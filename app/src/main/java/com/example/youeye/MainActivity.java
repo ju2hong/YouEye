@@ -1,5 +1,6 @@
 package com.example.youeye;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (switch1.isChecked()) {
                     TextView textView = null;
                     if (v.getId() == R.id.imageButton) {
@@ -67,7 +69,19 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        imageButton1.setOnClickListener(onClickListener);
+        imageButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (switch1.isChecked()) {
+                    String text = textView1.getText().toString();
+                    // 텍스트를 음성으로 출력
+                    textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+                }
+
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
 
         imageButton2.setOnClickListener(new View.OnClickListener() {
             @Override
