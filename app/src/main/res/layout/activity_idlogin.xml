@@ -121,7 +121,7 @@
         app:srcCompat="@drawable/keybutton" />
 
     <ImageButton
-        android:id="@+id/keyTts"
+        android:id="@+id/keyStt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -132,7 +132,7 @@
         app:layout_constraintVertical_bias="0.884"
         app:srcCompat="@drawable/keybutton" />
     <ImageButton
-        android:id="@+id/keyStt"
+        android:id="@+id/keyTts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -287,6 +287,26 @@
         app:layout_constraintStart_toStartOf="@id/key0"
         app:layout_constraintTop_toTopOf="@id/key0"
         app:layout_constraintVertical_bias="1"/>
+
+    <ImageView
+        android:id="@+id/imageStt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/keyStt"
+        app:layout_constraintEnd_toEndOf="@id/keyStt"
+        app:layout_constraintStart_toStartOf="@id/keyStt"
+        app:layout_constraintTop_toTopOf="@id/keyStt"
+        app:srcCompat="@drawable/sttbutton" />
+
+    <ImageView
+        android:id="@+id/imageTts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/keyTts"
+        app:layout_constraintEnd_toEndOf="@id/keyTts"
+        app:layout_constraintStart_toStartOf="@id/keyTts"
+        app:layout_constraintTop_toTopOf="@id/keyTts"
+        app:srcCompat="@drawable/ttsbutton" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
