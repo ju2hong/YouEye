@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color">
+    android:background="@color/background_color"
+    tools:context=".LoginActivity">
 
     <ImageButton
         android:id="@+id/idInputButton"
@@ -80,7 +81,7 @@
         android:id="@+id/loginView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="로그인"
+        android:text="아이디"
         android:textColor="#FFFFFF"
         android:textSize="80sp"
         android:textStyle="bold"
