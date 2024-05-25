@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     android:background="#E1DADA"
     tools:context=".IDLoginActivity"
-    tools:layout_editor_absoluteX="13dp"
-    tools:layout_editor_absoluteY="-12dp"
 >
 
     <ImageButton

@@ -5,27 +5,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class IDLoginActivity extends AppCompatActivity {
-
+public class PWLoginActivity extends AppCompatActivity {
+    // 이미지 버튼 리스트를 선언하고 초기화합니다.
     private List<ImageButton> imageButtons;
+    // 현재 포커싱된 버튼의 인덱스를 나타내는 변수를 선언하고 초기화합니다.
     private int currentIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_idlogin);
+        setContentView(R.layout.activity_pwlongin);
 
-        // ImageButton을 리스트로 초기화합니다.
+        // ImageButton 리스트 초기화
         imageButtons = new ArrayList<>();
-        imageButtons.add(findViewById(R.id.textButton1));
-        imageButtons.add(findViewById(R.id.textButton2));
-        imageButtons.add(findViewById(R.id.textButton3));
-        imageButtons.add(findViewById(R.id.textButton4));
+        imageButtons.add(findViewById(R.id.textPwButton1));
+        imageButtons.add(findViewById(R.id.textPwButton2));
+        imageButtons.add(findViewById(R.id.textPwButton3));
+        imageButtons.add(findViewById(R.id.textPwButton4));
 
         // 모든 ImageButton을 초기 상태로 설정합니다.
         for (ImageButton imageButton : imageButtons) {
@@ -36,7 +39,7 @@ public class IDLoginActivity extends AppCompatActivity {
         // onCreate 메서드 안에 0부터 9까지의 숫자에 대한 클릭 리스너를 추가합니다.
         for (int i = 0; i < 10; i++) {
             final int number = i; // 클로저를 위해 final 변수로 설정합니다.
-            int buttonId = getResources().getIdentifier("key" + i, "id", getPackageName());
+            int buttonId = getResources().getIdentifier("pwkey" + i, "id", getPackageName());
             findViewById(buttonId).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -47,14 +50,13 @@ public class IDLoginActivity extends AppCompatActivity {
                 }
             });
         }
-        findViewById(R.id.deleteButton).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.deletePwButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 deleteLastCharacter();
             }
         });
     }
-
     // 삭제 버튼 클릭 이벤트 핸들러
     public void deleteLastCharacter() {
         // 현재 입력된 숫자가 없는 경우 삭제 버튼을 무시합니다.
@@ -96,13 +98,13 @@ public class IDLoginActivity extends AppCompatActivity {
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("아이디 확인");
+        builder.setTitle("비밀번호 확인");
         builder.setMessage("입력된 숫자가 맞습니까? " + enteredNumber.toString());
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // 사용자가 Yes를 선택한 경우, LoginActivity로 화면을 전환합니다.
-                Intent intent = new Intent(IDLoginActivity.this, LoginActivity.class);
+                Intent intent = new Intent(PWLoginActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -124,6 +126,6 @@ public class IDLoginActivity extends AppCompatActivity {
         }
         currentIndex = 0; // 현재 인덱스를 초기화하여 처음부터 다시 입력할 수 있도록 합니다.
     }
-
 }
+
 
