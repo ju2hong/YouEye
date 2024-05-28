@@ -20,7 +20,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.728"
-        app:srcCompat="@drawable/button" />
+        app:srcCompat="@drawable/button"
+        android:contentDescription="로그인버튼" />
 
     <ImageButton
         android:id="@+id/imageButton2"
@@ -33,7 +34,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.947"
-        app:srcCompat="@drawable/button" />
+        app:srcCompat="@drawable/button"
+        android:contentDescription="회원가입버튼" />
 
 
     <ImageView
@@ -56,12 +58,16 @@
         android:thumb="@drawable/switchbutton"
         android:thumbTint="@color/switchbar_on_color"
         android:track="@drawable/switchbaroff"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.767"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.531" />
+
 
     <TextView
         android:id="@+id/textView3"
