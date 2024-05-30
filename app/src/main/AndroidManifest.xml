@@ -33,6 +33,18 @@
             android:name=".PWLoginActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".MemberActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".IDMemberActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".PWMemberActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

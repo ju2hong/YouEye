@@ -14,7 +14,8 @@ import androidx.core.content.res.ResourcesCompat;
 
 import java.util.ArrayList;
 import java.util.List;
-public class PWLoginActivity extends AppCompatActivity {
+
+public class PWMemberActivity extends AppCompatActivity {
     // 이미지 버튼 리스트를 선언하고 초기화합니다.
     private List<ImageButton> imageButtons;
     // 현재 포커싱된 버튼의 인덱스를 나타내는 변수를 선언하고 초기화합니다.
@@ -25,7 +26,7 @@ public class PWLoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pwlongin);
+        setContentView(R.layout.avtivity_pwmember);
 
         inputNumber = new StringBuilder(); // StringBuilder 초기화
 
@@ -126,9 +127,9 @@ public class PWLoginActivity extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(background);
         dialog.show();
     }
-    // 사용자가 Yes를 선택한 경우, LoginActivity로 화면을 전환하는 메서드
+    // 사용자가 Yes를 선택한 경우,  MemberActivity로 화면을 전환하는 메서드
     public void onYesButtonClick(View view) {
-        Intent intent = new Intent(PWLoginActivity.this, LoginActivity.class);
+        Intent intent = new Intent(PWMemberActivity.this, MemberActivity.class);
         startActivity(intent);
     }
 

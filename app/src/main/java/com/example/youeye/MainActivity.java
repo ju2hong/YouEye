@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                     textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
                 }
                     // 로그인페이지로 이동
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -87,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
                     // 텍스트를 음성으로 출력
                     textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
                 }
+                // 회원가입페이지로 이동
+                Intent intent = new Intent(MainActivity.this,MemberActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -1,17 +1,16 @@
 package com.example.youeye;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +18,9 @@ import java.util.List;
 public class IDLoginActivity extends AppCompatActivity {
 
     private List<ImageButton> imageButtons;
-    private StringBuilder inputNumber; // 사용자가 입력한 숫자를 저장할 StringBuilder
     private int currentIndex = 0;
+    private StringBuilder inputNumber; // 사용자가 입력한 숫자를 저장할 StringBuilder
+
     private AlertDialog dialog;
 
     @Override
@@ -53,6 +53,7 @@ public class IDLoginActivity extends AppCompatActivity {
                     ImageButton currentImageButton = imageButtons.get(currentIndex);
                     currentImageButton.setImageResource(R.drawable.textinput);
                     currentImageButton.setTag(String.valueOf(number)); // 숫자를 문자열로 변환하여 태그에 설정합니다.
+                    inputNumber.append(number); // 입력된 숫자를 추가합니다.
                     moveToNextImageButton();
                 }
             });
@@ -112,45 +113,46 @@ public class IDLoginActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView);
 
-
         // 다이얼로그 내의 TextView에 제목과 메시지를 설정합니다.
         TextView titleTextView = dialogView.findViewById(R.id.dialog_title);
         TextView messageTextView = dialogView.findViewById(R.id.dialog_message);
         titleTextView.setText("아이디 확인");
-        messageTextView.setText("\"" + enteredNumber.toString() + "\"\n맞습니까? ");
-
-        // 예 버튼에 대한 클릭 리스너를 설정합니다.
-        ImageButton yesButton = dialogView.findViewById(R.id.yesButton);
-        yesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 사용자가 Yes를 선택한 경우, LoginActivity로 화면을 전환합니다.
-                Intent intent = new Intent(IDLoginActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-
-// 아니오 버튼에 대한 클릭 리스너를 설정합니다.
-        ImageButton noButton = dialogView.findViewById(R.id.noButton);
-        noButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 사용자가 No를 선택한 경우, 입력된 숫자를 다시 초기화합니다.
-                clearAllImageButtons(); // 모든 이미지 버튼을 초기화합니다.
-                inputNumber.setLength(0); // 입력된 숫자를 초기화합니다.
-                dialog.dismiss(); // 팝업창을 닫습니다
-            }
-        });
-
+        String message = getString(R.string.confirmation_message, enteredNumber);
+        messageTextView.setText(message);
 
         // AlertDialog를 생성하고 표시합니다.
         dialog = builder.create();
         // 배경 설정
-        Drawable background = getResources().getDrawable(R.drawable.custom_dialog_background);
+        Drawable background = ResourcesCompat.getDrawable(getResources(), R.drawable.custom_dialog_background, null);
         dialog.getWindow().setBackgroundDrawable(background);
         dialog.show();
     }
+    // 사용자가 Yes를 선택한 경우, LoginActivity로 화면을 전환하는 메서드
+    public void onYesButtonClick(View view) {
+        // 로그인 처리를 한 뒤 로그인 액티비티의 아이디 입력 버튼을 변경합니다.
+        // 이 코드는 로그인 처리가 완료되었다고 가정하고 작성된 것입니다.
+        changeIdButtonInLoginActivity();
+        Intent intent = new Intent(IDLoginActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+    // LoginActivity에서 아이디 입력 버튼을 변경하는 메서드
+    private void changeIdButtonInLoginActivity() {
+        // 로그인 액티비티의 아이디 입력 창과 비밀번호 입력 창에 대한 레이아웃 파일을 가져옵니다.
+        View loginLayout = LayoutInflater.from(this).inflate(R.layout.activity_login, null);
 
+        // 가져온 레이아웃에서 아이디 입력 버튼을 찾아서 색상을 변경합니다.
+        ImageButton idButton = loginLayout.findViewById(R.id.idInputButton); // 예시에서는 idInputButton으로 가정합니다.
+        idButton.setImageResource(R.drawable.inputbutton); // 새 이미지로 아이디 입력 버튼을 설정합니다.
+
+        // 변경된 레이아웃을 다시 화면에 적용합니다.
+        setContentView(loginLayout);
+    }
+    // 사용자가 No를 선택한 경우, 입력된 숫자를 다시 초기화하는 메서드
+    public void onNoButtonClick(View view) {
+        clearAllImageButtons(); // 모든 이미지 버튼을 초기화합니다.
+        inputNumber.setLength(0);
+        dialog.dismiss(); // 팝업창을 닫습니다
+    }
 
     // 모든 ImageButton을 초기화하는 메서드
     public void clearAllImageButtons() {

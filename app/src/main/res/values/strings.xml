@@ -2,4 +2,5 @@
     <string name="app_name">YouEye</string>
     <string name="yes_button_description">예</string>
     <string name="no_button_description">아니오</string>
+    <string name="confirmation_message">"\"%s"\"\n맞습니까?</string>
 </resources>
