@@ -4,5 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="switchbar_on_color">#FF00312C</color>
     <color name="background_color">#E1DADA</color>
-
+    <color name="dialog_background_color">#55726F</color>
 </resources>
