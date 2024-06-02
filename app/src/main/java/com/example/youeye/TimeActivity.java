@@ -1,12 +1,14 @@
 package com.example.youeye;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,7 +35,7 @@ public class TimeActivity extends AppCompatActivity {
     private int adapterPosition;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarmsettings);
 
@@ -43,73 +45,61 @@ public class TimeActivity extends AppCompatActivity {
         listView.setAdapter(arrayAdapter);
 
         // List에 있는 항목들 눌렀을 때 시간변경 가능
-        listView.setOnClickListener(new AdapterView.OnItemClickListener(){
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 adapterPosition = position;
                 arrayAdapter.removeItem(position);
                 Intent intent = new Intent(TimeActivity.this, TimePickerActivity.class);
-                startActivityForResult(intent,REQUEST_CODE2);
-        }
-    });
+                startActivityForResult(intent, REQUEST_CODE2);
+            }
+        });
 
-    // 쓰레드를 사용해서 실시간으로 시간 출력
-    handler = new Handler() {
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            Calendar cal = Calendar.getInstance();
-
-            mFormat = new SimpleDateFormat("HH:mm:ss");
-            String strTime = mFormat.format(cal.getTime());
-            textView = (TextView) findViewById(R.id.current);
-            textView.setTextSize(30);
-            textView.setText(strTime);
-        }
-    };
-
-    class NewRunnable implements Runnable {
-        @Override
-        public void run(){
-            while(true){
-                try {
-                    Thread.sleep(1000);
-                }catch (Exception e){
-                    e.printStackTrace();
+        class NewRunnable implements Runnable {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    handler.sendEmptyMessage(0);
                 }
-                handler.sendEmptyMessage(0);
             }
         }
+
+        NewRunnable runnable = new NewRunnable();
+        Thread thread = new Thread(runnable);
+        thread.start();
+
+        // TimePicker의 시간 셋팅값을 받기 위한 startActivityForResult()
+        ImageButton tpBtn = (ImageButton) findViewById(R.id.adBtn);
+        tpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent tpIntent = new Intent(TimeActivity.this, TimePickerActivity.class);
+                startActivityForResult(tpIntent, REQUEST_CODE1);
+            }
+        });
+
+        ImageButton rmBtn = (ImageButton) findViewById(R.id.rmBtn);
+        rmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                arrayAdapter.removeItem();
+                arrayAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
-    NewRunnable runnable = new NewRunnable();
-    Thread thread = new Thread(runnable);
-    thread.start();
-
-    // TimePicker의 시간 셋팅값을 받기 위한 startActivityForResult()
-    tpBtn = (Button) findViewById(new View.OnClickListener(){
-        @Override
-        public void onClick(View v){
-            Intent tpIntent = new Intent(TimeActivity.this, TimePickerActivity.class);
-            startActivityForResult(tpIntent, REQUEST_CODE1);
-        }
-    });
-
-    rmBtn = (Button) findViewById(R.id.rmBtn);
-    rmBtn.setOnClickListener(new View.OnClickListener(){
-        @Override
-        public void onClick(View v){
-            arrayAdapter.removeItem();
-            arrayAdapter.notifDataSetChanged();
-        }
-    });
-    }
 
     // TimePicker 셋팅값 받아온 결과를 arrayAdapter에 추가
     @Override
-    protected void onActivityResult(int requestCode, int resiltCode, @Nullable intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // 시간 리스트 추가
-        if (requestCode == REQUEST_CODE1 && resiltCode == RESULT_OK && data != null) {
+        if (requestCode == REQUEST_CODE1 && resultCode == RESULT_OK && data != null) {
             hour = data.getIntExtra("hour", 1);
             minute = data.getIntExtra("minute", 2);
             am_pm = data.getStringExtra("am_pm");
@@ -133,3 +123,4 @@ public class TimeActivity extends AppCompatActivity {
         }
     }
 }
+

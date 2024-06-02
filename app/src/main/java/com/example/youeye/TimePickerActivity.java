@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,7 +38,7 @@ public class TimePickerActivity extends AppCompatActivity {
         stMonth = month.format(currentTime);
         stDay = day.format(currentTime);
 
-        okBtn = (Button)findViewById(R.id.okBtn);
+        ImageButton okBtn = (ImageButton) findViewById(R.id.okBtn);
         okBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -46,8 +47,8 @@ public class TimePickerActivity extends AppCompatActivity {
                     minute = timePicker.getMinute();
                 }
                 else{
-                    hour = timePicker.getCurrentHour();
-                    minute = timePicker.getCurrentMinute();
+                    hour = timePicker.getHour();
+                    minute = timePicker.getMinute();
                 }
 
                 am_pm = AM_PM(hour);
@@ -66,7 +67,7 @@ public class TimePickerActivity extends AppCompatActivity {
             }
         });
         // 취소 버튼 누를 시 TimePickerActivity 종료
-        cancelBtn = (Button) findViewById(R.id.cancleBtn);
+        ImageButton cancelBtn = (ImageButton)findViewById(R.id.cancelBtn);
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +75,7 @@ public class TimePickerActivity extends AppCompatActivity {
             }
         });
     }
+
     // 24시 시간제 바꾸기
     private int timeSet(int hour){
         if(hour > 12){
