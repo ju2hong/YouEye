@@ -25,7 +25,7 @@ public class PWLoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pwlongin);
+        setContentView(R.layout.activity_pwlogin);
 
         inputNumber = new StringBuilder(); // StringBuilder 초기화
 
