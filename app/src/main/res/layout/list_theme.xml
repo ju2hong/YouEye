@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_margin="6dp"
+        android:padding="6dp"
+        android:background="@drawable/layout_background">
+
+    <TextView
+        android:id="@+id/am_pm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="오전/오후"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textTime1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="몇시"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textTime2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="몇분"
+        tools:ignore="MissingConstraints" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/time_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="몇월"
+            android:layout_toLeftOf="@+id/time_day"
+            android:paddingRight="10dp" />
+
+        <TextView
+            android:id="@+id/time_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="며칠"
+            android:layout_toLeftOf="@+id/switchBtn"
+            android:paddingRight="10dp" />
+
+        <Switch
+            android:id="@+id/switchBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
+
+    </RelativeLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
