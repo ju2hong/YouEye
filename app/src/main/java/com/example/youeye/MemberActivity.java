@@ -4,13 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-public class LoginActivity extends AppCompatActivity {
+public class MemberActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_member);
 
         // 아이디 버튼 참조
         ImageButton idInputButton = findViewById(R.id.idInputButton);
@@ -21,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // 아이디 버튼을 클릭했을 때 실행될 코드 작성
                 // 아이디 입력 화면으로 이동
-                Intent intent = new Intent(LoginActivity.this, IDLoginActivity.class);
+                Intent intent = new Intent(MemberActivity.this, IDMemberActivity.class);
                 startActivity(intent);
             }
         });
@@ -35,9 +36,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // 비밀번호 버튼을 클릭했을 때 실행될 코드 작성
                 // 비밀번호 입력 화면으로 이동
-                Intent intent = new Intent(LoginActivity.this, PWLoginActivity.class);
+                Intent intent = new Intent(MemberActivity.this, PWMemberActivity.class);
                 startActivity(intent);
             }
         });
     }
 }
+

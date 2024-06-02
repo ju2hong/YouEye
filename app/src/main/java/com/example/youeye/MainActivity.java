@@ -9,14 +9,8 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -78,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                     textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
                 }
                     // 로그인페이지로 이동
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -93,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
                     // 텍스트를 음성으로 출력
                     textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
                 }
+                // 회원가입페이지로 이동
+                Intent intent = new Intent(MainActivity.this,MemberActivity.class);
+                startActivity(intent);
             }
         });
 
