@@ -3,4 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="switchbar_on_color">#FF00312C</color>
+    <color name="background_color">#E1DADA</color>
+
 </resources>
