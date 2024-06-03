@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E1DADA">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="325dp"
+        android:layout_height="316dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.038"
+        app:srcCompat="@drawable/logo" />
+
+    <ImageButton
+        android:id="@+id/imageSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.111"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.608"
+        app:srcCompat="@drawable/bigbutton" />
+
+    <ImageButton
+        android:id="@+id/voiceSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.928"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.608"
+        app:srcCompat="@drawable/bigbutton" />
+
+    <ImageButton
+        android:id="@+id/textSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.106"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.969"
+        app:srcCompat="@drawable/bigbutton" />
+
+    <ImageButton
+        android:id="@+id/MyPage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.933"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.969"
+        app:srcCompat="@drawable/bigbutton" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="153dp"
+        android:layout_height="178dp"
+        android:text="사진검색"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="25pt"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/imageSearch"
+        app:layout_constraintEnd_toEndOf="@id/imageSearch"
+        app:layout_constraintStart_toStartOf="@id/imageSearch"
+        app:layout_constraintTop_toTopOf="@id/imageSearch"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="43dp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="141dp"
+        android:layout_height="170dp"
+        android:text="음성검색"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="25pt"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/voiceSearch"
+        app:layout_constraintEnd_toEndOf="@id/voiceSearch"
+        app:layout_constraintStart_toStartOf="@id/voiceSearch"
+        app:layout_constraintTop_toTopOf="@id/voiceSearch"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="150dp"
+        android:layout_height="177dp"
+        android:text="글자검색"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="25pt"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/textSearch"
+        app:layout_constraintEnd_toEndOf="@id/textSearch"
+        app:layout_constraintStart_toStartOf="@id/textSearch"
+        app:layout_constraintTop_toTopOf="@id/textSearch"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="42dp"
+        tools:layout_editor_absoluteY="518dp" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="159dp"
+        android:layout_height="179dp"
+        android:text="마이
+                           페이지"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="23pt"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/MyPage"
+        app:layout_constraintEnd_toEndOf="@id/MyPage"
+        app:layout_constraintStart_toStartOf="@id/MyPage"
+        app:layout_constraintTop_toTopOf="@id/MyPage"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="225dp"
+        tools:layout_editor_absoluteY="518dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
