@@ -2,6 +2,7 @@ package com.example.youeye;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,8 @@ public class LoginActivity extends AppCompatActivity {
 
         // 아이디 버튼 참조
         ImageButton idInputButton = findViewById(R.id.idInputButton);
+        // 비밀번호 버튼 참조
+        ImageButton pwInputButton = findViewById(R.id.pwInputButton);
 
         // 아이디 버튼에 클릭 리스너 추가
         idInputButton.setOnClickListener(new View.OnClickListener() {
@@ -26,9 +29,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // 비밀번호 버튼 참조
-        ImageButton pwInputButton = findViewById(R.id.pwInputButton);
-
         // 비밀번호 버튼에 클릭 리스너 추가
         pwInputButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,5 +39,19 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // 인텐트에서 아이디와 비밀번호 값을 받아옵니다.
+        Intent intent = getIntent();
+        if(intent.hasExtra("id")) {
+            String id = intent.getStringExtra("id");
+            Log.d("LoginActivity", "Received ID: " + id);
+        }
+        if(intent.hasExtra("pw")) {
+            String pw = intent.getStringExtra("pw");
+            Log.d("LoginActivity", "Received Password: " + pw);
+            Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(homeIntent);
+        }
+
     }
 }

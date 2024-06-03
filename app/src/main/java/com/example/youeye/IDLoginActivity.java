@@ -129,24 +129,15 @@ public class IDLoginActivity extends AppCompatActivity {
     }
     // 사용자가 Yes를 선택한 경우, LoginActivity로 화면을 전환하는 메서드
     public void onYesButtonClick(View view) {
-        // 로그인 처리를 한 뒤 로그인 액티비티의 아이디 입력 버튼을 변경합니다.
-        // 이 코드는 로그인 처리가 완료되었다고 가정하고 작성된 것입니다.
-        changeIdButtonInLoginActivity();
+        // 사용자가 Yes를 선택한 경우, ID 값을 가져옵니다.
+        String enteredNumber = inputNumber.toString();
         Intent intent = new Intent(IDLoginActivity.this, LoginActivity.class);
+        // ID 값을 "id"라는 이름으로 Intent에 추가
+        intent.putExtra("id", enteredNumber);
         startActivity(intent);
     }
-    // LoginActivity에서 아이디 입력 버튼을 변경하는 메서드
-    private void changeIdButtonInLoginActivity() {
-        // 로그인 액티비티의 아이디 입력 창과 비밀번호 입력 창에 대한 레이아웃 파일을 가져옵니다.
-        View loginLayout = LayoutInflater.from(this).inflate(R.layout.activity_login, null);
 
-        // 가져온 레이아웃에서 아이디 입력 버튼을 찾아서 색상을 변경합니다.
-        ImageButton idButton = loginLayout.findViewById(R.id.idInputButton); // 예시에서는 idInputButton으로 가정합니다.
-        idButton.setImageResource(R.drawable.inputbutton); // 새 이미지로 아이디 입력 버튼을 설정합니다.
 
-        // 변경된 레이아웃을 다시 화면에 적용합니다.
-        setContentView(loginLayout);
-    }
     // 사용자가 No를 선택한 경우, 입력된 숫자를 다시 초기화하는 메서드
     public void onNoButtonClick(View view) {
         clearAllImageButtons(); // 모든 이미지 버튼을 초기화합니다.
