@@ -49,8 +49,10 @@ public class LoginActivity extends AppCompatActivity {
         if(intent.hasExtra("pw")) {
             String pw = intent.getStringExtra("pw");
             Log.d("LoginActivity", "Received Password: " + pw);
-
+            Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(homeIntent);
         }
+
 
     }
 }
