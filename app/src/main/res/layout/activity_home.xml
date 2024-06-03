@@ -119,8 +119,7 @@
         android:id="@+id/textView7"
         android:layout_width="159dp"
         android:layout_height="179dp"
-        android:text="마이
-                           페이지"
+        android:text="마이\n페이지"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="23pt"
