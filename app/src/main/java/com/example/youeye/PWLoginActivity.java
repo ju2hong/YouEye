@@ -128,7 +128,10 @@ public class PWLoginActivity extends AppCompatActivity {
     }
     // 사용자가 Yes를 선택한 경우, LoginActivity로 화면을 전환하는 메서드
     public void onYesButtonClick(View view) {
+        // 사용자가 Yes를 선택한 경우, ID 값을 가져옵니다.
+        String enteredNumber = inputNumber.toString();
         Intent intent = new Intent(PWLoginActivity.this, LoginActivity.class);
+        intent.putExtra("pw", enteredNumber);
         startActivity(intent);
     }
 
