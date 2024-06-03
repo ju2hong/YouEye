@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E1DADA"
+    tools:context=".MyPageActivity"
+    >
+
+    <ImageButton
+        android:id="@+id/alBtton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.071"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bigbutton" />
+
+    <ImageButton
+        android:id="@+id/logoutBtton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.928"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bigbutton" />
+
+    <TextView
+        android:id="@+id/altext"
+        android:layout_width="127dp"
+        android:layout_height="185dp"
+        android:text="나의\n알람"
+        android:textColor="#FFFFFF"
+        android:textSize="60sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/alBtton"
+        app:layout_constraintEnd_toEndOf="@id/alBtton"
+        app:layout_constraintStart_toStartOf="@id/alBtton"
+        app:layout_constraintTop_toTopOf="@id/alBtton" />
+
+    <TextView
+        android:id="@+id/logouttext"
+        android:layout_width="127dp"
+        android:layout_height="185dp"
+        android:text="로그\n아웃"
+        android:textColor="#FFFFFF"
+        android:textSize="60sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/logoutBtton"
+        app:layout_constraintEnd_toEndOf="@id/logoutBtton"
+        app:layout_constraintStart_toStartOf="@id/logoutBtton"
+        app:layout_constraintTop_toTopOf="@id/logoutBtton" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="마이페이지"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
+</androidx.constraintlayout.widget.ConstraintLayout>
