@@ -28,7 +28,7 @@ public class PWMemberActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.avtivity_pwmember);
+        setContentView(R.layout.activity_pwmember);
 
         inputNumber = new StringBuilder(); // StringBuilder 초기화
 

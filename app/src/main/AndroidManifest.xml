@@ -68,11 +68,11 @@
         </activity>
         <!--ㅡmypage 버튼 activity-->
         <activity
-            android:name=".alram.TimeActivity"
+            android:name=".alarm.TimeActivity"
             android:exported="true">
         </activity>
         <activity
-            android:name=".alram.TimePickerActivity"
+            android:name=".alarm.TimePickerActivity"
             android:exported="true">
         </activity>
     </application>

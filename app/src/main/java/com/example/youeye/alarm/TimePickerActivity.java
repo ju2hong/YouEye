@@ -1,4 +1,4 @@
-package com.example.youeye.alram;
+package com.example.youeye.alarm;
 
 import android.content.Intent;
 import android.os.Build;

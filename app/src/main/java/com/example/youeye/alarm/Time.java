@@ -1,4 +1,4 @@
-package com.example.youeye.alram;
+package com.example.youeye.alarm;
 
 public class Time {
     private int hour, minute;

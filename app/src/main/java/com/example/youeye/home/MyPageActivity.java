@@ -7,7 +7,7 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.youeye.R;
-import com.example.youeye.alram.TimeActivity;
+import com.example.youeye.alarm.TimeActivity;
 
 public class MyPageActivity extends AppCompatActivity {
     @Override

@@ -1,4 +1,4 @@
-package com.example.youeye.alram;
+package com.example.youeye.alarm;
 
 import android.view.LayoutInflater;
 import android.view.View;
