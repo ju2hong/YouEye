@@ -1,4 +1,4 @@
-package com.example.youeye.home.mypage;
+package com.example.youeye.home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.youeye.R;
+import com.example.youeye.alram.TimeActivity;
 
 public class MyPageActivity extends AppCompatActivity {
     @Override

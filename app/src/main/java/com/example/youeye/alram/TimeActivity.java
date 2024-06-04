@@ -1,4 +1,4 @@
-package com.example.youeye.home.mypage;
+package com.example.youeye.alram;
 
 import android.content.Intent;
 import android.os.Bundle;

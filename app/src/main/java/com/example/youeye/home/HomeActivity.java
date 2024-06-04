@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.example.youeye.R;
-import com.example.youeye.home.mypage.MyPageActivity;
 
 public class HomeActivity extends AppCompatActivity {
     @Override

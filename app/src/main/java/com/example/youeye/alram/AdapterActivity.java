@@ -1,4 +1,4 @@
-package com.example.youeye.home.mypage;
+package com.example.youeye.alram;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +7,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.youeye.R;
-import com.example.youeye.home.mypage.Time;
 
 import java.util.ArrayList;
 

@@ -63,16 +63,16 @@
             android:exported="true">
         </activity>
         <activity
-            android:name=".home.mypage.MyPageActivity"
+            android:name=".home.MyPageActivity"
             android:exported="true">
         </activity>
         <!--ㅡmypage 버튼 activity-->
         <activity
-            android:name=".home.mypage.TimeActivity"
+            android:name=".alram.TimeActivity"
             android:exported="true">
         </activity>
         <activity
-            android:name=".home.mypage.TimePickerActivity"
+            android:name=".alram.TimePickerActivity"
             android:exported="true">
         </activity>
     </application>
