@@ -1,4 +1,4 @@
-package com.example.youeye;
+package com.example.youeye.member;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -11,6 +11,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
+
+import com.example.youeye.R;
+import com.example.youeye.login.LoginActivity;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.youeye;
+package com.example.youeye.home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.ImageButton;
+
+import com.example.youeye.R;
+import com.example.youeye.home.mypage.MyPageActivity;
 
 public class HomeActivity extends AppCompatActivity {
     @Override

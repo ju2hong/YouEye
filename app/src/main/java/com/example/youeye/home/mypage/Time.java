@@ -1,4 +1,4 @@
-package com.example.youeye;
+package com.example.youeye.home.mypage;
 
 public class Time {
     private int hour, minute;

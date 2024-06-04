@@ -1,4 +1,4 @@
-package com.example.youeye;
+package com.example.youeye.home.mypage;
 
 import android.content.Intent;
 import android.os.Build;
@@ -9,6 +9,8 @@ import android.widget.ImageButton;
 import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.youeye.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

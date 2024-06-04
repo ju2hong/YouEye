@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#E1DADA"
-    tools:context=".PWMemberActivity">
+    tools:context=".member.PWMemberActivity">
 
     <ImageButton
         android:id="@+id/textPwButton1"

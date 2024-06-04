@@ -1,4 +1,4 @@
-package com.example.youeye;
+package com.example.youeye.home.mypage;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,9 +6,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
-
-import org.w3c.dom.Text;
+import com.example.youeye.R;
+import com.example.youeye.home.mypage.Time;
 
 import java.util.ArrayList;
 

@@ -1,10 +1,8 @@
-package com.example.youeye;
+package com.example.youeye.home.mypage;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -12,14 +10,12 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.w3c.dom.Text;
+import com.example.youeye.R;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class TimeActivity extends AppCompatActivity {
     public static final int REQUEST_CODE1 = 1000;

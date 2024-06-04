@@ -11,6 +11,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import com.example.youeye.login.LoginActivity;
+import com.example.youeye.member.MemberActivity;
+
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -72,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                     textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
                 }
                     // 로그인페이지로 이동
-                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -88,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
                 }
                 // 회원가입페이지로 이동
-                Intent intent = new Intent(MainActivity.this,MemberActivity.class);
+                Intent intent = new Intent(MainActivity.this, MemberActivity.class);
                 startActivity(intent);
             }
         });

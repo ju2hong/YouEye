@@ -1,4 +1,4 @@
-package com.example.youeye;
+package com.example.youeye.login;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -12,30 +12,32 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
+import com.example.youeye.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class PWMemberActivity extends AppCompatActivity {
-    // 이미지 버튼 리스트를 선언하고 초기화합니다.
+public class IDLoginActivity extends AppCompatActivity {
+
     private List<ImageButton> imageButtons;
-    // 현재 포커싱된 버튼의 인덱스를 나타내는 변수를 선언하고 초기화합니다.
     private int currentIndex = 0;
-    private StringBuilder inputNumber;
+    private StringBuilder inputNumber; // 사용자가 입력한 숫자를 저장할 StringBuilder
+
     private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.avtivity_pwmember);
+        setContentView(R.layout.activity_idlogin);
 
         inputNumber = new StringBuilder(); // StringBuilder 초기화
 
-        // ImageButton 리스트 초기화
+        // ImageButton을 리스트로 초기화합니다.
         imageButtons = new ArrayList<>();
-        imageButtons.add(findViewById(R.id.textPwButton1));
-        imageButtons.add(findViewById(R.id.textPwButton2));
-        imageButtons.add(findViewById(R.id.textPwButton3));
-        imageButtons.add(findViewById(R.id.textPwButton4));
+        imageButtons.add(findViewById(R.id.textButton1));
+        imageButtons.add(findViewById(R.id.textButton2));
+        imageButtons.add(findViewById(R.id.textButton3));
+        imageButtons.add(findViewById(R.id.textButton4));
 
         // 모든 ImageButton을 초기 상태로 설정합니다.
         for (ImageButton imageButton : imageButtons) {
@@ -46,7 +48,7 @@ public class PWMemberActivity extends AppCompatActivity {
         // onCreate 메서드 안에 0부터 9까지의 숫자에 대한 클릭 리스너를 추가합니다.
         for (int i = 0; i < 10; i++) {
             final int number = i; // 클로저를 위해 final 변수로 설정합니다.
-            int buttonId = getResources().getIdentifier("pwkey" + i, "id", getPackageName());
+            int buttonId = getResources().getIdentifier("key" + i, "id", getPackageName());
             findViewById(buttonId).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -58,7 +60,7 @@ public class PWMemberActivity extends AppCompatActivity {
                 }
             });
         }
-        findViewById(R.id.deletePwButton).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.deleteButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 deleteLastCharacter();
@@ -116,7 +118,7 @@ public class PWMemberActivity extends AppCompatActivity {
         // 다이얼로그 내의 TextView에 제목과 메시지를 설정합니다.
         TextView titleTextView = dialogView.findViewById(R.id.dialog_title);
         TextView messageTextView = dialogView.findViewById(R.id.dialog_message);
-        titleTextView.setText("비밀번호 확인");
+        titleTextView.setText("아이디 확인");
         String message = getString(R.string.confirmation_message, enteredNumber);
         messageTextView.setText(message);
 
@@ -127,11 +129,16 @@ public class PWMemberActivity extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(background);
         dialog.show();
     }
-    // 사용자가 Yes를 선택한 경우,  MemberActivity로 화면을 전환하는 메서드
+    // 사용자가 Yes를 선택한 경우, LoginActivity로 화면을 전환하는 메서드
     public void onYesButtonClick(View view) {
-        Intent intent = new Intent(PWMemberActivity.this, MemberActivity.class);
+        // 사용자가 Yes를 선택한 경우, ID 값을 가져옵니다.
+        String enteredNumber = inputNumber.toString();
+        Intent intent = new Intent(IDLoginActivity.this, LoginActivity.class);
+        // ID 값을 "id"라는 이름으로 Intent에 추가
+        intent.putExtra("id", enteredNumber);
         startActivity(intent);
     }
+
 
     // 사용자가 No를 선택한 경우, 입력된 숫자를 다시 초기화하는 메서드
     public void onNoButtonClick(View view) {
@@ -139,6 +146,7 @@ public class PWMemberActivity extends AppCompatActivity {
         inputNumber.setLength(0);
         dialog.dismiss(); // 팝업창을 닫습니다
     }
+
     // 모든 ImageButton을 초기화하는 메서드
     public void clearAllImageButtons() {
         for (ImageButton imageButton : imageButtons) {
@@ -147,4 +155,5 @@ public class PWMemberActivity extends AppCompatActivity {
         }
         currentIndex = 0; // 현재 인덱스를 초기화하여 처음부터 다시 입력할 수 있도록 합니다.
     }
+
 }
