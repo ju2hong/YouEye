@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E1DADA">
+    android:background="#E1DADA"
+    tools:context=".TimeActivity">
+
 
     <TextView
         android:id="@+id/textView15"
@@ -28,7 +30,8 @@
         android:layout_height="190dp"
         app:srcCompat="@drawable/bigbutton"
         tools:layout_editor_absoluteX="14dp"
-        tools:layout_editor_absoluteY="92dp" tools:ignore="MissingConstraints" />
+        tools:layout_editor_absoluteY="92dp"
+        tools:ignore="MissingConstraints" />
 
     <ImageButton
         android:id="@+id/rmBtn"

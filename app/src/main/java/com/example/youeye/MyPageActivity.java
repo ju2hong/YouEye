@@ -17,7 +17,7 @@ public class MyPageActivity extends AppCompatActivity {
         alButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyPageActivity.this, TimePickerActivity.class);
+                Intent intent = new Intent(MyPageActivity.this, TimeActivity.class);
                 startActivity(intent);
             }
         });
