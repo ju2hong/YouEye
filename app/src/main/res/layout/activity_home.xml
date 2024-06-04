@@ -69,9 +69,9 @@
 
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="153dp"
-        android:layout_height="178dp"
-        android:text="사진검색"
+        android:layout_width="149dp"
+        android:layout_height="184dp"
+        android:text="사진\n검색"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="25pt"
@@ -80,14 +80,13 @@
         app:layout_constraintEnd_toEndOf="@id/imageSearch"
         app:layout_constraintStart_toStartOf="@id/imageSearch"
         app:layout_constraintTop_toTopOf="@id/imageSearch"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="43dp" />
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="141dp"
         android:layout_height="170dp"
-        android:text="음성검색"
+        android:text="음성\n검색"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="25pt"
@@ -102,7 +101,7 @@
         android:id="@+id/textView6"
         android:layout_width="150dp"
         android:layout_height="177dp"
-        android:text="글자검색"
+        android:text="글자\n검색"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="25pt"
