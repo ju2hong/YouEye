@@ -33,7 +33,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.25"
-        app:srcCompat="@drawable/inserttext" />
+        app:srcCompat="@drawable/inserttext"
+        />
 
     <TextView
         android:id="@+id/insertText"
@@ -60,7 +61,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.721"
-        app:srcCompat="@drawable/button" />
+        app:srcCompat="@drawable/button"
+        android:background="@android:color/transparent"
+        />
 
     <ImageButton
         android:id="@+id/backBtn"
@@ -72,7 +75,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.925"
-        app:srcCompat="@drawable/button" />
+        app:srcCompat="@drawable/button"
+        android:background="@android:color/transparent"
+        />
 
     <TextView
         android:id="@+id/txtsearch"
@@ -100,6 +105,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/backBtn"
         app:layout_constraintEnd_toEndOf="@+id/backBtn"
         app:layout_constraintStart_toStartOf="@+id/backBtn"
-        app:layout_constraintTop_toBottomOf="@+id/textBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/textBtn"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

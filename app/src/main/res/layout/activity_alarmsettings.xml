@@ -32,7 +32,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/rmBtn"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.5"
+        android:background="@android:color/transparent"
+        />
 
     <ImageButton
         android:id="@+id/rmBtn"
@@ -43,7 +45,9 @@
         app:layout_constraintStart_toEndOf="@+id/adBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.5"
+        android:background="@android:color/transparent"
+        />
 
     <TextView
         android:id="@+id/addBtn"
@@ -56,10 +60,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/adBtn"
         app:layout_constraintEnd_toStartOf="@+id/rmBtn"
-        app:layout_constraintHorizontal_bias="0.445"
+        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/adBtn"
-        app:layout_constraintVertical_bias="0.453" />
+        app:layout_constraintVertical_bias="0.432" />
 
     <TextView
         android:id="@+id/removeBtn"
@@ -72,7 +76,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/rmBtn"
         app:layout_constraintEnd_toEndOf="@+id/rmBtn"
-        app:layout_constraintHorizontal_bias="0.593"
+        app:layout_constraintHorizontal_bias="0.574"
         app:layout_constraintStart_toEndOf="@+id/adBtn"
         app:layout_constraintTop_toTopOf="@+id/rmBtn"
         app:layout_constraintVertical_bias="0.442" />

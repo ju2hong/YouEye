@@ -17,7 +17,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.038"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/logo"
+        />
 
     <ImageButton
         android:id="@+id/imageSearch"
@@ -29,7 +30,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.608"
-        app:srcCompat="@drawable/bigbutton" />
+        app:srcCompat="@drawable/bigbutton"
+        android:background="@android:color/transparent"
+        />
 
     <ImageButton
         android:id="@+id/voiceSearch"
@@ -41,7 +44,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.608"
-        app:srcCompat="@drawable/bigbutton" />
+        app:srcCompat="@drawable/bigbutton"
+        android:background="@android:color/transparent"
+        />
 
     <ImageButton
         android:id="@+id/textSearch"
@@ -53,7 +58,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.969"
-        app:srcCompat="@drawable/bigbutton" />
+        app:srcCompat="@drawable/bigbutton"
+        android:background="@android:color/transparent"
+        />
 
     <ImageButton
         android:id="@+id/MyPage"
@@ -65,7 +72,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.969"
-        app:srcCompat="@drawable/bigbutton" />
+        app:srcCompat="@drawable/bigbutton"
+        android:background="@android:color/transparent"
+        />
 
     <TextView
         android:id="@+id/textView1"
