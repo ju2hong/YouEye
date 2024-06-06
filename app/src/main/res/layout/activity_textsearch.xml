@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E1DADA"
-    tools:context=".home.TextSearchActivity"
-    >
+    tools:context=".home.TextSearchActivity">
 
     <TextView
         android:id="@+id/textmain"
@@ -33,8 +32,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.25"
-        app:srcCompat="@drawable/inserttext"
-        />
+        app:srcCompat="@drawable/inserttext" />
 
     <TextView
         android:id="@+id/insertText"
@@ -51,33 +49,44 @@
         app:layout_constraintTop_toTopOf="@+id/maintext"
         app:layout_constraintVertical_bias="0.087" />
 
+    <EditText
+        android:id="@+id/editTextSearch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="검색할 약 이름을 입력하세요"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@id/insertText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintVertical_bias="0.05"/>
+
     <ImageButton
         android:id="@+id/textBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.721"
-        app:srcCompat="@drawable/button"
-        android:background="@android:color/transparent"
-        />
+        app:srcCompat="@drawable/button" />
 
     <ImageButton
         android:id="@+id/backBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.925"
-        app:srcCompat="@drawable/button"
-        android:background="@android:color/transparent"
-        />
+        app:srcCompat="@drawable/button" />
 
     <TextView
         android:id="@+id/txtsearch"
