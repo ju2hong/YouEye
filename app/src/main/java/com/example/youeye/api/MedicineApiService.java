@@ -5,6 +5,12 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface MedicineApiService {
-    @GET("searchMedicine")
-    Call<MedicineResponse> searchMedicine(@Query("name") String name);
+    @GET("SafeStadDrugService/getSafeStadDrugInq")
+    Call<MedicineResponse> searchMedicine(
+            @Query("serviceKey") String apiKey,
+            @Query("pageNo") int pageNo,
+            @Query("numOfRows") int numOfRows,
+            @Query("type") String type,
+            @Query("PRDLST_NM") String productName
+    );
 }

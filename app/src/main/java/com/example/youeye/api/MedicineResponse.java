@@ -1,18 +1,31 @@
 package com.example.youeye.api;
 
-import com.example.youeye.home.Medicine; // 여기에 Medicine 클래스를 임포트합니다.
+import com.example.youeye.home.Medicine;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class MedicineResponse {
-    @SerializedName("medicines")
-    private List<Medicine> medicines;
+    @SerializedName("body")
+    private Body body;
 
-    public List<Medicine> getMedicines() {
-        return medicines;
+    public Body getBody() {
+        return body;
     }
 
-    public void setMedicines(List<Medicine> medicines) {
-        this.medicines = medicines;
+    public void setBody(Body body) {
+        this.body = body;
+    }
+
+    public static class Body {
+        @SerializedName("items")
+        private List<Medicine> items;
+
+        public List<Medicine> getItems() {
+            return items;
+        }
+
+        public void setItems(List<Medicine> items) {
+            this.items = items;
+        }
     }
 }

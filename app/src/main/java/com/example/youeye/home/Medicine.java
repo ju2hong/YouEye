@@ -1,15 +1,28 @@
 package com.example.youeye.home;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Medicine {
+    @SerializedName("PRDLST_NM")
     private String name;
-    private String description;
+
+    @SerializedName("BSSH_NM")
+    private String company;
+
+    @SerializedName("VLD_PRD_YMD")
+    private String validity;
+
+    @SerializedName("STRG_MTH_CONT")
+    private String storage;
 
     public Medicine() {
     }
 
-    public Medicine(String name, String description) {
+    public Medicine(String name, String company, String validity, String storage) {
         this.name = name;
-        this.description = description;
+        this.company = company;
+        this.validity = validity;
+        this.storage = storage;
     }
 
     public String getName() {
@@ -20,11 +33,27 @@ public class Medicine {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getCompany() {
+        return company;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getValidity() {
+        return validity;
+    }
+
+    public void setValidity(String validity) {
+        this.validity = validity;
+    }
+
+    public String getStorage() {
+        return storage;
+    }
+
+    public void setStorage(String storage) {
+        this.storage = storage;
     }
 }
