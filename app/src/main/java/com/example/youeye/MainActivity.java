@@ -3,8 +3,6 @@ package com.example.youeye;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -38,52 +36,54 @@ public class MainActivity extends AppCompatActivity {
         // TTSManager 초기화
         ttsManager = new TTSManager(this);
 
-        // ImageButton 클릭 이벤트 통합
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (switch1.isChecked()) {
-                    TextView textView = (v.getId() == R.id.imageButton) ? textView1 : textView2;
-                    if (textView != null) {
-                        String text = textView.getText().toString();
-                        ttsManager.speak(text);
-                    }
-                }
-                if (v.getId() == R.id.imageButton) {
-                    // 로그인 페이지로 이동
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                } else if (v.getId() == R.id.imageButton2) {
-                    // 회원가입 페이지로 이동
-                    startActivity(new Intent(MainActivity.this, MemberActivity.class));
-                }
-            }
-        };
-
-        imageButton1.setOnClickListener(onClickListener);
-        imageButton2.setOnClickListener(onClickListener);
+        // ImageButton 클릭 이벤트 설정
+        setButtonClickListener(imageButton1, textView1, LoginActivity.class);
+        setButtonClickListener(imageButton2, textView2, MemberActivity.class);
 
         // 스위치 상태 변화 감지
-        switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                String statusText = isChecked ? "On" : "Off";
-                textView3.setText(statusText);
-                ttsManager.setTTSOn(isChecked ? 1 : 0); // 스위치 상태에 따라 TTS 상태 설정
-                ttsManager.speak(statusText);
-                if (isChecked) {
-                    switch1.getTrackDrawable().setColorFilter(
-                            ContextCompat.getColor(MainActivity.this, R.color.switchbar_on_color),
-                            PorterDuff.Mode.MULTIPLY
-                    );
-                } else {
-                    // 스위치가 꺼진 경우에는 트랙의 색상 필터를 제거하여 원래의 상태로 되돌립니다.
-                    switch1.getTrackDrawable().clearColorFilter();
-                }
+        switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            String statusText = isChecked ? "On" : "Off";
+            textView3.setText(statusText);
+            ttsManager.setTTSOn(isChecked);
+            ttsManager.speak(statusText);
+            if (isChecked) {
+                switch1.getTrackDrawable().setColorFilter(
+                        ContextCompat.getColor(MainActivity.this, R.color.switchbar_on_color),
+                        PorterDuff.Mode.MULTIPLY
+                );
+            } else {
+                switch1.getTrackDrawable().clearColorFilter();
             }
         });
 
         // 초기 상태 설정
         textView3.setText("ON/OFF");
+    }
+
+    private void setButtonClickListener(ImageButton button, TextView textView, Class<?> activityClass) {
+        button.setOnClickListener(v -> {
+            if (switch1.isChecked()) {
+                String text = textView.getText().toString();
+                ttsManager.speak(text);
+            }
+            Intent intent = new Intent(MainActivity.this, activityClass);
+            intent.putExtra("switch_state", switch1.isChecked()); // 스위치 상태를 전달
+            startActivity(intent);
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 화면이 다시 보여질 때 TTS 상태를 복원
+        ttsManager.setTTSOn(switch1.isChecked());
+    }
+
+    @Override
+    protected void onPause() {
+        // 화면이 가려질 때 TTS 상태를 저장
+        ttsManager.setTTSOn(switch1.isChecked());
+        super.onPause();
     }
 
     @Override

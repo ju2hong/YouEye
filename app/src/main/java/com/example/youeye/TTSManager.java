@@ -7,14 +7,13 @@ import java.util.Locale;
 public class TTSManager {
     private TextToSpeech tts;
     private boolean isInitialized = false;
-    private int isTTSOn = 1; // TTS 기본 상태: 활성화 (1)
+    private boolean isTTSOn = true; // TTS 기본 상태: 활성화
 
     public TTSManager(Context context) {
         tts = new TextToSpeech(context.getApplicationContext(), status -> {
             if (status == TextToSpeech.SUCCESS) {
                 int result = tts.setLanguage(Locale.KOREAN); // 한국어 설정
                 if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                    // 언어 데이터가 없거나 지원되지 않는 경우
                     isInitialized = false;
                 } else {
                     isInitialized = true;
@@ -24,19 +23,22 @@ public class TTSManager {
     }
 
     // TTS 상태 설정
-    public void setTTSOn(int ttsOn) {
+    public void setTTSOn(boolean ttsOn) {
         isTTSOn = ttsOn;
     }
 
     // TTS 상태 가져오기
-    public int isTTSOn() {
+    public boolean isTTSOn() {
         return isTTSOn;
     }
 
     // 음성 출력
     public void speak(String text) {
-        if (isInitialized && tts != null && isTTSOn == 1) {
+        if (isInitialized && tts != null && isTTSOn) {
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+        } else if (!isInitialized) {
+            // 초기화 실패 시 로그 또는 예외 처리
+            System.err.println("TTS 초기화에 실패했습니다.");
         }
     }
 
