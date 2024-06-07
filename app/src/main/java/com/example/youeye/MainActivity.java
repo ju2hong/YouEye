@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 String statusText = isChecked ? "On" : "Off";
                 textView3.setText(statusText);
+                ttsManager.setTTSOn(isChecked ? 1 : 0); // 스위치 상태에 따라 TTS 상태 설정
                 ttsManager.speak(statusText);
                 if (isChecked) {
                     switch1.getTrackDrawable().setColorFilter(

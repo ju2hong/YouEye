@@ -7,7 +7,7 @@ import java.util.Locale;
 public class TTSManager {
     private TextToSpeech tts;
     private boolean isInitialized = false;
-    private int isTTSOn = 1; // 스위치가 켜진 상태를 1로 나타냄
+    private int isTTSOn = 1; // TTS 기본 상태: 활성화 (1)
 
     public TTSManager(Context context) {
         tts = new TextToSpeech(context.getApplicationContext(), status -> {
@@ -23,13 +23,13 @@ public class TTSManager {
         });
     }
 
-    // 음성 출력 여부 설정
-    public void setTTSOn(boolean ttsOn) {
-        isTTSOn = ttsOn ? 1 : 0; // 스위치 상태에 따라 1 또는 0으로 설정
+    // TTS 상태 설정
+    public void setTTSOn(int ttsOn) {
+        isTTSOn = ttsOn;
     }
 
-    // 음성 출력 여부 가져오기
-    public int getTTSOn() {
+    // TTS 상태 가져오기
+    public int isTTSOn() {
         return isTTSOn;
     }
 

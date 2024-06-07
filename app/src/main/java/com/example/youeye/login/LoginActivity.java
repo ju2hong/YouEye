@@ -11,6 +11,8 @@ import com.example.youeye.R;
 import com.example.youeye.home.HomeActivity;
 
 public class LoginActivity extends AppCompatActivity {
+    private boolean switchState; // 스위치 상태를 저장할 변수
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
                 // 아이디 버튼을 클릭했을 때 실행될 코드 작성
                 // 아이디 입력 화면으로 이동
                 Intent intent = new Intent(LoginActivity.this, IDLoginActivity.class);
+                intent.putExtra("switch_state", switchState); // 스위치 상태를 전달
                 startActivity(intent);
             }
         });
@@ -39,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
                 // 비밀번호 버튼을 클릭했을 때 실행될 코드 작성
                 // 비밀번호 입력 화면으로 이동
                 Intent intent = new Intent(LoginActivity.this, PWLoginActivity.class);
+                intent.putExtra("switch_state", switchState); // 스위치 상태를 전달
                 startActivity(intent);
             }
         });
@@ -56,5 +60,9 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(homeIntent);
         }
 
+        // 인텐트에서 스위치 상태를 받아옵니다.
+        if(intent.hasExtra("switch_state")) {
+            switchState = intent.getBooleanExtra("switch_state", false);
+        }
     }
 }
