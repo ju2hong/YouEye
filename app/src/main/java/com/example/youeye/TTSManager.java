@@ -2,6 +2,9 @@ package com.example.youeye;
 
 import android.content.Context;
 import android.speech.tts.TextToSpeech;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
 import java.util.Locale;
 
 public class TTSManager {
@@ -40,6 +43,18 @@ public class TTSManager {
             // 초기화 실패 시 로그 또는 예외 처리
             System.err.println("TTS 초기화에 실패했습니다.");
         }
+    }
+
+    // TextView의 텍스트를 음성으로 출력
+    public void speakTextViewText(TextView textView) {
+        String text = textView.getText().toString();
+        speak(text);
+    }
+
+    // ImageButton의 contentDescription을 음성으로 출력
+    public void speakButtonDescription(ImageButton button) {
+        String buttonText = button.getContentDescription().toString();
+        speak(buttonText);
     }
 
     // 음성 정지
