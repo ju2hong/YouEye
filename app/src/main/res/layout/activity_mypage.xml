@@ -7,55 +7,6 @@
     android:background="#E1DADA"
     tools:context=".home.MyPageActivity"
     >
-
-    <ImageButton
-        android:id="@+id/alBtton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.071"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bigbutton" />
-
-    <ImageButton
-        android:id="@+id/logoutBtton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.928"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bigbutton" />
-
-    <TextView
-        android:id="@+id/altext"
-        android:layout_width="127dp"
-        android:layout_height="185dp"
-        android:text="나의\n알람"
-        android:textColor="#FFFFFF"
-        android:textSize="60sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/alBtton"
-        app:layout_constraintEnd_toEndOf="@id/alBtton"
-        app:layout_constraintStart_toStartOf="@id/alBtton"
-        app:layout_constraintTop_toTopOf="@id/alBtton" />
-
-    <TextView
-        android:id="@+id/logouttext"
-        android:layout_width="127dp"
-        android:layout_height="185dp"
-        android:text="로그\n아웃"
-        android:textColor="#FFFFFF"
-        android:textSize="60sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/logoutBtton"
-        app:layout_constraintEnd_toEndOf="@id/logoutBtton"
-        app:layout_constraintStart_toStartOf="@id/logoutBtton"
-        app:layout_constraintTop_toTopOf="@id/logoutBtton" />
-
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
@@ -69,4 +20,148 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023" />
+
+    <ImageButton
+        android:id="@+id/logoutBtton"
+        android:layout_width="202dp"
+        android:layout_height="223dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.99"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.234"
+        app:srcCompat="@drawable/bigbutton"
+        android:background="@android:color/transparent"/>
+
+    <ImageButton
+        android:id="@+id/alBtton"
+        android:layout_width="198dp"
+        android:layout_height="223dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.234"
+        app:srcCompat="@drawable/bigbutton"
+        android:background="@android:color/transparent"
+        />
+
+    <ImageButton
+        android:id="@+id/imageButton8"
+        android:layout_width="200dp"
+        android:layout_height="219dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.037"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.667"
+        app:srcCompat="@drawable/bigbutton"
+        android:background="@android:color/transparent"
+        />
+
+    <ImageButton
+        android:id="@+id/imageButton9"
+        android:layout_width="201dp"
+        android:layout_height="218dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.995"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.668"
+        app:srcCompat="@drawable/bigbutton"
+        android:background="@android:color/transparent"
+        />
+
+    <ImageButton
+        android:id="@+id/imageButton10"
+        android:layout_width="404dp"
+        android:layout_height="135dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.941"
+        app:srcCompat="@drawable/backbutton"
+        android:background="@android:color/transparent"
+        />
+
+    <TextView
+        android:id="@+id/logouttext"
+        android:layout_width="127dp"
+        android:layout_height="185dp"
+        android:text="로그\n아웃"
+        android:textColor="#FFFFFF"
+        android:textSize="60sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/logoutBtton"
+        app:layout_constraintEnd_toEndOf="@id/logoutBtton"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="@id/logoutBtton"
+        app:layout_constraintTop_toTopOf="@id/logoutBtton" />
+
+    <TextView
+        android:id="@+id/altext"
+        android:layout_width="127dp"
+        android:layout_height="185dp"
+        android:text="나의\n알람"
+        android:textColor="#FFFFFF"
+        android:textSize="60sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@id/alBtton"
+        app:layout_constraintEnd_toEndOf="@id/alBtton"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="@id/alBtton"
+        app:layout_constraintTop_toTopOf="@id/alBtton" />
+
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="설정"
+        android:textSize="30pt"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton8"
+        app:layout_constraintEnd_toEndOf="@+id/imageButton8"
+        app:layout_constraintStart_toStartOf="@+id/imageButton8"
+        app:layout_constraintTop_toBottomOf="@+id/alBtton" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="나의\n복용약"
+        android:textSize="23pt"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton9"
+        app:layout_constraintEnd_toEndOf="@+id/imageButton9"
+        app:layout_constraintStart_toEndOf="@+id/imageButton8"
+        app:layout_constraintTop_toBottomOf="@+id/logoutBtton" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="뒤로가기"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="30pt"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton10"
+        app:layout_constraintEnd_toEndOf="@+id/imageButton10"
+        app:layout_constraintStart_toStartOf="@+id/imageButton10"
+        app:layout_constraintTop_toTopOf="@+id/imageButton10"
+        app:layout_constraintVertical_bias="0.303" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

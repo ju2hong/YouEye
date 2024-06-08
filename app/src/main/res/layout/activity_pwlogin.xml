@@ -18,7 +18,8 @@
         app:layout_constraintHorizontal_bias="0.77"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.069" />
+        app:layout_constraintVertical_bias="0.069"
+        />
 
     <ImageButton
         android:id="@+id/textPwButton2"
@@ -70,7 +71,8 @@
         app:layout_constraintVertical_bias="0.21"
         app:srcCompat="@drawable/keybutton"
         android:onClick="addNumber"
-        android:tag="1" />
+        android:tag="1"
+        />
     <ImageButton
         android:id="@+id/pwkey2"
         android:layout_width="wrap_content"

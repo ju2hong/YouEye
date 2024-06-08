@@ -17,7 +17,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.714"
-        app:srcCompat="@drawable/button" />
+        app:srcCompat="@drawable/button"
+        android:background="@android:color/transparent"/>
 
     <ImageButton
         android:id="@+id/pwInputButton"
@@ -29,7 +30,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.919"
-        app:srcCompat="@drawable/button" />
+        app:srcCompat="@drawable/button"
+        android:background="@android:color/transparent"/>
 
     <Switch
         android:id="@+id/switch1"

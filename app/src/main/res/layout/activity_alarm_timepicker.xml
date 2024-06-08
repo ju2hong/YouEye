@@ -30,7 +30,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.729"
-        app:srcCompat="@drawable/button" />
+        app:srcCompat="@drawable/button"
+        android:background="@android:color/transparent"
+        />
 
     <ImageButton
         android:id="@+id/cancelBtn"
@@ -42,7 +44,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.948"
-        app:srcCompat="@drawable/button" />
+        app:srcCompat="@drawable/button"
+        android:background="@android:color/transparent"
+        />
 
     <TextView
         android:id="@+id/textView19"

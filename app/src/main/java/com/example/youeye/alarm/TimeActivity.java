@@ -5,11 +5,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,10 +19,8 @@ import com.example.youeye.R;
 import java.text.SimpleDateFormat;
 
 public class TimeActivity extends AppCompatActivity {
-    public static final int REQUEST_CODE1 = 1000;
-    public static final int REQUEST_CODE2 = 1001;
     private AdapterActivity arrayAdapter;
-    private Button tpBtn, rmBtn;
+    private ImageButton tpBtn, rmBtn;
     private ListView listView;
     private TextView textView;
     private int hour, minute;
@@ -30,10 +29,46 @@ public class TimeActivity extends AppCompatActivity {
     private SimpleDateFormat mFormat;
     private int adapterPosition;
 
+    private final ActivityResultLauncher<Intent> timePickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Intent data = result.getData();
+                    hour = data.getIntExtra("hour", 1);
+                    minute = data.getIntExtra("minute", 2);
+                    am_pm = data.getStringExtra("am_pm");
+                    month = data.getStringExtra("month");
+                    day = data.getStringExtra("day");
+
+                    arrayAdapter.addItem(hour, minute, am_pm, month, day);
+                    arrayAdapter.notifyDataSetChanged();
+                }
+            }
+    );
+
+    private final ActivityResultLauncher<Intent> itemEditLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Intent data = result.getData();
+                    hour = data.getIntExtra("hour", 1);
+                    minute = data.getIntExtra("minute", 2);
+                    am_pm = data.getStringExtra("am_pm");
+                    month = data.getStringExtra("month");
+                    day = data.getStringExtra("day");
+
+                    arrayAdapter.addItem(hour, minute, am_pm, month, day);
+                    arrayAdapter.notifyDataSetChanged();
+                }
+            }
+    );
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarmsettings);
+
+        handler = new Handler();  // Handler 초기화
 
         arrayAdapter = new AdapterActivity();
 
@@ -47,7 +82,7 @@ public class TimeActivity extends AppCompatActivity {
                 adapterPosition = position;
                 arrayAdapter.removeItem(position);
                 Intent intent = new Intent(TimeActivity.this, TimePickerActivity.class);
-                startActivityForResult(intent, REQUEST_CODE2);
+                itemEditLauncher.launch(intent);
             }
         });
 
@@ -69,17 +104,22 @@ public class TimeActivity extends AppCompatActivity {
         Thread thread = new Thread(runnable);
         thread.start();
 
-        // TimePicker의 시간 셋팅값을 받기 위한 startActivityForResult()
-        ImageButton tpBtn = (ImageButton) findViewById(R.id.adBtn);
+        // TimePicker의 시간 셋팅값을 받기 위한 startActivityForResult() 대체
+        tpBtn = (ImageButton) findViewById(R.id.adBtn);
+        rmBtn = (ImageButton) findViewById(R.id.rmBtn);
+
+        if (tpBtn == null || rmBtn == null || listView == null) {
+            throw new IllegalArgumentException("필수 뷰 요소를 찾을 수 없습니다.");
+        }
+
         tpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent tpIntent = new Intent(TimeActivity.this, TimePickerActivity.class);
-                startActivityForResult(tpIntent, REQUEST_CODE1);
+                timePickerLauncher.launch(tpIntent);
             }
         });
 
-        ImageButton rmBtn = (ImageButton) findViewById(R.id.rmBtn);
         rmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,35 +128,4 @@ public class TimeActivity extends AppCompatActivity {
             }
         });
     }
-
-
-    // TimePicker 셋팅값 받아온 결과를 arrayAdapter에 추가
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // 시간 리스트 추가
-        if (requestCode == REQUEST_CODE1 && resultCode == RESULT_OK && data != null) {
-            hour = data.getIntExtra("hour", 1);
-            minute = data.getIntExtra("minute", 2);
-            am_pm = data.getStringExtra("am_pm");
-            month = data.getStringExtra("month");
-            day = data.getStringExtra("day");
-
-            arrayAdapter.addItem(hour, minute, am_pm, month, day);
-            arrayAdapter.notifyDataSetChanged();
-        }
-
-        //시간 리스트 터치 시 변경된 시간값 저장
-        if (requestCode == REQUEST_CODE2 && resultCode == RESULT_OK && data != null) {
-            hour = data.getIntExtra("hour", 1);
-            minute = data.getIntExtra("minute", 2);
-            am_pm = data.getStringExtra("am_pm");
-            month = data.getStringExtra("month");
-            day = data.getStringExtra("day");
-
-            arrayAdapter.addItem(hour, minute, am_pm, month, day);
-            arrayAdapter.notifyDataSetChanged();
-        }
-    }
 }
-
