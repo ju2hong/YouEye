@@ -9,12 +9,16 @@ import android.widget.Switch;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
 import com.example.youeye.R;
+import com.example.youeye.SwitchManager;
 import com.example.youeye.TTSManager;
 import com.example.youeye.home.HomeActivity;
+
 public class LoginActivity extends AppCompatActivity {
     private boolean switchState; // 스위치 상태를 저장할 변수
     private TTSManager ttsManager; // TTSManager 추가
+    private SwitchManager switchManager; // SwitchManager 추가
     private ImageButton idInputButton;
     private ImageButton pwInputButton;
     private Switch switchLogin; // 로그인 화면의 스위치
@@ -27,14 +31,16 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // TTSManager 초기화
+        // TTSManager 및 SwitchManager 초기화
         ttsManager = new TTSManager(this);
+        switchManager = SwitchManager.getInstance(this);
 
         // 인텐트에서 스위치 상태를 받아옵니다.
         Intent intent = getIntent();
         if(intent.hasExtra("switch_state")) {
             switchState = intent.getBooleanExtra("switch_state", false);
             ttsManager.setTTSOn(switchState); // TTSManager에 스위치 상태 설정
+            switchManager.setSwitchState(switchState); // SwitchManager에 스위치 상태 설정
         }
 
         // 스위치와 텍스트뷰 참조
@@ -50,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         pwView = findViewById(R.id.pwView);
 
         // 스위치 초기 상태 설정
-        switchLogin.setChecked(switchState);
+        switchLogin.setChecked(switchManager.getSwitchState()); // 저장된 스위치 상태 가져오기
         textViewLogin.setText(switchState ? "On" : "Off");
 
         // ImageButton 클릭 이벤트 설정
@@ -64,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
             ttsManager.setTTSOn(isChecked);
             ttsManager.speak(statusText);
             switchState = isChecked; // 스위치 상태 업데이트
+            switchManager.setSwitchState(isChecked); //
             if (isChecked) {
                 switchLogin.getTrackDrawable().setColorFilter(
                         ContextCompat.getColor(LoginActivity.this, R.color.switchbar_on_color),
@@ -97,13 +104,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // 화면이 다시 보여질 때 TTS 상태를 복원
-        ttsManager.setTTSOn(switchState);
+        ttsManager.setTTSOn(switchManager.getSwitchState());
     }
 
     @Override
     protected void onPause() {
         // 화면이 가려질 때 TTS 상태를 저장
         switchState = ttsManager.isTTSOn();
+        switchManager.setSwitchState(switchState);
         super.onPause();
     }
 
