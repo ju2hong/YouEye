@@ -202,7 +202,7 @@
         android:tag="0"/>
 
     <ImageButton
-        android:id="@+id/keyStt"
+        android:id="@+id/keytts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -383,14 +383,14 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
-        android:id="@+id/imageStt"
+        android:id="@+id/imagetts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/keyStt"
-        app:layout_constraintEnd_toEndOf="@id/keyStt"
+        app:layout_constraintBottom_toBottomOf="@id/keytts"
+        app:layout_constraintEnd_toEndOf="@id/keytts"
         app:layout_constraintHorizontal_bias="0.424"
-        app:layout_constraintStart_toStartOf="@id/keyStt"
-        app:layout_constraintTop_toTopOf="@id/keyStt"
+        app:layout_constraintStart_toStartOf="@id/keytts"
+        app:layout_constraintTop_toTopOf="@id/keytts"
         app:layout_constraintVertical_bias="0.4"
         app:srcCompat="@drawable/sttbutton"
         />
