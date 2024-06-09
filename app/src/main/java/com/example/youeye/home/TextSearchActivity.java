@@ -25,7 +25,7 @@ public class TextSearchActivity extends AppCompatActivity {
     private EditText editTextSearch;
     private ImageButton textBtn, backBtn;
     private MedicineApiService apiService;
-    private static final String API_KEY = "YOUR_API_KEY"; // 실제 API 키로 변경하세요
+    private static final String API_KEY = "kzeiL%2B9qmHudz%2FPLh%2B1UM%2FFqH0DZCcYEtmqVS8h3g39V8jgSxg%2F%2FsApHiLmfp4LeEGd9WVzdu1Z2vnqpVfMn3A%3D%3D"; // 실제 API 키로 변경하세요
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
