@@ -37,10 +37,13 @@ public class LoginActivity extends AppCompatActivity {
 
         // 인텐트에서 스위치 상태를 받아옵니다.
         Intent intent = getIntent();
-        if(intent.hasExtra("switch_state")) {
-            switchState = intent.getBooleanExtra("switch_state", false);
+        if (intent.hasExtra("switch_state")) {
+            switchState = intent.getBooleanExtra("switch_state", switchManager.getSwitchState());
             ttsManager.setTTSOn(switchState); // TTSManager에 스위치 상태 설정
             switchManager.setSwitchState(switchState); // SwitchManager에 스위치 상태 설정
+        } else {
+            // 인텐트가 없으면 SwitchManager의 상태를 사용
+            switchState = switchManager.getSwitchState();
         }
 
         // 스위치와 텍스트뷰 참조
@@ -56,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         pwView = findViewById(R.id.pwView);
 
         // 스위치 초기 상태 설정
-        switchLogin.setChecked(switchManager.getSwitchState()); // 저장된 스위치 상태 가져오기
+        switchLogin.setChecked(switchState); // 저장된 스위치 상태 가져오기
         textViewLogin.setText(switchState ? "On" : "Off");
 
         // ImageButton 클릭 이벤트 설정
@@ -70,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
             ttsManager.setTTSOn(isChecked);
             ttsManager.speak(statusText);
             switchState = isChecked; // 스위치 상태 업데이트
-            switchManager.setSwitchState(isChecked); //
+            switchManager.setSwitchState(isChecked); // SwitchManager에 스위치 상태 저장
             if (isChecked) {
                 switchLogin.getTrackDrawable().setColorFilter(
                         ContextCompat.getColor(LoginActivity.this, R.color.switchbar_on_color),
@@ -82,12 +85,12 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // 인텐트에서 아이디와 비밀번호 값을 받아옵니다.
-        if(intent.hasExtra("id")) {
+        if (intent.hasExtra("id")) {
             String id = intent.getStringExtra("id");
             Log.d("LoginActivity", "Received ID: " + id);
         }
 
-        if(intent.hasExtra("pw")) {
+        if (intent.hasExtra("pw")) {
             String pw = intent.getStringExtra("pw");
             Log.d("LoginActivity", "Received Password: " + pw);
 
@@ -104,7 +107,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // 화면이 다시 보여질 때 TTS 상태를 복원
-        ttsManager.setTTSOn(switchManager.getSwitchState());
+        switchState = switchManager.getSwitchState();
+        ttsManager.setTTSOn(switchState);
+        switchLogin.setChecked(switchState);
+        textViewLogin.setText(switchState ? "On" : "Off");
     }
 
     @Override

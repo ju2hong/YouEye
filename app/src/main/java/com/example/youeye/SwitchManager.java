@@ -37,4 +37,5 @@ public class SwitchManager {
     public void setInitialized(boolean initialized) {
         preferences.edit().putBoolean(INITIALIZED_KEY, initialized).apply();
     }
+
 }

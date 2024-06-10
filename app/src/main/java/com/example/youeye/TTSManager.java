@@ -2,6 +2,7 @@ package com.example.youeye;
 
 import android.content.Context;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -38,12 +39,16 @@ public class TTSManager {
     // 음성 출력
     public void speak(String text) {
         if (isInitialized && tts != null && isTTSOn) {
-            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+            int result = tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+            if (result == TextToSpeech.ERROR) {
+                Log.e("TTSManager", "음성 출력에 오류가 발생했습니다.");
+            }
         } else if (!isInitialized) {
             // 초기화 실패 시 로그 또는 예외 처리
-            System.err.println("TTS 초기화에 실패했습니다.");
+            Log.e("TTSManager", "TTS 초기화에 실패했습니다.");
         }
     }
+
 
     // TextView의 텍스트를 음성으로 출력
     public void speakTextViewText(TextView textView) {
@@ -70,4 +75,5 @@ public class TTSManager {
             tts.shutdown();
         }
     }
+
 }
