@@ -81,15 +81,13 @@
 
     <ListView
         android:id="@+id/list_view"
-        android:layout_width="403dp"
-        android:layout_height="362dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@+id/adBtn"
-        app:layout_constraintVertical_bias="0.058"
-        tools:listitem="@layout/list_theme">
-    </ListView>
+        app:layout_constraintBottom_toTopOf="@+id/imageButton11"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:listitem="@layout/list_theme"></ListView>
 
     <ImageButton
         android:id="@+id/imageButton11"

@@ -24,5 +24,15 @@ public class MyPageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // 설정 버튼 참조
+        ImageButton settingsButton = findViewById(R.id.imageButton8);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyPageActivity.this, SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

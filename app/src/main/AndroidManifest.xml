@@ -79,6 +79,9 @@
         <!-- 알람 리시버 -->
         <receiver android:name=".alarm.AlarmReceiverActivity" />
 
+        <!-- mypage 설정 버튼 -->
+        <activity android:name=".home.SettingsActivity" />
+
     </application>
 
 </manifest>
