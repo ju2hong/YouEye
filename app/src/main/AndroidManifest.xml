@@ -4,6 +4,8 @@
     <!-- 오디오 사용 권한 추가 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -77,6 +79,13 @@
             android:name=".alarm.TimePickerActivity"
             android:exported="true">
         </activity>
+
+        <!-- 알람 리시버 -->
+        <receiver android:name=".alarm.AlarmReceiverActivity" />
+
+        <!-- mypage 설정 버튼 -->
+        <activity android:name=".home.SettingsActivity" />
+
     </application>
 
 </manifest>

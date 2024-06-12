@@ -159,7 +159,7 @@ public class IDLoginActivity extends AppCompatActivity {
     public void onYesButtonClick(View view) {
         String enteredNumber = inputNumber.toString();
         Intent intent = new Intent(IDLoginActivity.this, LoginActivity.class);
-        intent.putExtra("id", enteredNumber);
+        intent.putExtra("id", enteredNumber); // 입력된 ID 값을 전달
         startActivity(intent);
     }
 
