@@ -75,6 +75,10 @@
             android:name=".alarm.TimePickerActivity"
             android:exported="true">
         </activity>
+
+        <!-- 알람 리시버 -->
+        <receiver android:name=".alarm.AlarmReceiverActivity" />
+
     </application>
 
 </manifest>
