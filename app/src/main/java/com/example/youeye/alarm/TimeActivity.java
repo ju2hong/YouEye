@@ -160,5 +160,9 @@ public class TimeActivity extends AppCompatActivity {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         }
     }
+    public void onBackButtonPressed(View view) {
+
+        finish(); // 종료하고 이전 액티비티로 돌아감
+    }
 }
 

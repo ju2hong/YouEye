@@ -96,4 +96,8 @@ public class MyPageActivity extends AppCompatActivity {
             // 다이얼로그 표시
             dialog.show();
         }
+    public void onBackButtonPressed(View view) {
+
+        finish(); // 종료하고 이전 액티비티로 돌아감
+    }
     }
