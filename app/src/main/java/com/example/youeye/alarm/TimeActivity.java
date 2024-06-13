@@ -1,5 +1,8 @@
 package com.example.youeye.alarm;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,25 +11,27 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.youeye.R;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 
 public class TimeActivity extends AppCompatActivity {
+
     private AdapterActivity arrayAdapter;
     private ImageButton tpBtn, rmBtn;
     private ListView listView;
-    private TextView textView;
     private int hour, minute;
     private String month, day, am_pm;
     private Handler handler;
-    private SimpleDateFormat mFormat;
     private int adapterPosition;
 
     private final ActivityResultLauncher<Intent> timePickerLauncher = registerForActivityResult(
@@ -42,6 +47,9 @@ public class TimeActivity extends AppCompatActivity {
 
                     arrayAdapter.addItem(hour, minute, am_pm, month, day);
                     arrayAdapter.notifyDataSetChanged();
+
+                    // 알람 토스트 설정
+                    setAlarm(hour, minute);
                 }
             }
     );
@@ -59,6 +67,9 @@ public class TimeActivity extends AppCompatActivity {
 
                     arrayAdapter.addItem(hour, minute, am_pm, month, day);
                     arrayAdapter.notifyDataSetChanged();
+
+                    // 알람 토스트 설정2
+                    setAlarm(hour, minute);
                 }
             }
     );
@@ -128,4 +139,30 @@ public class TimeActivity extends AppCompatActivity {
             }
         });
     }
+
+    // 알람 매니저
+    private void setAlarm(int hour, int minute) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        // 알람이 울릴 시간 설정
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+
+        // 인텐트를 생성하여 리시버를 호출합니다.
+        Intent intent = new Intent(this, AlarmReceiverActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // 알람을 설정합니다.
+        if (alarmManager != null) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        }
+    }
+    public void onBackButtonPressed(View view) {
+
+        finish(); // 종료하고 이전 액티비티로 돌아감
+    }
 }
+

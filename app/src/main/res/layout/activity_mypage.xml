@@ -88,6 +88,7 @@
         app:layout_constraintVertical_bias="0.941"
         app:srcCompat="@drawable/backbutton"
         android:background="@android:color/transparent"
+        android:onClick="onBackButtonPressed"
         />
 
     <TextView
@@ -139,14 +140,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="나의\n복용약"
+        android:textAlignment="center"
+        android:textColor="@color/white"
         android:textSize="23pt"
         android:textStyle="bold"
-        android:textColor="@color/white"
-        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/imageButton9"
         app:layout_constraintEnd_toEndOf="@+id/imageButton9"
+        app:layout_constraintHorizontal_bias="0.433"
         app:layout_constraintStart_toEndOf="@+id/imageButton8"
-        app:layout_constraintTop_toBottomOf="@+id/logoutBtton" />
+        app:layout_constraintTop_toBottomOf="@+id/logoutBtton"
+        app:layout_constraintVertical_bias="0.428" />
 
     <TextView
         android:id="@+id/textView18"

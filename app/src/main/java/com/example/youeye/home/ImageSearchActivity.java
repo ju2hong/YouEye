@@ -15,4 +15,8 @@ public class ImageSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imagesearch);
     }
+    public void onBackButtonPressed(View view) {
+
+        finish(); // 종료하고 이전 액티비티로 돌아감
+    }
 }

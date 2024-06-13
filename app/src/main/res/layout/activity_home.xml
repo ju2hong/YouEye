@@ -32,6 +32,7 @@
         app:layout_constraintVertical_bias="0.608"
         app:srcCompat="@drawable/bigbutton"
         android:background="@android:color/transparent"
+        android:contentDescription="사진검색"
         />
 
     <ImageButton
@@ -46,6 +47,7 @@
         app:layout_constraintVertical_bias="0.608"
         app:srcCompat="@drawable/bigbutton"
         android:background="@android:color/transparent"
+        android:contentDescription="음성검색"
         />
 
     <ImageButton
@@ -60,6 +62,7 @@
         app:layout_constraintVertical_bias="0.969"
         app:srcCompat="@drawable/bigbutton"
         android:background="@android:color/transparent"
+        android:contentDescription="글자검색"
         />
 
     <ImageButton
@@ -74,6 +77,7 @@
         app:layout_constraintVertical_bias="0.969"
         app:srcCompat="@drawable/bigbutton"
         android:background="@android:color/transparent"
+        android:contentDescription="마이페이지"
         />
 
     <TextView
@@ -89,7 +93,8 @@
         app:layout_constraintEnd_toEndOf="@id/imageSearch"
         app:layout_constraintStart_toStartOf="@id/imageSearch"
         app:layout_constraintTop_toTopOf="@id/imageSearch"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        />
 
     <TextView
         android:id="@+id/textView5"

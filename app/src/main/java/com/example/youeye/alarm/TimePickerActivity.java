@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -65,14 +66,19 @@ public class TimePickerActivity extends AppCompatActivity {
                 sendIntent.putExtra("day",stDay);
                 setResult(RESULT_OK,sendIntent);
 
+                // 알람이 설정되었다는 토스트 메시지 표시
+                Toast.makeText(TimePickerActivity.this, "알람이 설정되었습니다 : " + hour + "시 : " + String.format("%02d분", minute), Toast.LENGTH_LONG).show();
+
                 finish();
             }
         });
+
         // 취소 버튼 누를 시 TimePickerActivity 종료
         ImageButton cancelBtn = (ImageButton)findViewById(R.id.cancelBtn);
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 finish();
             }
         });

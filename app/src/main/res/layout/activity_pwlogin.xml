@@ -192,7 +192,7 @@
         android:tag="0"  />
 
     <ImageButton
-        android:id="@+id/pwkeyStt"
+        android:id="@+id/pwkeyTts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -360,14 +360,14 @@
         app:layout_constraintVertical_bias="1" />
 
     <ImageView
-        android:id="@+id/imagePwStt"
+        android:id="@+id/imagePwTts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/pwkeyStt"
-        app:layout_constraintEnd_toEndOf="@id/pwkeyStt"
+        app:layout_constraintBottom_toBottomOf="@id/pwkeyTts"
+        app:layout_constraintEnd_toEndOf="@id/pwkeyTts"
         app:layout_constraintHorizontal_bias="0.424"
-        app:layout_constraintStart_toStartOf="@id/pwkeyStt"
-        app:layout_constraintTop_toTopOf="@id/pwkeyStt"
+        app:layout_constraintStart_toStartOf="@id/pwkeyTts"
+        app:layout_constraintTop_toTopOf="@id/pwkeyTts"
         app:layout_constraintVertical_bias="0.4"
         app:srcCompat="@drawable/sttbutton"
         />
