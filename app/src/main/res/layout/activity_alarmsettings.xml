@@ -100,7 +100,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.99"
-        app:srcCompat="@drawable/backbutton" />
+        app:srcCompat="@drawable/backbutton"
+        android:onClick="onBackButtonPressed"
+        />
 
     <TextView
         android:id="@+id/textView21"
