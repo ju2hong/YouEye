@@ -19,9 +19,10 @@ public class DrugDetailActivity extends AppCompatActivity {
     private static final Map<String, String> medicineNameMap = new HashMap<>();
 
     static {
-        medicineNameMap.put("타이레놀", "tylenol");
-        medicineNameMap.put("아스피린", "aspirin");
         medicineNameMap.put("닥터베아제정", "dakteobeajejeong");
+        medicineNameMap.put("훼스탈골드정", "hweseutalgoldeujeong");
+        medicineNameMap.put("판피린티정", "panpirintijeong");
+
 
         // 필요한 만큼 추가
     }
