@@ -67,7 +67,7 @@ public class TimePickerActivity extends AppCompatActivity {
                 setResult(RESULT_OK,sendIntent);
 
                 // 알람이 설정되었다는 토스트 메시지 표시
-                Toast.makeText(TimePickerActivity.this, "알람이 설정되었습니다: " + hour + ":" + String.format("%02d", minute), Toast.LENGTH_SHORT).show();
+                Toast.makeText(TimePickerActivity.this, "알람이 설정되었습니다 : " + hour + "시 : " + String.format("%02d분", minute), Toast.LENGTH_LONG).show();
 
                 finish();
             }

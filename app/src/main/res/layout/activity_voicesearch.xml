@@ -26,8 +26,7 @@
         android:id="@+id/start"
         android:layout_width="441dp"
         android:layout_height="175dp"
-        android:text="버튼을 누르고
-                       검색을 시작하세요"
+        android:text="버튼을 누르고 \n 검색을 시작하세요"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="20pt"
@@ -79,6 +78,7 @@
         app:layout_constraintVertical_bias="0.937"
         app:srcCompat="@drawable/button"
         android:background="@android:color/transparent"
+        android:onClick="onBackButtonPressed"
         />
 
     <TextView

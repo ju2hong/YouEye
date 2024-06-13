@@ -158,10 +158,11 @@ public class TimeActivity extends AppCompatActivity {
         // 알람을 설정합니다.
         if (alarmManager != null) {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
-            // 확인 토스트 메시지 표시
-            Toast.makeText(this, "알람이 설정되었습니다: " + hour + ":" + String.format("%02d", minute), Toast.LENGTH_SHORT).show();
         }
+    }
+    public void onBackButtonPressed(View view) {
+
+        finish(); // 종료하고 이전 액티비티로 돌아감
     }
 }
 
