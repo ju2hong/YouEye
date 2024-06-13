@@ -15,8 +15,6 @@ import androidx.core.content.res.ResourcesCompat;
 import com.example.youeye.R;
 import com.example.youeye.SwitchManager;
 import com.example.youeye.TTSManager;
-import com.example.youeye.login.LoginActivity;
-import com.example.youeye.login.PWLoginActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,16 +22,15 @@ import java.util.List;
 public class ChangePasswordActivity extends AppCompatActivity {
     private List<ImageButton> imageButtons;
     private int currentIndex = 0;
-    private List<TextView> textViews;
 
-    private StringBuilder inputNumber;
     private AlertDialog dialog;
     private TTSManager ttsManager;
-    private SwitchManager switchManager;  // SwitchManager 선언 추가
+    private SwitchManager switchManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pwlogin);
+        setContentView(R.layout.activity_changepw);
 
         // TTSManager 초기화
         ttsManager = new TTSManager(this);
@@ -45,28 +42,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
         // TTS 활성화 여부 설정
         ttsManager.setTTSOn(isSwitchOn);
 
-        // 입력 번호를 저장할 StringBuilder 초기화
-        inputNumber = new StringBuilder();
-
         // ImageButton 리스트 초기화
         imageButtons = new ArrayList<>();
-        imageButtons.add(findViewById(R.id.textPwButton1));
-        imageButtons.add(findViewById(R.id.textPwButton2));
-        imageButtons.add(findViewById(R.id.textPwButton3));
-        imageButtons.add(findViewById(R.id.textPwButton4));
-
-        // TextView 리스트 초기화
-        textViews = new ArrayList<>();
-        textViews.add(findViewById(R.id.textpwkey1));
-        textViews.add(findViewById(R.id.textpwkey2));
-        textViews.add(findViewById(R.id.textpwkey3));
-        textViews.add(findViewById(R.id.textpwkey4));
-        textViews.add(findViewById(R.id.textpwkey5));
-        textViews.add(findViewById(R.id.textpwkey6));
-        textViews.add(findViewById(R.id.textpwkey7));
-        textViews.add(findViewById(R.id.textpwkey8));
-        textViews.add(findViewById(R.id.textpwkey9));
-        textViews.add(findViewById(R.id.textpwkey0));
+        imageButtons.add(findViewById(R.id.chpwButton1));
+        imageButtons.add(findViewById(R.id.chpwButton2));
+        imageButtons.add(findViewById(R.id.chpwButton3));
+        imageButtons.add(findViewById(R.id.chpwButton4));
 
         // 모든 ImageButton을 초기 상태로 설정
         for (ImageButton imageButton : imageButtons) {
@@ -81,25 +62,29 @@ public class ChangePasswordActivity extends AppCompatActivity {
         // 0부터 9까지 숫자 버튼에 클릭 리스너 설정
         for (int i = 0; i < 10; i++) {
             final int number = i;
-            int buttonId = getResources().getIdentifier("textpwkey" + i, "id", getPackageName());
+            int buttonId = getResources().getIdentifier("textchpwkey" + i, "id", getPackageName());
             findViewById(buttonId).setOnClickListener(v -> handleNumberInput(number));
         }
 
         // 삭제 버튼 클릭 리스너 설정
-        findViewById(R.id.deletePwButton).setOnClickListener(v -> deleteLastCharacter());
+        findViewById(R.id.deleteChpwButton).setOnClickListener(v -> deleteLastCharacter());
     }
 
     // 숫자 입력 처리
     private void handleNumberInput(int number) {
         if (currentIndex < imageButtons.size()) {
             ImageButton currentImageButton = imageButtons.get(currentIndex);
+            // 이미지를 textinput으로 변경
             currentImageButton.setImageResource(R.drawable.textinput);
             currentImageButton.setTag(String.valueOf(number));
-            inputNumber.append(number);
             if (ttsManager.isTTSOn()) {
                 ttsManager.speak(String.valueOf(number));
             }
-            moveToNextImageButton();
+            currentIndex++;
+            if (currentIndex >= imageButtons.size()) {
+                showConfirmationDialog();
+                currentIndex = 0;
+            }
         }
     }
 
@@ -110,18 +95,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
             ImageButton previousImageButton = imageButtons.get(currentIndex);
             previousImageButton.setImageResource(R.drawable.logintext);
             previousImageButton.setTag(null);
-            inputNumber.deleteCharAt(inputNumber.length() - 1);
-        }
-    }
-
-    // 다음 ImageButton으로 이동하는 메서드
-    private void moveToNextImageButton() {
-        currentIndex++;
-        if (currentIndex >= imageButtons.size()) {
-            showConfirmationDialog();
-            currentIndex = 0;
-        } else {
-            imageButtons.get(currentIndex).requestFocus();
         }
     }
 
@@ -151,7 +124,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
         TextView titleTextView = dialogView.findViewById(R.id.dialog_title);
         TextView messageTextView = dialogView.findViewById(R.id.dialog_message);
-        titleTextView.setText("비밀번호 확인");
+        titleTextView.setText("비밀번호 변경 확인");
         String message = getString(R.string.confirmation_message, enteredNumber);
         messageTextView.setText(message);
 
@@ -162,19 +135,18 @@ public class ChangePasswordActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    // Yes 버튼 클릭 시 LoginActivity로 전환
+    // Yes 버튼 클릭 시 SettingsActivity로 전환
     public void onYesButtonClick(View view) {
-        String enteredNumber = inputNumber.toString();
         Intent intent = new Intent(ChangePasswordActivity.this, SettingsActivity.class);
-        intent.putExtra("pw", enteredNumber);
         startActivity(intent);
     }
 
     // No 버튼 클릭 시 입력된 숫자 초기화
     public void onNoButtonClick(View view) {
         clearAllImageButtons();
-        inputNumber.setLength(0);
-        dialog.dismiss();
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
     }
 
     // 모든 ImageButton을 초기화하는 메서드
@@ -186,4 +158,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
         currentIndex = 0;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // TTSManager 리소스 해제
+        ttsManager.shutdown();
+    }
 }
