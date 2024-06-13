@@ -15,14 +15,18 @@ public class Medicine {
     @SerializedName("STRG_MTH_CONT")
     private String storage;
 
+    @SerializedName("IMG_URL")
+    private String imageUrl; // 이미지 URL 필드 추가
+
     public Medicine() {
     }
 
-    public Medicine(String name, String company, String validity, String storage) {
+    public Medicine(String name, String company, String validity, String storage, String imageUrl) {
         this.name = name;
         this.company = company;
         this.validity = validity;
         this.storage = storage;
+        this.imageUrl = imageUrl;
     }
 
     public String getName() {
@@ -55,5 +59,13 @@ public class Medicine {
 
     public void setStorage(String storage) {
         this.storage = storage;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

@@ -88,6 +88,7 @@ public class TextSearchActivity extends AppCompatActivity {
                         intent.putExtra("company", medicine.getCompany());
                         intent.putExtra("validity", medicine.getValidity());
                         intent.putExtra("storage", medicine.getStorage());
+                        intent.putExtra("imageUrl", medicine.getImageUrl()); // 이미지 URL 전달
                         startActivity(intent);
                     } else {
                         Toast.makeText(TextSearchActivity.this, "검색 결과가 없습니다.", Toast.LENGTH_SHORT).show();
