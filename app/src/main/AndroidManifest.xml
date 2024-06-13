@@ -78,6 +78,11 @@
             android:name=".alarm.TimePickerActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".home.DrugDetailActivity"
+            android:exported="true">
+        </activity>
+
     </application>
 
 </manifest>

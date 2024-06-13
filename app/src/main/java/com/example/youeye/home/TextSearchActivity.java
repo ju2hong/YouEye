@@ -1,6 +1,7 @@
 package com.example.youeye.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -80,7 +81,14 @@ public class TextSearchActivity extends AppCompatActivity {
                     if (medicineResponse.getBody().getItems() != null && !medicineResponse.getBody().getItems().isEmpty()) {
                         // 검색된 의약품 정보 처리
                         Medicine medicine = medicineResponse.getBody().getItems().get(0);
-                        Toast.makeText(TextSearchActivity.this, "약품 정보: " + medicine.getName() + "\n회사: " + medicine.getCompany() + "\n유효기간: " + medicine.getValidity() + "\n보관방법: " + medicine.getStorage(), Toast.LENGTH_LONG).show();
+
+                        // DrugDetailActivity로 데이터 전달
+                        Intent intent = new Intent(TextSearchActivity.this, DrugDetailActivity.class);
+                        intent.putExtra("name", medicine.getName());
+                        intent.putExtra("company", medicine.getCompany());
+                        intent.putExtra("validity", medicine.getValidity());
+                        intent.putExtra("storage", medicine.getStorage());
+                        startActivity(intent);
                     } else {
                         Toast.makeText(TextSearchActivity.this, "검색 결과가 없습니다.", Toast.LENGTH_SHORT).show();
                     }
@@ -100,4 +108,5 @@ public class TextSearchActivity extends AppCompatActivity {
             }
         });
     }
+
 }
