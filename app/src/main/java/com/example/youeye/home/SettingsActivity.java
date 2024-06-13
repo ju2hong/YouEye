@@ -18,6 +18,16 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        // 비밀번호 변경 버튼 참조 및 클릭 이벤트 처리
+        ImageButton changePasswordButton = findViewById(R.id.imageButton12);
+        changePasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, ChangePasswordActivity.class);
+                startActivity(intent);
+            }
+        });
+
         // 알람 버튼 참조
         ImageButton alButton = findViewById(R.id.imageButton13);
         alButton.setOnClickListener(new View.OnClickListener() {
