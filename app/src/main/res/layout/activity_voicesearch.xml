@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E1DADA">
+    android:background="#E1DADA"
+    tools:context=".home.VoiceSearchActivity" >
 
     <TextView
         android:id="@+id/main"
@@ -25,8 +26,7 @@
         android:id="@+id/start"
         android:layout_width="441dp"
         android:layout_height="175dp"
-        android:text="버튼을 누르고
-                       검색을 시작하세요"
+        android:text="버튼을 누르고 \n 검색을 시작하세요"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="20pt"
@@ -47,14 +47,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.63"
-        app:srcCompat="@drawable/voicesearch" />
+        app:srcCompat="@drawable/voicesearch"
+        android:background="@android:color/transparent"
+        />
 
     <TextView
         android:id="@+id/voice_text"
         android:layout_width="147dp"
         android:layout_height="231dp"
-        android:text="음성
-                        검색"
+        android:text="음성\n검색"
         android:textColor="@color/white"
         android:textSize="30pt"
         android:textStyle="bold"
@@ -75,7 +76,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.937"
-        app:srcCompat="@drawable/button" />
+        app:srcCompat="@drawable/button"
+        android:background="@android:color/transparent"
+        android:onClick="onBackButtonPressed"
+        />
 
     <TextView
         android:id="@+id/back"

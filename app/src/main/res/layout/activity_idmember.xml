@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E1DADA"
-    tools:context=".login.IDLoginActivity"
->
+    tools:context=".member.IDMemberActivity"
+    >
 
     <ImageButton
         android:id="@+id/textButton1"
@@ -64,8 +64,6 @@
         android:id="@+id/key1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="addNumber"
-        android:tag="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.052"
@@ -73,7 +71,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.21"
         app:srcCompat="@drawable/keybutton"
-        />
+        android:onClick="addNumber"
+        android:tag="1" />
 
     <ImageButton
         android:id="@+id/key2"
@@ -202,7 +201,7 @@
         android:tag="0"/>
 
     <ImageButton
-        android:id="@+id/keytts"
+        android:id="@+id/keyStt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -383,14 +382,14 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
-        android:id="@+id/imagetts"
+        android:id="@+id/imageStt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/keytts"
-        app:layout_constraintEnd_toEndOf="@id/keytts"
+        app:layout_constraintBottom_toBottomOf="@id/keyStt"
+        app:layout_constraintEnd_toEndOf="@id/keyStt"
         app:layout_constraintHorizontal_bias="0.424"
-        app:layout_constraintStart_toStartOf="@id/keytts"
-        app:layout_constraintTop_toTopOf="@id/keytts"
+        app:layout_constraintStart_toStartOf="@id/keyStt"
+        app:layout_constraintTop_toTopOf="@id/keyStt"
         app:layout_constraintVertical_bias="0.4"
         app:srcCompat="@drawable/sttbutton"
         />
