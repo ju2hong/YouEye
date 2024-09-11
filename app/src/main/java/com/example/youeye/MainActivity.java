@@ -3,6 +3,8 @@ package com.example.youeye;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -50,6 +52,35 @@ public class MainActivity extends AppCompatActivity {
             switch1.setChecked(switchState);
         }
 
+        imageButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (switch1.isChecked()) {
+                    String text = textView1.getText().toString();
+                    // 텍스트를 음성으로 출력
+                    ttsManager.speak(text);
+                }
+                // 로그인페이지로 이동
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        imageButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 스위치가 켜져 있는지 확인
+                if (switch1.isChecked()) {
+                    // imageButton2 위에 있는 textView2의 텍스트 가져오기
+                    String text = textView2.getText().toString();
+                    // 텍스트를 음성으로 출력
+                    ttsManager.speak(text);
+                }
+                // 회원가입페이지로 이동
+                Intent intent = new Intent(MainActivity.this, MemberActivity.class);
+                startActivity(intent);
+            }
+        });
         // ImageButton 클릭 이벤트 설정
         setButtonClickListener(imageButton1, textView1, LoginActivity.class);
         setButtonClickListener(imageButton2, textView2, MemberActivity.class);
