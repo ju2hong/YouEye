@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E1DADA">
+    android:background="#E1DADA"
+    tools:context=".home.HomeActivity"
+    >
 
     <ImageView
         android:id="@+id/imageView"
@@ -15,7 +17,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.038"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/logo"
+        />
 
     <ImageButton
         android:id="@+id/imageSearch"
@@ -27,7 +30,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.608"
-        app:srcCompat="@drawable/bigbutton" />
+        app:srcCompat="@drawable/bigbutton"
+        android:background="@android:color/transparent"
+        android:contentDescription="사진검색"
+        />
 
     <ImageButton
         android:id="@+id/voiceSearch"
@@ -39,7 +45,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.608"
-        app:srcCompat="@drawable/bigbutton" />
+        app:srcCompat="@drawable/bigbutton"
+        android:background="@android:color/transparent"
+        android:contentDescription="음성검색"
+        />
 
     <ImageButton
         android:id="@+id/textSearch"
@@ -51,7 +60,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.969"
-        app:srcCompat="@drawable/bigbutton" />
+        app:srcCompat="@drawable/bigbutton"
+        android:background="@android:color/transparent"
+        android:contentDescription="글자검색"
+        />
 
     <ImageButton
         android:id="@+id/MyPage"
@@ -63,13 +75,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.969"
-        app:srcCompat="@drawable/bigbutton" />
+        app:srcCompat="@drawable/bigbutton"
+        android:background="@android:color/transparent"
+        android:contentDescription="마이페이지"
+        />
 
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="153dp"
-        android:layout_height="178dp"
-        android:text="사진검색"
+        android:layout_width="149dp"
+        android:layout_height="184dp"
+        android:text="사진\n검색"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="25pt"
@@ -79,13 +94,13 @@
         app:layout_constraintStart_toStartOf="@id/imageSearch"
         app:layout_constraintTop_toTopOf="@id/imageSearch"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="43dp" />
+        />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="141dp"
         android:layout_height="170dp"
-        android:text="음성검색"
+        android:text="음성\n검색"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="25pt"
@@ -100,7 +115,7 @@
         android:id="@+id/textView6"
         android:layout_width="150dp"
         android:layout_height="177dp"
-        android:text="글자검색"
+        android:text="글자\n검색"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="25pt"
@@ -117,8 +132,7 @@
         android:id="@+id/textView7"
         android:layout_width="159dp"
         android:layout_height="179dp"
-        android:text="마이
-                           페이지"
+        android:text="마이\n페이지"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="23pt"

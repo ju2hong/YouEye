@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E1DADA">
+    android:background="#E1DADA"
+    tools:context=".home.ImageSearchActivity"
+    >
 
 
     <TextView
@@ -31,7 +33,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.769"
-        app:srcCompat="@drawable/camerabutton" />
+        app:srcCompat="@drawable/camerabutton"
+        android:background="@android:color/transparent"
+        />
 
     <ImageButton
         android:id="@+id/imageButton4"
@@ -43,7 +47,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.973"
-        app:srcCompat="@drawable/button" />
+        app:srcCompat="@drawable/button"
+        android:background="@android:color/transparent"
+        android:onClick="onBackButtonPressed"
+        />
 
     <TextView
         android:id="@+id/textView9"
@@ -57,7 +64,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageButton4"
         app:layout_constraintEnd_toEndOf="@+id/imageButton4"
         app:layout_constraintStart_toStartOf="@+id/imageButton4"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton3" />
+        app:layout_constraintTop_toBottomOf="@+id/imageButton3"
+        app:layout_constraintVertical_bias="0.884" />
 
     <TextView
         android:id="@+id/textView10"

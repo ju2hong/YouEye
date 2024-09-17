@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#E1DADA"
+    tools:context=".home.ChangePasswordActivity">
+
+    <ImageButton
+        android:id="@+id/chPwButton1"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/logintext"
+        android:src="@drawable/textinput"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/chPwButton2"
+        app:layout_constraintHorizontal_bias="0.77"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.069"
+        />
+
+    <ImageButton
+        android:id="@+id/chPwButton2"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/logintext"
+        android:src="@drawable/textinput"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/chPwButton3"
+        app:layout_constraintHorizontal_bias="0.867"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.069" />
+
+    <ImageButton
+        android:id="@+id/chPwButton3"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/logintext"
+        android:src="@drawable/textinput"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/chPwButton4"
+        app:layout_constraintHorizontal_bias="0.89"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.069" />
+
+    <ImageButton
+        android:id="@+id/chPwButton4"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/logintext"
+        android:src="@drawable/textinput"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.069" />
+    <ImageButton
+        android:id="@+id/pwkey1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.052"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.21"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="1"
+        />
+
+    <ImageButton
+        android:id="@+id/chpwButton1"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/logintext"
+        android:src="@drawable/textinput"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/chpwButton2"
+        app:layout_constraintHorizontal_bias="0.77"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.069" />
+
+    <ImageButton
+        android:id="@+id/chpwButton2"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/logintext"
+        android:src="@drawable/textinput"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/chpwButton3"
+        app:layout_constraintHorizontal_bias="0.867"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.069" />
+
+    <ImageButton
+        android:id="@+id/chpwButton3"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/logintext"
+        android:src="@drawable/textinput"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/chpwButton4"
+        app:layout_constraintHorizontal_bias="0.89"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.069" />
+
+    <ImageButton
+        android:id="@+id/chpwButton4"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/logintext"
+        android:src="@drawable/textinput"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.069" />
+
+    <ImageButton
+        android:id="@+id/chpwkey1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.052"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.21"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="1" />
+
+    <ImageButton
+        android:id="@+id/chpwkey2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.539"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.21"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="2" />
+
+    <ImageButton
+        android:id="@+id/chpwkey3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.21"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="3" />
+
+    <ImageButton
+        android:id="@+id/chpwkey4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.052"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.415"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="4" />
+
+    <ImageButton
+        android:id="@+id/chpwkey5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.539"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.415"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="5" />
+
+    <ImageButton
+        android:id="@+id/chpwkey6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.415"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="6" />
+
+    <ImageButton
+        android:id="@+id/chpwkey7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.052"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.619"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="7" />
+
+    <ImageButton
+        android:id="@+id/chpwkey8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.539"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.619"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="8" />
+
+    <ImageButton
+        android:id="@+id/chpwkey9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.619"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="9" />
+
+    <ImageButton
+        android:id="@+id/chpwkey0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.539"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.823"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="0"  />
+
+    <ImageButton
+        android:id="@+id/chpwkeyTts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.048"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.823"
+        app:srcCompat="@drawable/keybutton"/>
+
+    <ImageButton
+        android:id="@+id/deleteChpwButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.823"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="deleteLastCharacter"/>
+
+    <TextView
+        android:id="@+id/textChpwView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="변경할 비밀번호를 입력해주세요."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022" />
+
+    <TextView
+        android:id="@+id/textchpwkey1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textColor="@color/white"
+        android:textSize="100sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/chpwkey1"
+        app:layout_constraintEnd_toEndOf="@id/chpwkey1"
+        app:layout_constraintStart_toStartOf="@id/chpwkey1"
+        app:layout_constraintTop_toTopOf="@id/chpwkey1"
+        app:layout_constraintVertical_bias="1" />
+
+    <TextView
+        android:id="@+id/textchpwkey2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2"
+        android:textColor="@color/white"
+        android:textSize="100sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/chpwkey2"
+        app:layout_constraintEnd_toEndOf="@id/chpwkey2"
+        app:layout_constraintStart_toStartOf="@id/chpwkey2"
+        app:layout_constraintTop_toTopOf="@id/chpwkey2"
+        app:layout_constraintVertical_bias="1" />
+
+    <TextView
+        android:id="@+id/textchpwkey3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3"
+        android:textColor="@color/white"
+        android:textSize="100sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/chpwkey3"
+        app:layout_constraintEnd_toEndOf="@id/chpwkey3"
+        app:layout_constraintStart_toStartOf="@id/chpwkey3"
+        app:layout_constraintTop_toTopOf="@id/chpwkey3"
+        app:layout_constraintVertical_bias="1" />
+
+    <TextView
+        android:id="@+id/textchpwkey4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4"
+        android:textColor="@color/white"
+        android:textSize="100sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/chpwkey4"
+        app:layout_constraintEnd_toEndOf="@id/chpwkey4"
+        app:layout_constraintStart_toStartOf="@id/chpwkey4"
+        app:layout_constraintTop_toTopOf="@id/chpwkey4"
+        app:layout_constraintVertical_bias="1" />
+
+    <TextView
+        android:id="@+id/textchpwkey5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5"
+        android:textColor="@color/white"
+        android:textSize="100sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/chpwkey5"
+        app:layout_constraintEnd_toEndOf="@id/chpwkey5"
+        app:layout_constraintStart_toStartOf="@id/chpwkey5"
+        app:layout_constraintTop_toTopOf="@id/chpwkey5"
+        app:layout_constraintVertical_bias="1" />
+    <TextView
+        android:id="@+id/textchpwkey6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="6"
+        android:textColor="@color/white"
+        android:textSize="100sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/chpwkey6"
+        app:layout_constraintEnd_toEndOf="@id/chpwkey6"
+        app:layout_constraintStart_toStartOf="@id/chpwkey6"
+        app:layout_constraintTop_toTopOf="@id/chpwkey6"
+        app:layout_constraintVertical_bias="1" />
+    <TextView
+        android:id="@+id/textchpwkey7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="7"
+        android:textColor="@color/white"
+        android:textSize="100sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/chpwkey7"
+        app:layout_constraintEnd_toEndOf="@id/chpwkey7"
+        app:layout_constraintStart_toStartOf="@id/chpwkey7"
+        app:layout_constraintTop_toTopOf="@id/chpwkey7"
+        app:layout_constraintVertical_bias="1" />
+
+    <TextView
+        android:id="@+id/textchpwkey8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="8"
+        android:textColor="@color/white"
+        android:textSize="100sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/chpwkey8"
+        app:layout_constraintEnd_toEndOf="@id/chpwkey8"
+        app:layout_constraintStart_toStartOf="@id/chpwkey8"
+        app:layout_constraintTop_toTopOf="@id/chpwkey8"
+        app:layout_constraintVertical_bias="1" />
+
+    <TextView
+        android:id="@+id/textchpwkey9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="9"
+        android:textColor="@color/white"
+        android:textSize="100sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/chpwkey9"
+        app:layout_constraintEnd_toEndOf="@id/chpwkey9"
+        app:layout_constraintStart_toStartOf="@id/chpwkey9"
+        app:layout_constraintTop_toTopOf="@id/chpwkey9"
+        app:layout_constraintVertical_bias="1" />
+
+    <TextView
+        android:id="@+id/textchpwkey0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/white"
+        android:textSize="100sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/chpwkey0"
+        app:layout_constraintEnd_toEndOf="@id/chpwkey0"
+        app:layout_constraintStart_toStartOf="@id/chpwkey0"
+        app:layout_constraintTop_toTopOf="@id/chpwkey0"
+        app:layout_constraintVertical_bias="1" />
+
+    <ImageView
+        android:id="@+id/imageChpwTts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/chpwkeyTts"
+        app:layout_constraintEnd_toEndOf="@id/chpwkeyTts"
+        app:layout_constraintHorizontal_bias="0.424"
+        app:layout_constraintStart_toStartOf="@id/chpwkeyTts"
+        app:layout_constraintTop_toTopOf="@id/chpwkeyTts"
+        app:layout_constraintVertical_bias="0.4"
+        app:srcCompat="@drawable/sttbutton" />
+
+    <ImageView
+        android:id="@+id/imageChpwback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/deleteChpwButton"
+        app:layout_constraintEnd_toEndOf="@id/deleteChpwButton"
+        app:layout_constraintHorizontal_bias="0.561"
+        app:layout_constraintStart_toStartOf="@id/deleteChpwButton"
+        app:layout_constraintTop_toTopOf="@id/deleteChpwButton"
+        app:layout_constraintVertical_bias="0.45"
+        app:srcCompat="@drawable/back" />
+
+    <ImageButton
+        android:id="@+id/chpwBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.551"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.993"
+        app:srcCompat="@drawable/backbutton" />
+
+    <TextView
+        android:id="@+id/chpwBacktext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="뒤로가기"
+        android:textColor="@color/white"
+        android:textSize="80sp"
+        app:layout_constraintBottom_toBottomOf="@id/chpwBackButton"
+        app:layout_constraintEnd_toEndOf="@id/chpwBackButton"
+        app:layout_constraintStart_toStartOf="@id/chpwBackButton"
+        app:layout_constraintTop_toTopOf="@id/chpwBackButton"
+        app:layout_constraintVertical_bias="0.9" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

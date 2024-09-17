@@ -3,29 +3,87 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#E1DADA">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#E1DADA"
+    tools:context=".member.PWMemberActivity">
+
+    <ImageButton
+        android:id="@+id/textPwButton1"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/logintext"
+        android:src="@drawable/textinput"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textPwButton2"
+        app:layout_constraintHorizontal_bias="0.77"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.069" />
+
+    <ImageButton
+        android:id="@+id/textPwButton2"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/logintext"
+        android:src="@drawable/textinput"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textPwButton3"
+        app:layout_constraintHorizontal_bias="0.867"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.069" />
+
+    <ImageButton
+        android:id="@+id/textPwButton3"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/logintext"
+        android:src="@drawable/textinput"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textPwButton4"
+        app:layout_constraintHorizontal_bias="0.89"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.069" />
+
+    <ImageButton
+        android:id="@+id/textPwButton4"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/logintext"
+        android:src="@drawable/textinput"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.069" />
     <ImageButton
         android:id="@+id/pwkey1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.011"
+        app:layout_constraintHorizontal_bias="0.052"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.271"
-        app:srcCompat="@drawable/keybutton" />
+        app:layout_constraintVertical_bias="0.21"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="1" />
     <ImageButton
         android:id="@+id/pwkey2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.539"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.271"
-        app:srcCompat="@drawable/keybutton" />
+        app:layout_constraintVertical_bias="0.21"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="2" />
     <ImageButton
         android:id="@+id/pwkey3"
         android:layout_width="wrap_content"
@@ -35,30 +93,36 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.271"
-        app:srcCompat="@drawable/keybutton" />
+        app:layout_constraintVertical_bias="0.21"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="3" />
     <ImageButton
         android:id="@+id/pwkey4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.011"
+        app:layout_constraintHorizontal_bias="0.052"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.476"
-        app:srcCompat="@drawable/keybutton" />
+        app:layout_constraintVertical_bias="0.415"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="4" />
     <ImageButton
         android:id="@+id/pwkey5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.539"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.476"
-        app:srcCompat="@drawable/keybutton" />
+        app:layout_constraintVertical_bias="0.415"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="5" />
     <ImageButton
         android:id="@+id/pwkey6"
         android:layout_width="wrap_content"
@@ -68,30 +132,36 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.476"
-        app:srcCompat="@drawable/keybutton" />
+        app:layout_constraintVertical_bias="0.415"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="6" />
     <ImageButton
         android:id="@+id/pwkey7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.011"
+        app:layout_constraintHorizontal_bias="0.052"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.68"
-        app:srcCompat="@drawable/keybutton" />
+        app:layout_constraintVertical_bias="0.619"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="7" />
     <ImageButton
         android:id="@+id/pwkey8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.539"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.68"
-        app:srcCompat="@drawable/keybutton" />
+        app:layout_constraintVertical_bias="0.619"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="8" />
     <ImageButton
         android:id="@+id/pwkey9"
         android:layout_width="wrap_content"
@@ -101,19 +171,23 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.68"
-        app:srcCompat="@drawable/keybutton" />
+        app:layout_constraintVertical_bias="0.619"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="9" />
     <ImageButton
         android:id="@+id/pwkey0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.539"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.884"
-        app:srcCompat="@drawable/keybutton" />
+        app:layout_constraintVertical_bias="0.823"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="addNumber"
+        android:tag="0"  />
 
     <ImageButton
         android:id="@+id/pwkeyStt"
@@ -121,14 +195,14 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.011"
+        app:layout_constraintHorizontal_bias="0.048"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.884"
-        app:srcCompat="@drawable/keybutton" />
+        app:layout_constraintVertical_bias="0.823"
+        app:srcCompat="@drawable/keybutton"/>
 
     <ImageButton
-        android:id="@+id/pwkeyTts"
+        android:id="@+id/deletePwButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -136,20 +210,21 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.884"
-        app:srcCompat="@drawable/keybutton" />
+        app:layout_constraintVertical_bias="0.823"
+        app:srcCompat="@drawable/keybutton"
+        android:onClick="deleteLastCharacter"
+        />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textPwView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="비밀번호를 입력해주세요."
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.046" />
+        app:layout_constraintVertical_bias="0.022" />
 
     <TextView
         android:id="@+id/textpwkey1"
@@ -281,4 +356,56 @@
         app:layout_constraintStart_toStartOf="@id/pwkey0"
         app:layout_constraintTop_toTopOf="@id/pwkey0"
         app:layout_constraintVertical_bias="1" />
+
+    <ImageView
+        android:id="@+id/imagePwStt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/pwkeyStt"
+        app:layout_constraintEnd_toEndOf="@id/pwkeyStt"
+        app:layout_constraintHorizontal_bias="0.424"
+        app:layout_constraintStart_toStartOf="@id/pwkeyStt"
+        app:layout_constraintTop_toTopOf="@id/pwkeyStt"
+        app:layout_constraintVertical_bias="0.4"
+        app:srcCompat="@drawable/sttbutton"
+        />
+
+    <ImageView
+        android:id="@+id/imagePwback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/deletePwButton"
+        app:layout_constraintEnd_toEndOf="@id/deletePwButton"
+        app:layout_constraintHorizontal_bias="0.561"
+        app:layout_constraintStart_toStartOf="@id/deletePwButton"
+        app:layout_constraintTop_toTopOf="@id/deletePwButton"
+        app:layout_constraintVertical_bias="0.45"
+        app:srcCompat="@drawable/back"
+        />
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.551"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.993"
+        app:srcCompat="@drawable/backbutton"
+        />
+    <TextView
+        android:id="@+id/backtext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="뒤로가기"
+        android:textColor="@color/white"
+        android:textSize="80sp"
+        app:layout_constraintBottom_toBottomOf="@id/backButton"
+        app:layout_constraintEnd_toEndOf="@id/backButton"
+        app:layout_constraintStart_toStartOf="@id/backButton"
+        app:layout_constraintTop_toTopOf="@id/backButton"
+        app:layout_constraintVertical_bias="0.9"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
