@@ -27,6 +27,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    sourceSets {
+        main {
+            assets {
+                srcDirs 'src\\main\\assets'
+            }
+        }
+    }
 }
 
 dependencies {
@@ -59,5 +66,7 @@ dependencies {
         implementation libs.retrofit
         implementation libs.converter.gson
         implementation libs.logging.interceptor
+    implementation 'com.opencsv:opencsv:5.5.2'
 
-    }
+
+}
