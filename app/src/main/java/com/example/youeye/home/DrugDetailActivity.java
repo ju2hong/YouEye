@@ -1,14 +1,15 @@
 package com.example.youeye.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.youeye.R;
 import com.bumptech.glide.Glide;
 import com.opencsv.CSVReader;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
@@ -77,6 +78,7 @@ public class DrugDetailActivity extends AppCompatActivity {
         }
     }
 
+    // CSV에서 약품 정보를 찾아서 textView15에 표시하는 메소드
     private void displayDrugDetailsFromCSV(String drugName) {
         try {
             // assets 폴더에서 detaildrug.csv 파일 열기
@@ -119,5 +121,11 @@ public class DrugDetailActivity extends AppCompatActivity {
             Log.e(TAG, "CSV 파일을 읽는 중 오류 발생", e);
             textView15.setText("약품 정보를 불러오지 못했습니다.");
         }
+    }
+
+    // 뒤로가기 버튼 클릭 시 실행될 메서드
+    public void goBackToTextSearch(View view) {
+        Intent intent = new Intent(this, TextSearchActivity.class); // TextSearchActivity로 이동
+        startActivity(intent);
     }
 }

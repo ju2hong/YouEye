@@ -97,7 +97,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.973"
-        app:srcCompat="@drawable/button" />
+        app:srcCompat="@drawable/button"
+        android:onClick="goBackToTextSearch" /> <!-- 뒤로가기 버튼 클릭 메서드 추가 -->/>
 
     <TextView
         android:id="@+id/textView13"
