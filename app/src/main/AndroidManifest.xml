@@ -60,6 +60,10 @@
         <!-- mypage 설정 버튼 -->
         <activity android:name=".home.SettingsActivity" />
 
+        <!-- 사진결과 -->
+        <activity android:name=".home.PhotoResultActivity" android:exported="true" />
+
+
 
 
 

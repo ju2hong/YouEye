@@ -2,8 +2,10 @@ package com.example.youeye.home;
 
 import android.Manifest;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.icu.text.SimpleDateFormat;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -117,7 +119,16 @@ public class ImageSearchActivity extends AppCompatActivity {
         imageCapture.takePicture(outputFileOptions, cameraExecutor, new ImageCapture.OnImageSavedCallback() {
             @Override
             public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-                runOnUiThread(() -> Toast.makeText(ImageSearchActivity.this, "사진 촬영 성공! 갤러리에 저장되었습니다.", Toast.LENGTH_SHORT).show());
+                Uri savedUri = outputFileResults.getSavedUri();
+
+                runOnUiThread(() -> {
+                    Toast.makeText(ImageSearchActivity.this, "사진 촬영 성공! 갤러리에 저장되었습니다.", Toast.LENGTH_SHORT).show();
+
+                    // PhotoResultActivity로 전환하며 사진 Uri 전달
+                    Intent intent = new Intent(ImageSearchActivity.this, PhotoResultActivity.class);
+                    intent.putExtra("photoUri", savedUri);
+                    startActivity(intent);
+                });
             }
 
             @Override
@@ -126,6 +137,7 @@ public class ImageSearchActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
     @Override
