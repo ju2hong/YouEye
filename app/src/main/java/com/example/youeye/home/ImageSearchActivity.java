@@ -1,8 +1,12 @@
 package com.example.youeye.home;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.pm.PackageManager;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -23,6 +27,7 @@ import com.example.youeye.R;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -98,15 +103,21 @@ public class ImageSearchActivity extends AppCompatActivity {
         if (imageCapture == null) return;
 
         // 사진 파일을 저장할 경로 설정
-        File photoFile = new File(getExternalFilesDir(null), System.currentTimeMillis() + ".jpg");
+        String name = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(System.currentTimeMillis());
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name + ".jpg");
+        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+        contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES); // 갤러리 경로 설정
 
-        ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(photoFile).build();
+        ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(
+                getContentResolver(), MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                .build();
 
         // 사진 촬영
         imageCapture.takePicture(outputFileOptions, cameraExecutor, new ImageCapture.OnImageSavedCallback() {
             @Override
             public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-                runOnUiThread(() -> Toast.makeText(ImageSearchActivity.this, "사진 촬영 성공!", Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> Toast.makeText(ImageSearchActivity.this, "사진 촬영 성공! 갤러리에 저장되었습니다.", Toast.LENGTH_SHORT).show());
             }
 
             @Override
@@ -115,6 +126,7 @@ public class ImageSearchActivity extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     protected void onDestroy() {
