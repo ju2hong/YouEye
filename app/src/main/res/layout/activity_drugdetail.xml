@@ -130,19 +130,19 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView14"
+                android:id="@+id/textView15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="[사용 예]\n감기 증상을 완화 합니다. 발열, 두통, 치통, 근육통 등 통증을 완화 하기 위해 사용 합니다"
+                android:text="약품 정보를 여기에 표시합니다."
                 android:textColor="@color/black"
                 android:textSize="10pt"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView15"
+                android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="약품 정보를 여기에 표시합니다."
+                android:text="[사용 예]\n감기 증상을 완화 합니다. 발열, 두통, 치통, 근육통 등 통증을 완화 하기 위해 사용 합니다"
                 android:textColor="@color/black"
                 android:textSize="10pt"
                 android:textStyle="bold" />

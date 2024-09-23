@@ -26,8 +26,16 @@ public class DrugDetailActivity extends AppCompatActivity {
 
     static {
         medicineNameMap.put("닥터베아제정", "dakteobeajejeong");
+        medicineNameMap.put("베아제정", "baejejeong");
         medicineNameMap.put("훼스탈골드정", "hweseutalgoldeujeong");
         medicineNameMap.put("판피린티정", "panpirintijeong");
+        medicineNameMap.put("어린이부루펜시럽", "burupensireop");
+        medicineNameMap.put("어린이용타이레놀정", "eoriniyongtairenoljeong");
+        medicineNameMap.put("신신파스아렉스", "sinsinpaseuarekseu");
+
+
+
+
         // 필요한 만큼 추가
     }
 
