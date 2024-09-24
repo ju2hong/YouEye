@@ -15,6 +15,17 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // 중복된 파일을 제외시키기 위한 packagingOptions 추가
+        // packagingOptions 블록 추가
+        packagingOptions {
+            exclude 'META-INF/DEPENDENCIES'
+            exclude 'META-INF/INDEX.LIST'   // 추가적인 중복 파일 예시
+            exclude 'META-INF/LICENSE'
+            exclude 'META-INF/LICENSE.txt'
+            exclude 'META-INF/NOTICE'
+            exclude 'META-INF/NOTICE.txt'
+        }
     }
 
     buildTypes {
@@ -82,6 +93,14 @@ dependencies {
 
         // ML Kit 텍스트 인식 라이브러리
         implementation 'com.google.mlkit:text-recognition:16.0.0'
+
+//google vision
+        implementation 'com.google.cloud:google-cloud-vision:2.0.0'
+        implementation 'com.google.guava:guava:31.0.1-android'
+//okhttp의존성
+    implementation 'com.squareup.okhttp3:okhttp:4.9.2'
+
+
     }
 
 
