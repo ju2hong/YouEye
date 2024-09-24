@@ -2,8 +2,12 @@ package com.example.youeye.home;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -12,17 +16,25 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.youeye.R;
-import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.text.Text;
-import com.google.mlkit.vision.text.TextRecognition;
-import com.google.mlkit.vision.text.TextRecognizer;
-import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class PhotoResultActivity extends AppCompatActivity {
 
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int GALLERY_REQUEST_CODE = 100;
+    private static final String API_KEY = "YOUR_API_KEY";  // 여기에 실제 API 키를 넣으세요.
     private ImageView photoImageView;
-    private Button searchButton;
     private Bitmap imageBitmap;
 
     @Override
@@ -31,56 +43,121 @@ public class PhotoResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_photo_result);
 
         photoImageView = findViewById(R.id.photoImageView);
-        searchButton = findViewById(R.id.searchButton);
+        Button selectImageButton = findViewById(R.id.selectImageButton);  // 선택 버튼
 
-        // 사진 촬영 인텐트 실행
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-
-        // 검색 버튼 클릭 시 텍스트 추출
-        searchButton.setOnClickListener(v -> {
-            if (imageBitmap != null) {
-                extractTextFromImage(imageBitmap);
-            } else {
-                Toast.makeText(this, "사진이 없습니다.", Toast.LENGTH_SHORT).show();
-            }
+        // 갤러리에서 이미지 선택
+        selectImageButton.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, GALLERY_REQUEST_CODE);
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            imageBitmap = (Bitmap) extras.get("data");
-            photoImageView.setImageBitmap(imageBitmap);
+
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            Uri imageUri = data.getData();
+            try {
+                // 선택된 이미지를 비트맵으로 변환
+                imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                // 이미지뷰에 선택된 이미지 표시
+                photoImageView.setImageBitmap(imageBitmap);
+
+                // Vision API로 이미지 텍스트 인식
+                if (imageBitmap != null) {
+                    String base64Image = bitmapToBase64(imageBitmap);
+                    requestTextRecognition(base64Image);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "이미지를 처리하는 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
+    // 비트맵 이미지를 Base64로 인코딩
+    private String bitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
 
-    // ML Kit을 사용하여 텍스트를 추출하는 메소드
-    private void extractTextFromImage(Bitmap bitmap) {
-        InputImage image = InputImage.fromBitmap(bitmap, 0);
+    // Google Vision API로 텍스트 인식 요청
+    private void requestTextRecognition(String base64Image) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                OkHttpClient client = new OkHttpClient();
+                String jsonRequest = createJsonRequest(base64Image);
 
-        // TextRecognizer 인스턴스를 옵션과 함께 초기화
-        TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS); // 수정된 부분
+                RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonRequest);
+                Request request = new Request.Builder()
+                        .url("https://vision.googleapis.com/v1/images:annotate?key=" + API_KEY)
+                        .post(body)
+                        .build();
 
-        recognizer.process(image)
-                .addOnSuccessListener(result -> {
-                    // 성공적으로 텍스트를 인식한 경우
-                    String recognizedText = result.getText();
-                    if (!recognizedText.isEmpty()) {
-                        // 인식된 텍스트를 처리
-                        Toast.makeText(this, "추출된 텍스트: " + recognizedText, Toast.LENGTH_LONG).show();
+                try {
+                    Response response = client.newCall(request).execute();
+                    if (response.isSuccessful()) {
+                        return response.body().string();
                     } else {
-                        Toast.makeText(this, "텍스트를 인식할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                        Log.e("Vision API Request", "API 요청 실패: " + response.message());
                     }
-                })
-                .addOnFailureListener(e -> {
-                    // 인식 실패 처리
-                    Toast.makeText(this, "텍스트 인식 실패: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
+                } catch (IOException e) {
+                    Log.e("Vision API Error", "API 요청 중 오류 발생", e);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                if (result != null) {
+                    String recognizedText = parseTextFromJson(result);
+                    Toast.makeText(PhotoResultActivity.this, "인식된 텍스트: " + recognizedText, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(PhotoResultActivity.this, "API 요청 실패", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
+    }
+
+    // Vision API 요청을 위한 JSON 생성
+    private String createJsonRequest(String base64Image) {
+        try {
+            return "{\n" +
+                    "  \"requests\": [\n" +
+                    "    {\n" +
+                    "      \"image\": {\n" +
+                    "        \"content\": \"" + base64Image + "\"\n" +
+                    "      },\n" +
+                    "      \"features\": [\n" +
+                    "        {\n" +
+                    "          \"type\": \"TEXT_DETECTION\"\n" +
+                    "        }\n" +
+                    "      ]\n" +
+                    "    }\n" +
+                    "  ]\n" +
+                    "}";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // Vision API 응답에서 텍스트 추출
+    private String parseTextFromJson(String jsonResponse) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonResponse);
+            JSONArray responses = jsonObject.getJSONArray("responses");
+            JSONObject firstResponse = responses.getJSONObject(0);
+            JSONObject textAnnotation = firstResponse.getJSONArray("textAnnotations").getJSONObject(0);
+            return textAnnotation.getString("description");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
