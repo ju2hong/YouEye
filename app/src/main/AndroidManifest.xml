@@ -2,12 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <!-- 오디오 사용 권한 추가 -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- 인터넷 권한 추가 -->
     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- 카메라 권한 추가 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -71,6 +79,13 @@
 
         <!-- mypage 설정 버튼 -->
         <activity android:name=".home.SettingsActivity" />
+
+        <!-- 사진결과 -->
+        <activity android:name=".home.PhotoResultActivity" android:exported="true" />
+
+
+
+
 
     </application>
 </manifest>
