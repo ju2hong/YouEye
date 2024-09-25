@@ -42,6 +42,7 @@ public class TextSearchActivity extends AppCompatActivity {
 
     private EditText searchEditText;
     private ImageButton searchButton;
+    private TextView editTextSearch;  // TextView의 ID와 일치시킵니다.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,15 @@ public class TextSearchActivity extends AppCompatActivity {
             }
         });
 
+        // TextView 초기화
+        editTextSearch = findViewById(R.id.editTextSearch);
+
+        // VoiceSearchActivity에서 전달된 텍스트 받기
+        Intent intent = getIntent();
+        String recognizedText = intent.getStringExtra("recognizedText");
+
+        // 전달받은 텍스트를 TextView에 표시
+        editTextSearch.setText(recognizedText);
         searchEditText = findViewById(R.id.editTextSearch); // 여기에서 ID를 올바르게 사용
         searchButton = findViewById(R.id.search_button);
 
@@ -142,6 +152,7 @@ public class TextSearchActivity extends AppCompatActivity {
             return null;
         }
     }
+
     // 뒤로가기 버튼 관련
     public void onBackButtonPressed(View view) {
         finish(); // 종료하고 이전 액티비티로 돌아감
