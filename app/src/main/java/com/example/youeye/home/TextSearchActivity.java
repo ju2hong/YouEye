@@ -8,9 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.youeye.R;
+import com.example.youeye.TTSManager;
 import com.example.youeye.api.ApiClient;
 import com.example.youeye.api.MedicineApiService;
 
@@ -30,6 +32,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TextSearchActivity extends AppCompatActivity {
+    private TTSManager ttsManager;
+    private ImageButton backBtn;
+    private TextView backtxt;
 
     private static final String TAG = "TextSearchActivity";
     private static final String API_KEY = "sqeiVAd6RVpiBOZKO62+f7rbVqGd0E61xsA/QVijhT92Wf808uIpf9fATjE3lUUlM0Wqxh6KflfipYlWmCv8xg=="; // 여기에 실제 API 키를 넣으세요.
@@ -37,12 +42,35 @@ public class TextSearchActivity extends AppCompatActivity {
 
     private EditText searchEditText;
     private ImageButton searchButton;
+    private TextView editTextSearch;  // TextView의 ID와 일치시킵니다.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_textsearch);
+        // TTSManager 초기화
+        ttsManager = new TTSManager(this);
+        // View 초기화
+        backtxt = findViewById(R.id.backtxt);
+        backBtn = findViewById(R.id.backBtn);  // imageButton4 초기화
+        // 뒤로가기 버튼 클릭 이벤트 설정
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ttsManager.speakTextViewText(backtxt);  // textView9의 텍스트를 읽음
+                onBackButtonPressed(v);
+            }
+        });
 
+        // TextView 초기화
+        editTextSearch = findViewById(R.id.editTextSearch);
+
+        // VoiceSearchActivity에서 전달된 텍스트 받기
+        Intent intent = getIntent();
+        String recognizedText = intent.getStringExtra("recognizedText");
+
+        // 전달받은 텍스트를 TextView에 표시
+        editTextSearch.setText(recognizedText);
         searchEditText = findViewById(R.id.editTextSearch); // 여기에서 ID를 올바르게 사용
         searchButton = findViewById(R.id.search_button);
 
@@ -123,5 +151,10 @@ public class TextSearchActivity extends AppCompatActivity {
         } else {
             return null;
         }
+    }
+
+    // 뒤로가기 버튼 관련
+    public void onBackButtonPressed(View view) {
+        finish(); // 종료하고 이전 액티비티로 돌아감
     }
 }

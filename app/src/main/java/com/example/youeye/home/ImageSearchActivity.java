@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,7 @@ public class ImageSearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imagesearch);
+
 
         previewView = findViewById(R.id.previewView);
 
@@ -137,6 +139,7 @@ public class ImageSearchActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
 

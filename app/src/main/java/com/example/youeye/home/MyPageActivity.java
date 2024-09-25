@@ -43,21 +43,30 @@ public class MyPageActivity extends AppCompatActivity {
 
         // TextView의 텍스트를 TTS로 출력
         ttsManager.speakTextViewText(textView9);
+// 알람 버튼 클릭 이벤트 설정
+        setButtonClickListener(alButton, TimeActivity.class);
 
-        // 알람 버튼 클릭 이벤트 설정
-        setButtonClickListener(alButton, alText, TimeActivity.class);
 
-        // 설정 버튼 클릭 이벤트 설정
-        setButtonClickListener(settingsButton, settingsText, SettingsActivity.class);
+// 설정 버튼 클릭 이벤트 설정
+        setButtonClickListener(settingsButton, SettingsActivity.class);
 
-        // 로그아웃 버튼 클릭 이벤트 설정
+
+// 로그아웃 버튼 클릭 이벤트 설정
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ttsManager.speakTextViewText(logoutText);
+                // 버튼의 contentDescription 읽기
+                CharSequence buttonDescription = logoutButton.getContentDescription();
+
+                // TTS로 contentDescription 읽기
+                if (buttonDescription != null) {
+                    ttsManager.speak(buttonDescription.toString());
+                }
+
                 showLogoutDialog("로그아웃", "정말 로그아웃 하시겠습니까?");
             }
         });
+
 
         // 뒤로가기 버튼 클릭 이벤트 설정
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -68,10 +77,18 @@ public class MyPageActivity extends AppCompatActivity {
             }
         });
     }
-
-    private void setButtonClickListener(ImageButton button, TextView textView, Class<?> activityClass) {
+    // tts 로 버튼 위 데코 읽기
+    private void setButtonClickListener(ImageButton button, Class<?> activityClass) {
         button.setOnClickListener(v -> {
-            ttsManager.speakTextViewText(textView);
+            // 버튼의 contentDescription 읽기
+            CharSequence buttonDescription = button.getContentDescription();
+
+            // TTS로 contentDescription 읽기
+            if (buttonDescription != null) {
+                ttsManager.speak(buttonDescription.toString());
+            }
+
+            // 버튼 클릭 시 해당 액티비티로 이동
             Intent intent = new Intent(MyPageActivity.this, activityClass);
             startActivity(intent);
         });
