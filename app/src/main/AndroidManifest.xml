@@ -16,6 +16,8 @@
     <!-- 카메라 권한 추가 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 음성 인식 권한 추가 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -65,10 +67,7 @@
             android:name=".home.ChangePasswordActivity"
             android:exported="true">
         </activity>
-        <activity android:name=".home.ImageSearchActivity" android:exported="true" />
-        <activity android:name=".home.VoiceSearchActivity" android:exported="true" />
-        <activity android:name=".home.TextSearchActivity" android:exported="true" />
-        <activity android:name=".home.MyPageActivity" android:exported="true" />    
+
         <!--ㅡmypage 버튼 activity-->
         <activity android:name=".alarm.TimeActivity" android:exported="true" />
         <activity android:name=".alarm.TimePickerActivity" android:exported="true" />
