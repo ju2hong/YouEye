@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.youeye.R;
 import com.bumptech.glide.Glide;
+import com.example.youeye.TTSManager;
 import com.opencsv.CSVReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -24,7 +25,8 @@ public class DrugDetailActivity extends AppCompatActivity {
     private ImageView medicineImageView;
     private static final String TAG = "DrugDetailActivity";
     private TextToSpeech tts;
-    private ImageButton ttsButton;
+    private ImageButton ttsButton,imageButton7;
+    private TTSManager ttsManager;
     private boolean isSpeaking = false;  // TTS 실행 여부를 저장하는 변수
 
     // 한글 약품명을 영어로 매핑하는 테이블
@@ -55,6 +57,9 @@ public class DrugDetailActivity extends AppCompatActivity {
         textView15 = findViewById(R.id.textView15);
         medicineImageView = findViewById(R.id.medicineImageView);
         ttsButton = findViewById(R.id.imageButton5);
+        imageButton7 = findViewById(R.id.imageButton7);
+        // TTSManager 초기화
+        ttsManager = new TTSManager(this);
         // TextToSpeech 초기화
         tts = new TextToSpeech(this, status -> {
             if (status == TextToSpeech.SUCCESS) {
@@ -177,11 +182,17 @@ public class DrugDetailActivity extends AppCompatActivity {
             tts.stop();
             tts.shutdown();  // TTS 해제
         }
+        ttsManager.shutdown();
         super.onDestroy();
     }
-    // 뒤로가기 버튼 클릭 시 실행될 메서드
-    public void goBackToTextSearch(View view) {
-        Intent intent = new Intent(this, TextSearchActivity.class); // TextSearchActivity로 이동
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, TextSearchActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);  // 새로 시작할 때 기존 상태를 지움
         startActivity(intent);
+        finish();  // 현재 액티비티 종료
     }
+
+
 }

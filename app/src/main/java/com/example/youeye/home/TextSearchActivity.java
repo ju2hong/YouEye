@@ -10,8 +10,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Handler;
 
 import com.example.youeye.R;
+import com.example.youeye.SwitchManager;
 import com.example.youeye.TTSManager;
 import com.example.youeye.api.ApiClient;
 import com.example.youeye.api.MedicineApiService;
@@ -33,6 +35,7 @@ import retrofit2.Response;
 
 public class TextSearchActivity extends AppCompatActivity {
     private TTSManager ttsManager;
+    private SwitchManager switchManager;
     private ImageButton backBtn;
     private TextView backtxt;
 
@@ -48,22 +51,17 @@ public class TextSearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_textsearch);
+
         // TTSManager 초기화
         ttsManager = new TTSManager(this);
+        switchManager = SwitchManager.getInstance(this);
+
         // View 초기화
         backtxt = findViewById(R.id.backtxt);
-        backBtn = findViewById(R.id.backBtn);  // imageButton4 초기화
-        // 뒤로가기 버튼 클릭 이벤트 설정
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ttsManager.speakTextViewText(backtxt);  // textView9의 텍스트를 읽음
-                onBackButtonPressed(v);
-            }
-        });
-
-        // TextView 초기화
-        editTextSearch = findViewById(R.id.editTextSearch);
+        backBtn = findViewById(R.id.backBtn);
+        searchButton = findViewById(R.id.search_button);
+        searchEditText = findViewById(R.id.editTextSearch); // EditText 초기화
+        editTextSearch = findViewById(R.id.editTextSearch); // TextView 초기화
 
         // VoiceSearchActivity에서 전달된 텍스트 받기
         Intent intent = getIntent();
@@ -71,18 +69,25 @@ public class TextSearchActivity extends AppCompatActivity {
 
         // 전달받은 텍스트를 TextView에 표시
         editTextSearch.setText(recognizedText);
-        searchEditText = findViewById(R.id.editTextSearch); // 여기에서 ID를 올바르게 사용
-        searchButton = findViewById(R.id.search_button);
 
-        apiService = ApiClient.getClient("http://apis.data.go.kr/1471000/SafeStadDrugService/").create(MedicineApiService.class);
+        // 검색창 초기화
+        if (getIntent().getBooleanExtra("clearSearch", false)) {
+            searchEditText.setText("");  // 검색창 초기화
+        }
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        // 뒤로가기 버튼 클릭 이벤트 설정
+        backBtn.setOnClickListener(v -> speakButtonDescriptionAndFinish());
+
+        // 검색 버튼 클릭 이벤트 설정
+        searchButton.setOnClickListener(v -> {
+            speakSearchButtonDescription();
+            new Handler().postDelayed(() -> {
                 String query = searchEditText.getText().toString();
                 searchMedicine(query);
-            }
+            }, 50); // TTS 발화 후 대기 시간 (50ms)
         });
+
+        apiService = ApiClient.getClient("http://apis.data.go.kr/1471000/SafeStadDrugService/").create(MedicineApiService.class);
     }
 
     private void searchMedicine(String query) {
@@ -153,8 +158,50 @@ public class TextSearchActivity extends AppCompatActivity {
         }
     }
 
-    // 뒤로가기 버튼 관련
-    public void onBackButtonPressed(View view) {
-        finish(); // 종료하고 이전 액티비티로 돌아감
+    private void speakSearchButtonDescription() {
+        if (switchManager.getSwitchState()) {
+            String buttonText = searchButton.getContentDescription().toString();
+            ttsManager.speak(buttonText);
+        }
     }
+
+    private void speakButtonDescriptionAndFinish() {
+        String buttonText = backtxt.getText().toString();
+        if (switchManager.getSwitchState()) {
+            ttsManager.speak(buttonText);
+            // 예상 발화 시간 계산 (대략 100ms per character + 500ms buffer)
+            int estimatedSpeechTime = buttonText.length() * 100;
+
+            new Handler().postDelayed(() -> finishWithAnimation(), estimatedSpeechTime);
+        } else {
+            finishWithAnimation();
+        }
+    }
+
+    private void finishWithAnimation() {
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 상태 초기화
+        searchEditText.setText(""); // 검색창 초기화
+    }
+
+    @Override
+    public void onBackPressed() {
+        // 현재 activity 종료
+        super.onBackPressed();
+        finish();
+        // 홈 화면으로 이동
+        Intent homeIntent = new Intent(this, HomeActivity.class);
+        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(homeIntent);
+
+        // 애니메이션 적용
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
 }
