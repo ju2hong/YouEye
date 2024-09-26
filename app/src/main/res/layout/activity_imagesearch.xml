@@ -5,9 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E1DADA"
-    tools:context=".home.ImageSearchActivity"
-    >
+    tools:context=".home.ImageSearchActivity">
 
+    <!-- PreviewView for Camera Preview -->
+
+    <!-- Other UI elements -->
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/previewView"
+        android:layout_width="402dp"
+        android:layout_height="409dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageButton3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.6"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.797"
+        app:layout_constraintWidth_percent="1"
+        tools:ignore="MissingClass" />
 
     <TextView
         android:id="@+id/textView8"
@@ -35,8 +51,9 @@
         app:layout_constraintVertical_bias="0.769"
         app:srcCompat="@drawable/camerabutton"
         android:background="@android:color/transparent"
-        />
+        android:onClick="takePhoto"/>
 
+    <!-- 뒤로가기 버튼 -->
     <ImageButton
         android:id="@+id/imageButton4"
         android:layout_width="wrap_content"
@@ -49,8 +66,7 @@
         app:layout_constraintVertical_bias="0.973"
         app:srcCompat="@drawable/button"
         android:background="@android:color/transparent"
-        android:onClick="onBackButtonPressed"
-        />
+        android:onClick="onBackButtonPressed" />
 
     <TextView
         android:id="@+id/textView9"
@@ -67,19 +83,4 @@
         app:layout_constraintTop_toBottomOf="@+id/imageButton3"
         app:layout_constraintVertical_bias="0.884" />
 
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="사진검색"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="20pt"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton3"
-        app:layout_constraintEnd_toEndOf="@+id/imageButton3"
-        app:layout_constraintHorizontal_bias="0.758"
-        app:layout_constraintStart_toStartOf="@+id/imageButton3"
-        app:layout_constraintTop_toTopOf="@+id/imageButton3"
-        app:layout_constraintVertical_bias="0.436" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E1DADA">
+    android:background="#E1DADA"
+    tools:context=".home.DrugDetailActivity">
 
     <TextView
         android:id="@+id/textView11"
@@ -17,7 +18,6 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.022" />
@@ -33,8 +33,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.097"
-        app:srcCompat="@drawable/speaker"
-        />
+        app:srcCompat="@drawable/speaker" />
 
     <ImageButton
         android:id="@+id/imageButton6"
@@ -50,14 +49,25 @@
         app:srcCompat="@drawable/alarm" />
 
     <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="413dp"
-        android:layout_height="420dp"
+        android:id="@+id/medicineImageView"
+        android:layout_width="323dp"
+        android:layout_height="142dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.549"
+        app:layout_constraintVertical_bias="0.342"
+        app:srcCompat="@drawable/placeholder" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="386dp"
+        android:layout_height="422dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.523"
         app:srcCompat="@drawable/squareline" />
 
     <TextView
@@ -87,7 +97,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.973"
-        app:srcCompat="@drawable/button" />
+        app:srcCompat="@drawable/button"
+        android:onClick="goBackToTextSearch" /> <!-- 뒤로가기 버튼 클릭 메서드 추가 -->/>
 
     <TextView
         android:id="@+id/textView13"
@@ -104,30 +115,38 @@
         app:layout_constraintTop_toTopOf="@+id/imageButton7" />
 
     <ScrollView
-        android:layout_width="262dp"
-        android:layout_height="114dp"
+        android:layout_width="338dp"
+        android:layout_height="215dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="@+id/imageView2"
-        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintHorizontal_bias="0.479"
         app:layout_constraintStart_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.856">
+        app:layout_constraintVertical_bias="0.937">
 
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="[사용 예]
-            감기 증상을 완화 합니다. 발열,두통,치통,근육통 등 통증을 완화 하기 위해 사용 합니다"
-            android:textColor="@color/black"
-            android:textSize="10pt"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/imageButton7"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="@+id/imageView2"
-            app:layout_constraintTop_toTopOf="@+id/imageView2"
-            app:layout_constraintVertical_bias="0.752" />
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="약품 정보를 여기에 표시합니다."
+                android:textColor="@color/black"
+                android:textSize="10pt"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[사용 예]\n감기 증상을 완화 합니다. 발열, 두통, 치통, 근육통 등 통증을 완화 하기 위해 사용 합니다"
+                android:textColor="@color/black"
+                android:textSize="10pt"
+                android:textStyle="bold" />
+
+        </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

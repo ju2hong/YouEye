@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1000169627466",
+    "firebase_url": "https://projectui-399e6-default-rtdb.firebaseio.com",
+    "project_id": "projectui-399e6",
+    "storage_bucket": "projectui-399e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000169627466:android:0de20f28f999b05b49abb3",
+        "android_client_info": {
+          "package_name": "com.example.youeye"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1hkvTcOXdwWhk95ZfsFjvfTWejIqXIfI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
