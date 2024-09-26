@@ -22,6 +22,7 @@
 
     <ImageButton
         android:id="@+id/okBtn"
+        android:contentDescription="확인 버튼"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -36,6 +37,7 @@
 
     <ImageButton
         android:id="@+id/cancelBtn"
+        android:contentDescription="취소 버튼"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

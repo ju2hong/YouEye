@@ -6,6 +6,12 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- 알람 사용 권한 추가 -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,6 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.YouEye"
         tools:targetApi="31">
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -70,21 +77,28 @@
             android:name=".home.MyPageActivity"
             android:exported="true">
         </activity>
-        <!--ㅡmypage 버튼 activity-->
+
+        <!-- TimeActivity 등록 -->
         <activity
             android:name=".alarm.TimeActivity"
             android:exported="true">
         </activity>
+        <!-- TimePicjkerActivity 등록 -->
         <activity
             android:name=".alarm.TimePickerActivity"
             android:exported="true">
         </activity>
-
+        <!-- PlayingService 등록 -->
+        <service android:name=".alarm.PlayingService" />
         <!-- 알람 리시버 -->
         <receiver android:name=".alarm.AlarmReceiverActivity" />
 
+
         <!-- mypage 설정 버튼 -->
         <activity android:name=".home.SettingsActivity" />
+
+
+
 
     </application>
 

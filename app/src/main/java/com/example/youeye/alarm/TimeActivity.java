@@ -1,9 +1,11 @@
+// TimeActivity
 package com.example.youeye.alarm;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -22,7 +24,6 @@ import com.example.youeye.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 
 public class TimeActivity extends AppCompatActivity {
 
@@ -74,6 +75,16 @@ public class TimeActivity extends AppCompatActivity {
             }
     );
 
+    private void checkAlarmPermission() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager != null && !alarmManager.canScheduleExactAlarms()) {
+                Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                startActivity(intent);
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +95,7 @@ public class TimeActivity extends AppCompatActivity {
         arrayAdapter = new AdapterActivity();
 
         listView = (ListView) findViewById(R.id.list_view);
+        arrayAdapter = new AdapterActivity();
         listView.setAdapter(arrayAdapter);
 
         // List에 있는 항목들 눌렀을 때 시간변경 가능
@@ -153,13 +165,32 @@ public class TimeActivity extends AppCompatActivity {
 
         // 인텐트를 생성하여 리시버를 호출합니다.
         Intent intent = new Intent(this, AlarmReceiverActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // PendingIntent 생성 시 플래그 설정
+        int flags = PendingIntent.FLAG_UPDATE_CURRENT;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            flags |= PendingIntent.FLAG_IMMUTABLE;
+        }
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, flags);
 
         // 알람을 설정합니다.
         if (alarmManager != null) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            } else {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            }
         }
+
+
+        // PlayingService 시작
+        Intent serviceIntent = new Intent(this, PlayingService.class);
+        serviceIntent.putExtra("action", "START_ALARM");
+        startService(serviceIntent);
+
+        Toast.makeText(this, "알람이 " + hour + "시 " + minute + "분으로 설정되었습니다.", Toast.LENGTH_SHORT).show();
     }
+
     public void onBackButtonPressed(View view) {
 
         finish(); // 종료하고 이전 액티비티로 돌아감
