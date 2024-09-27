@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.youeye.R;
 import com.bumptech.glide.Glide;
+import com.example.youeye.SwitchManager;
 import com.example.youeye.TTSManager;
 import com.opencsv.CSVReader;
 import java.io.InputStream;
@@ -18,6 +19,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import android.os.Handler;
 
 public class DrugDetailActivity extends AppCompatActivity {
 
@@ -27,6 +29,7 @@ public class DrugDetailActivity extends AppCompatActivity {
     private TextToSpeech tts;
     private ImageButton ttsButton,imageButton7;
     private TTSManager ttsManager;
+    private SwitchManager switchManager;
     private boolean isSpeaking = false;  // TTS 실행 여부를 저장하는 변수
 
     // 한글 약품명을 영어로 매핑하는 테이블
@@ -60,6 +63,8 @@ public class DrugDetailActivity extends AppCompatActivity {
         imageButton7 = findViewById(R.id.imageButton7);
         // TTSManager 초기화
         ttsManager = new TTSManager(this);
+        switchManager = SwitchManager.getInstance(this);
+
         // TextToSpeech 초기화
         tts = new TextToSpeech(this, status -> {
             if (status == TextToSpeech.SUCCESS) {
@@ -74,7 +79,7 @@ public class DrugDetailActivity extends AppCompatActivity {
                 speakText();  // 현재 TTS가 실행 중이지 않으면 텍스트 읽음
             }
         });
-
+        imageButton7.setOnClickListener(v -> speakBackButtonAndFinish());
         // 인텐트로 전달된 데이터 가져오기
         String name = getIntent().getStringExtra("name");
         String company = getIntent().getStringExtra("company");
@@ -158,41 +163,57 @@ public class DrugDetailActivity extends AppCompatActivity {
 
     }
 
-    // TTS로 텍스트 읽는 메소드
+    // TTS 멈추는 메소드
+    private void stopTTS() {
+        if (tts.isSpeaking()) {
+            tts.stop();  // TTS 멈추기
+            tts.shutdown();
+        }
+        isSpeaking = false;  // TTS 멈춤 상태로 설정
+    }
+
+    private void speakBackButtonAndFinish() {
+        String buttonText = imageButton7.getContentDescription().toString();
+        if (switchManager.getSwitchState()) {
+            ttsManager.speak(buttonText);
+
+            int estimatedSpeechTime = buttonText.length() * 100 + 500;
+            new Handler().postDelayed(this::finishWithAnimation, estimatedSpeechTime);
+        } else {
+            finishWithAnimation();
+        }
+    }
+
+    private void finishWithAnimation() {
+        Intent intent = new Intent(this, TextSearchActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        stopTTS();
+
+    }
+
+    // speakText 메소드 수정
     private void speakText() {
         String textToSpeak = textViewName.getText().toString() + ", " +
                 textView15.getText().toString() + ", " +
                 textViewDetail.getText().toString();
 
-        tts.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null);  // 텍스트 읽기
-        isSpeaking = true;  // TTS 실행 상태로 설정
+        tts.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null);
+        isSpeaking = true;
     }
 
-    // TTS 멈추는 메소드
-    private void stopTTS() {
-        if (tts.isSpeaking()) {
-            tts.stop();  // TTS 멈추기
-        }
-        isSpeaking = false;  // TTS 멈춤 상태로 설정
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (tts != null) {
-            tts.stop();
-            tts.shutdown();  // TTS 해제
-        }
-        ttsManager.shutdown();
-        super.onDestroy();
-    }
+    // onBackPressed 메소드 수정
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(this, TextSearchActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);  // 새로 시작할 때 기존 상태를 지움
+        intent.putExtra("clearSearch", true);
         startActivity(intent);
-        finish();  // 현재 액티비티 종료
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        stopTTS();
     }
-
 
 }

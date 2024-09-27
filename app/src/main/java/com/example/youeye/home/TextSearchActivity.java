@@ -1,7 +1,6 @@
 package com.example.youeye.home;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,23 +10,18 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Handler;
-
 import com.example.youeye.R;
 import com.example.youeye.SwitchManager;
 import com.example.youeye.TTSManager;
 import com.example.youeye.api.ApiClient;
 import com.example.youeye.api.MedicineApiService;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-
 import java.io.StringReader;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,7 +34,7 @@ public class TextSearchActivity extends AppCompatActivity {
     private TextView backtxt;
 
     private static final String TAG = "TextSearchActivity";
-    private static final String API_KEY = "sqeiVAd6RVpiBOZKO62+f7rbVqGd0E61xsA/QVijhT92Wf808uIpf9fATjE3lUUlM0Wqxh6KflfipYlWmCv8xg=="; // 여기에 실제 API 키를 넣으세요.
+    private static final String API_KEY = "d3eydv/570Cqm8T8No9Hs/Vw0AGDF6tR1kSF2S8cY1IjtvSp/sWS5I5CERN3V8/58vdDWwbnVfdtZlP8KQRLUg=="; // 여기에 실제 API 키를 넣으세요.
     private MedicineApiService apiService;
 
     private EditText searchEditText;
@@ -60,19 +54,24 @@ public class TextSearchActivity extends AppCompatActivity {
         backtxt = findViewById(R.id.backtxt);
         backBtn = findViewById(R.id.backBtn);
         searchButton = findViewById(R.id.search_button);
-        searchEditText = findViewById(R.id.editTextSearch); // EditText 초기화
         editTextSearch = findViewById(R.id.editTextSearch); // TextView 초기화
+
+        // View 초기화
+        searchEditText = findViewById(R.id.editTextSearch);
 
         // VoiceSearchActivity에서 전달된 텍스트 받기
         Intent intent = getIntent();
         String recognizedText = intent.getStringExtra("recognizedText");
 
-        // 전달받은 텍스트를 TextView에 표시
-        editTextSearch.setText(recognizedText);
+        // 전달받은 텍스트를 EditText에 표시
+        if (recognizedText != null && !recognizedText.isEmpty()) {
+            searchEditText.setText(recognizedText);
+            Log.d(TAG, "Received recognized text: " + recognizedText);
+        }
 
         // 검색창 초기화
-        if (getIntent().getBooleanExtra("clearSearch", false)) {
-            searchEditText.setText("");  // 검색창 초기화
+        if (intent.getBooleanExtra("clearSearch", false)) {
+            searchEditText.setText(""); // 검색창 초기화
         }
 
         // 뒤로가기 버튼 클릭 이벤트 설정
@@ -81,10 +80,8 @@ public class TextSearchActivity extends AppCompatActivity {
         // 검색 버튼 클릭 이벤트 설정
         searchButton.setOnClickListener(v -> {
             speakSearchButtonDescription();
-            new Handler().postDelayed(() -> {
-                String query = searchEditText.getText().toString();
-                searchMedicine(query);
-            }, 50); // TTS 발화 후 대기 시간 (50ms)
+            String query = searchEditText.getText().toString();
+            searchMedicine(query);
         });
 
         apiService = ApiClient.getClient("http://apis.data.go.kr/1471000/SafeStadDrugService/").create(MedicineApiService.class);
@@ -165,43 +162,43 @@ public class TextSearchActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        // 홈 화면으로 이동
+        super.onBackPressed();
+        Intent homeIntent = new Intent(this, HomeActivity.class);
+        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(homeIntent);
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
     private void speakButtonDescriptionAndFinish() {
         String buttonText = backtxt.getText().toString();
         if (switchManager.getSwitchState()) {
             ttsManager.speak(buttonText);
-            // 예상 발화 시간 계산 (대략 100ms per character + 500ms buffer)
+
+            // 예상 발화 시간 계산 (약 100ms per character + 여유 시간)
             int estimatedSpeechTime = buttonText.length() * 100;
 
+            // TTS 발화 후 일정 시간 후 뒤로가기 처리
             new Handler().postDelayed(() -> finishWithAnimation(), estimatedSpeechTime);
         } else {
+            // TTS 비활성화 시 즉시 뒤로가기 처리
             finishWithAnimation();
         }
     }
 
+    // 슬라이드 애니메이션과 함께 Activity 종료
     private void finishWithAnimation() {
-        finish();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        Intent homeIntent = new Intent(this, HomeActivity.class);
+        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(homeIntent);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);  // 슬라이드 애니메이션 적용
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // 상태 초기화
-        searchEditText.setText(""); // 검색창 초기화
     }
-
-    @Override
-    public void onBackPressed() {
-        // 현재 activity 종료
-        super.onBackPressed();
-        finish();
-        // 홈 화면으로 이동
-        Intent homeIntent = new Intent(this, HomeActivity.class);
-        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(homeIntent);
-
-        // 애니메이션 적용
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-    }
-
 }
