@@ -167,7 +167,6 @@ public class DrugDetailActivity extends AppCompatActivity {
     private void stopTTS() {
         if (tts.isSpeaking()) {
             tts.stop();  // TTS 멈추기
-            tts.shutdown();
         }
         isSpeaking = false;  // TTS 멈춤 상태로 설정
     }
