@@ -162,17 +162,6 @@ public class TextSearchActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        // 홈 화면으로 이동
-        super.onBackPressed();
-        Intent homeIntent = new Intent(this, HomeActivity.class);
-        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(homeIntent);
-        finish();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-    }
-
     private void speakButtonDescriptionAndFinish() {
         String buttonText = backtxt.getText().toString();
         if (switchManager.getSwitchState()) {
@@ -188,6 +177,12 @@ public class TextSearchActivity extends AppCompatActivity {
             finishWithAnimation();
         }
     }
+    //Activity 종료
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishWithAnimation();
+    }
 
     // 슬라이드 애니메이션과 함께 Activity 종료
     private void finishWithAnimation() {
@@ -197,8 +192,4 @@ public class TextSearchActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);  // 슬라이드 애니메이션 적용
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 }

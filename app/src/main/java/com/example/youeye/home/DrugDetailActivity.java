@@ -177,7 +177,7 @@ public class DrugDetailActivity extends AppCompatActivity {
         if (switchManager.getSwitchState()) {
             ttsManager.speak(buttonText);
 
-            int estimatedSpeechTime = buttonText.length() * 100 + 500;
+            int estimatedSpeechTime = buttonText.length() * 100 ;
             new Handler().postDelayed(this::finishWithAnimation, estimatedSpeechTime);
         } else {
             finishWithAnimation();
@@ -208,11 +208,6 @@ public class DrugDetailActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, TextSearchActivity.class);
-        intent.putExtra("clearSearch", true);
-        startActivity(intent);
-        finish();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         stopTTS();
     }
 
