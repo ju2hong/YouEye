@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         // 스위치 초기 상태 설정
         if (!switchManager.isInitialized()) {
             textView3.setText("ON/OFF");
-            switch1.setChecked(false);
+            switch1.setChecked(true);
             switchManager.setInitialized(true);
         } else {
             boolean switchState = switchManager.getSwitchState();
