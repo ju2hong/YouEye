@@ -1,7 +1,5 @@
 package com.example.youeye.home;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +7,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.youeye.R;
 import com.example.youeye.api.ApiClient;
@@ -32,7 +32,7 @@ import retrofit2.Response;
 public class TextSearchActivity extends AppCompatActivity {
 
     private static final String TAG = "TextSearchActivity";
-    private static final String API_KEY = "sqeiVAd6RVpiBOZKO62+f7rbVqGd0E61xsA/QVijhT92Wf808uIpf9fATjE3lUUlM0Wqxh6KflfipYlWmCv8xg=="; // 여기에 실제 API 키를 넣으세요.
+    private static final String API_KEY = "d3eydv/570Cqm8T8No9Hs/Vw0AGDF6tR1kSF2S8cY1IjtvSp/sWS5I5CERN3V8/58vdDWwbnVfdtZlP8KQRLUg=="; // 여기에 실제 API 키를 넣으세요.
     private MedicineApiService apiService;
 
     private EditText searchEditText;
