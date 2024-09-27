@@ -29,6 +29,7 @@ public class IDLoginActivity extends AppCompatActivity {
     private AlertDialog dialog;
     private TTSManager ttsManager;
     private SwitchManager switchManager;  // SwitchManager 선언 추가
+    private ImageButton backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,8 @@ public class IDLoginActivity extends AppCompatActivity {
         imageButtons.add(findViewById(R.id.textButton3));
         imageButtons.add(findViewById(R.id.textButton4));
 
+        backButton = findViewById(R.id.backButton);
+
         // TextView 리스트 초기화
         textViews = new ArrayList<>();
         textViews.add(findViewById(R.id.textkey1));
@@ -70,6 +73,8 @@ public class IDLoginActivity extends AppCompatActivity {
         textViews.add(findViewById(R.id.textkey8));
         textViews.add(findViewById(R.id.textkey9));
         textViews.add(findViewById(R.id.textkey0));
+        //뒤로가기 버튼 활성화
+        backButton.setOnClickListener(v -> onBackPressed());
 
         // 모든 ImageButton을 초기 상태로 설정
         for (ImageButton imageButton : imageButtons) {
@@ -177,5 +182,12 @@ public class IDLoginActivity extends AppCompatActivity {
             imageButton.setTag(null);
         }
         currentIndex = 0;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }
