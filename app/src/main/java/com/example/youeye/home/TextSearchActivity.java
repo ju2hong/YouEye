@@ -12,20 +12,17 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.youeye.R;
+import com.example.youeye.SwitchManager;
 import com.example.youeye.TTSManager;
 import com.example.youeye.api.ApiClient;
 import com.example.youeye.api.MedicineApiService;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-
 import java.io.StringReader;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,6 +30,7 @@ import retrofit2.Response;
 
 public class TextSearchActivity extends AppCompatActivity {
     private TTSManager ttsManager;
+    private SwitchManager switchManager;
     private ImageButton backBtn;
     private TextView backtxt;
 
@@ -48,41 +46,46 @@ public class TextSearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_textsearch);
+
         // TTSManager 초기화
         ttsManager = new TTSManager(this);
+        switchManager = SwitchManager.getInstance(this);
+
         // View 초기화
         backtxt = findViewById(R.id.backtxt);
-        backBtn = findViewById(R.id.backBtn);  // imageButton4 초기화
-        // 뒤로가기 버튼 클릭 이벤트 설정
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ttsManager.speakTextViewText(backtxt);  // textView9의 텍스트를 읽음
-                onBackButtonPressed(v);
-            }
-        });
+        backBtn = findViewById(R.id.backBtn);
+        searchButton = findViewById(R.id.search_button);
+        editTextSearch = findViewById(R.id.editTextSearch); // TextView 초기화
 
-        // TextView 초기화
-        editTextSearch = findViewById(R.id.editTextSearch);
+        // View 초기화
+        searchEditText = findViewById(R.id.editTextSearch);
 
         // VoiceSearchActivity에서 전달된 텍스트 받기
         Intent intent = getIntent();
         String recognizedText = intent.getStringExtra("recognizedText");
 
-        // 전달받은 텍스트를 TextView에 표시
-        editTextSearch.setText(recognizedText);
-        searchEditText = findViewById(R.id.editTextSearch); // 여기에서 ID를 올바르게 사용
-        searchButton = findViewById(R.id.search_button);
+        // 전달받은 텍스트를 EditText에 표시
+        if (recognizedText != null && !recognizedText.isEmpty()) {
+            searchEditText.setText(recognizedText);
+            Log.d(TAG, "Received recognized text: " + recognizedText);
+        }
+
+        // 검색창 초기화
+        if (intent.getBooleanExtra("clearSearch", false)) {
+            searchEditText.setText(""); // 검색창 초기화
+        }
+
+        // 뒤로가기 버튼 클릭 이벤트 설정
+        backBtn.setOnClickListener(v -> speakButtonDescriptionAndFinish());
+
+        // 검색 버튼 클릭 이벤트 설정
+        searchButton.setOnClickListener(v -> {
+            speakSearchButtonDescription();
+            String query = searchEditText.getText().toString();
+            searchMedicine(query);
+        });
 
         apiService = ApiClient.getClient("http://apis.data.go.kr/1471000/SafeStadDrugService/").create(MedicineApiService.class);
-
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String query = searchEditText.getText().toString();
-                searchMedicine(query);
-            }
-        });
     }
 
     private void searchMedicine(String query) {
@@ -153,8 +156,41 @@ public class TextSearchActivity extends AppCompatActivity {
         }
     }
 
-    // 뒤로가기 버튼 관련
-    public void onBackButtonPressed(View view) {
-        finish(); // 종료하고 이전 액티비티로 돌아감
+    private void speakSearchButtonDescription() {
+        if (switchManager.getSwitchState()) {
+            String buttonText = searchButton.getContentDescription().toString();
+            ttsManager.speak(buttonText);
+        }
     }
+
+    private void speakButtonDescriptionAndFinish() {
+        String buttonText = backtxt.getText().toString();
+        if (switchManager.getSwitchState()) {
+            ttsManager.speak(buttonText);
+
+            // 예상 발화 시간 계산 (약 100ms per character + 여유 시간)
+            int estimatedSpeechTime = buttonText.length() * 100;
+
+            // TTS 발화 후 일정 시간 후 뒤로가기 처리
+            new Handler().postDelayed(() -> finishWithAnimation(), estimatedSpeechTime);
+        } else {
+            // TTS 비활성화 시 즉시 뒤로가기 처리
+            finishWithAnimation();
+        }
+    }
+    //Activity 종료
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishWithAnimation();
+    }
+
+    // 슬라이드 애니메이션과 함께 Activity 종료
+    private void finishWithAnimation() {
+        Intent homeIntent = new Intent(this, HomeActivity.class);
+        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(homeIntent);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);  // 슬라이드 애니메이션 적용
+    }
+
 }
