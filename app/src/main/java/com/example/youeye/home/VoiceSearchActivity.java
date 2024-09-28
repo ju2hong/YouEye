@@ -1,13 +1,21 @@
 package com.example.youeye.home;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
+
 import com.example.youeye.R;
 import com.example.youeye.SwitchManager;
 import com.example.youeye.TTSManager;
@@ -21,6 +29,7 @@ public class VoiceSearchActivity extends AppCompatActivity {
     private ImageButton backButton;
     private TTSManager ttsManager;
     private SwitchManager switchManager;
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,26 +92,66 @@ public class VoiceSearchActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // 음성 인식 결과 처리
         if (requestCode == REQUEST_CODE_STT && resultCode == RESULT_OK && data != null) {
             ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             if (result != null && !result.isEmpty()) {
                 String recognizedText = result.get(0);
-                moveToTextSearchActivity(recognizedText);
+                showConfirmationDialog(recognizedText);
             }
         }
     }
+    private void showConfirmationDialog(String recognizedText) {
+        // 커스텀 레이아웃을 인플레이트하여 다이얼로그 구성
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.custom_dialog_layout, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView);
 
-    // TextSearchActivity로 인식된 텍스트 전달
+        // 다이얼로그 텍스트 설정
+        TextView titleTextView = dialogView.findViewById(R.id.dialog_title);
+        TextView messageTextView = dialogView.findViewById(R.id.dialog_message);
+        titleTextView.setText("음성 인식 결과");
+        String message = recognizedText + "\n맞습니까?";
+        messageTextView.setText(message);
+
+        // 다이얼로그 버튼 설정 (Yes, No 버튼)
+        dialogView.findViewById(R.id.yesButton).setOnClickListener(v -> {
+            moveToTextSearchActivity(recognizedText);
+            dialog.dismiss();
+        });
+        dialogView.findViewById(R.id.noButton).setOnClickListener(v -> {
+            if (switchManager.getSwitchState()) {
+                ttsManager.stop(); // TTS 출력을 멈춤
+            }
+            startVoiceRecognition(); // 음성 인식 다시 시작
+            dialog.dismiss();
+        });
+
+        // 다이얼로그 배경 설정
+        dialog = builder.create();
+        Drawable background = ResourcesCompat.getDrawable(getResources(), R.drawable.custom_dialog_background, null);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(background);
+        }
+
+        // 다이얼로그 표시
+        dialog.show();
+
+        // TTS로 다이얼로그 내용 읽기
+        if (switchManager.getSwitchState()) {
+            String ttsText = "인식된 텍스트는 " + recognizedText + " 입니다. 맞으면 예, 틀리면 아니오를 선택해주세요.";
+            ttsManager.speak(ttsText);
+        }
+    }
+
     private void moveToTextSearchActivity(String recognizedText) {
         Intent intent = new Intent(VoiceSearchActivity.this, TextSearchActivity.class);
         intent.putExtra("recognizedText", recognizedText);
         startActivity(intent);
+        finish(); // VoiceSearchActivity 종료
     }
 
     @Override
