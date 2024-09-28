@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <!-- 오디오 사용 권한 추가 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
@@ -87,7 +88,9 @@
         </activity>
 
         <!-- PlayingService 등록 -->
-        <service android:name=".alarm.PlayingService" />
+        <service android:name=".alarm.PlayingService"
+                 android:foregroundServiceType="mediaPlayback"
+                 tools:ignore="ForegroundServicePermission" />
 
         <!-- 알람 리시버 -->
         <receiver android:name=".alarm.AlarmReceiverActivity" />
