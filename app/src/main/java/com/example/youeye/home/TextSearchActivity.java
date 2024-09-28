@@ -2,8 +2,8 @@ package com.example.youeye.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -16,13 +16,17 @@ import com.example.youeye.SwitchManager;
 import com.example.youeye.TTSManager;
 import com.example.youeye.api.ApiClient;
 import com.example.youeye.api.MedicineApiService;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
 import java.io.StringReader;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
