@@ -3,6 +3,7 @@ package com.example.youeye.login;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -15,6 +16,7 @@ import androidx.core.content.res.ResourcesCompat;
 import com.example.youeye.R;
 import com.example.youeye.SwitchManager;
 import com.example.youeye.TTSManager;
+import com.example.youeye.home.HomeActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +75,8 @@ public class IDLoginActivity extends AppCompatActivity {
         textViews.add(findViewById(R.id.textkey8));
         textViews.add(findViewById(R.id.textkey9));
         textViews.add(findViewById(R.id.textkey0));
-        //뒤로가기 버튼 활성화
-        backButton.setOnClickListener(v -> onBackPressed());
+
+        backButton.setOnClickListener(v -> speakButtonDescriptionAndFinish());
 
         // 모든 ImageButton을 초기 상태로 설정
         for (ImageButton imageButton : imageButtons) {
@@ -184,10 +186,27 @@ public class IDLoginActivity extends AppCompatActivity {
         currentIndex = 0;
     }
 
+
+    private void speakButtonDescriptionAndFinish() {
+        String buttonText = backButton.getContentDescription().toString();
+        if (switchManager.getSwitchState()) {
+            ttsManager.speak(buttonText);
+
+            // 예상 발화 시간 계산 (대략 100ms per character + 500ms buffer)
+            int estimatedSpeechTime = buttonText.length() * 100 ;
+
+            new Handler().postDelayed(this::finishWithAnimation, estimatedSpeechTime);
+        } else {
+            finishWithAnimation();
+        }
+    }
+    private void finishWithAnimation() {
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        speakButtonDescriptionAndFinish();
     }
 }

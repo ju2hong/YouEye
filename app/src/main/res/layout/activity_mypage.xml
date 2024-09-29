@@ -82,6 +82,7 @@
 
     <ImageButton
         android:id="@+id/imageButton10"
+        android:contentDescription="뒤로가기"
         android:layout_width="404dp"
         android:layout_height="135dp"
         app:layout_constraintBottom_toBottomOf="parent"
