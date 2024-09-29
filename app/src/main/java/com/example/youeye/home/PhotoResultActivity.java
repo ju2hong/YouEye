@@ -196,8 +196,9 @@ public class PhotoResultActivity extends AppCompatActivity {
                 // Stop TTS when "Yes" is clicked
                 ttsManager.stop();
 
-                photoImageView.setImageBitmap(null); // Clear the displayed image
-                Toast.makeText(PhotoResultActivity.this, "새로운 이미지를 선택하세요.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(PhotoResultActivity.this, TextSearchActivity.class);
+                intent.putExtra("recognizedText", recognizedProductName[0]);
+                startActivity(intent);
                 dialog.dismiss();
             });
 
@@ -205,9 +206,8 @@ public class PhotoResultActivity extends AppCompatActivity {
                 // Stop TTS when "No" is clicked
                 ttsManager.stop();
 
-                // ImageSearchActivity로 이동
-                Intent intent = new Intent(PhotoResultActivity.this, ImageSearchActivity.class);
-                startActivity(intent);
+                photoImageView.setImageBitmap(null); // Clear the displayed image
+                Toast.makeText(PhotoResultActivity.this, "새로운 이미지를 선택하세요.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             });
 
