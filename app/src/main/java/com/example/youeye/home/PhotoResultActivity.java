@@ -196,9 +196,8 @@ public class PhotoResultActivity extends AppCompatActivity {
                 // Stop TTS when "Yes" is clicked
                 ttsManager.stop();
 
-                Intent intent = new Intent(PhotoResultActivity.this, TextSearchActivity.class);
-                intent.putExtra("recognizedText", recognizedProductName[0]);
-                startActivity(intent);
+                photoImageView.setImageBitmap(null); // Clear the displayed image
+                Toast.makeText(PhotoResultActivity.this, "새로운 이미지를 선택하세요.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             });
 
