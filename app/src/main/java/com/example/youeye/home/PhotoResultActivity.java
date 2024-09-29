@@ -3,18 +3,25 @@ package com.example.youeye.home;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.example.youeye.R;
+import com.example.youeye.SwitchManager;
+import com.example.youeye.TTSManager;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
@@ -34,7 +41,8 @@ public class PhotoResultActivity extends AppCompatActivity {
     private static final int GALLERY_REQUEST_CODE = 100;
     private ImageView photoImageView;
     private Bitmap imageBitmap;
-
+    private TTSManager ttsManager;
+    private SwitchManager switchManager;
     // 표준품목코드와 제품명을 저장할 Map
     private Map<String, String> drugDataMap;
 
@@ -42,7 +50,9 @@ public class PhotoResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_result);
-
+        // SwitchManager와 TTSManager 초기화
+        switchManager = new SwitchManager(this);
+        ttsManager = new TTSManager(this);
         photoImageView = findViewById(R.id.photoImageView);
         Button selectImageButton = findViewById(R.id.selectImageButton);  // 이미지 선택 버튼
 
@@ -157,43 +167,66 @@ public class PhotoResultActivity extends AppCompatActivity {
             // 바코드의 RawValue를 가져와서 표준품목코드와 비교
             String barcodeValue = barcode.getRawValue();
             if (barcodeValue != null && drugDataMap.containsKey(barcodeValue)) {
-                recognizedProductName[0] = drugDataMap.get(barcodeValue);  // 제품명 추출
+                recognizedProductName[0] = drugDataMap.get(barcodeValue); // 제품명 추출
                 recognizedBarcodeNumbers.append(barcodeValue).append("\n");
-                break;  // 하나의 바코드만 찾으면 종료
+                break; // 하나의 바코드만 찾으면 종료
             }
         }
 
         if (recognizedProductName[0] != null) {
             // 다이얼로그에 인식된 바코드 번호와 제품명 표시
+            View dialogView = LayoutInflater.from(this).inflate(R.layout.custom_dialog_layout, null);
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("인식된 바코드 정보");
-            builder.setMessage("표준품목코드: " + recognizedBarcodeNumbers.toString() +
-                    "\n제품명: " + recognizedProductName[0] + "\n이 제품명이 맞습니까?");
+            builder.setView(dialogView);
 
-            // "예" 버튼
-            builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // TextSearchActivity로 전환하면서 인식된 제품명을 전달
-                    Intent intent = new Intent(PhotoResultActivity.this, TextSearchActivity.class);
-                    intent.putExtra("recognizedText", recognizedProductName[0]);  // 인식된 제품명을 전달
-                    startActivity(intent);  // 새로운 Activity로 전환
-                }
-            });
+            TextView titleTextView = dialogView.findViewById(R.id.dialog_title);
+            TextView messageTextView = dialogView.findViewById(R.id.dialog_message);
+            titleTextView.setText("인식된 약품 결과");
+            String message = recognizedProductName[0] + "\n 맞습니까?";
+            messageTextView.setText(message);
 
-            // "아니오" 버튼
-            builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Toast.makeText(PhotoResultActivity.this, "제품명 확인을 취소하셨습니다.", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            // 다이얼로그 표시
             AlertDialog dialog = builder.create();
             dialog.show();
+            Drawable background = ResourcesCompat.getDrawable(getResources(), R.drawable.custom_dialog_background, null);
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setBackgroundDrawable(background);
+            }
+
+            dialogView.findViewById(R.id.yesButton).setOnClickListener(v -> {
+                // Stop TTS when "Yes" is clicked
+                ttsManager.stop();
+
+                Intent intent = new Intent(PhotoResultActivity.this, TextSearchActivity.class);
+                intent.putExtra("recognizedText", recognizedProductName[0]);
+                startActivity(intent);
+                dialog.dismiss();
+            });
+
+            dialogView.findViewById(R.id.noButton).setOnClickListener(v -> {
+                // Stop TTS when "No" is clicked
+                ttsManager.stop();
+
+                // ImageSearchActivity로 이동
+                Intent intent = new Intent(PhotoResultActivity.this, ImageSearchActivity.class);
+                startActivity(intent);
+                dialog.dismiss();
+            });
+
+            // TTS로 다이얼로그 내용 읽기 (필요한 경우)
+            if (switchManager.getSwitchState()) {
+                String ttsText = "인식된 제품명은 " + recognizedProductName[0] + " 입니다. 맞으면 예, 틀리면 아니오를 선택해주세요.";
+                ttsManager.speak(ttsText);
+            }
         } else {
             Toast.makeText(this, "인식된 바코드와 일치하는 제품명을 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (ttsManager != null) {
+            ttsManager.shutdown();
+        }
+        super.onDestroy();
     }
 }
