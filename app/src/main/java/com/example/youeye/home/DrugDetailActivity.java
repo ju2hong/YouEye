@@ -2,24 +2,35 @@ package com.example.youeye.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.youeye.R;
 import com.bumptech.glide.Glide;
+import com.example.youeye.SwitchManager;
+import com.example.youeye.TTSManager;
 import com.opencsv.CSVReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import android.os.Handler;
 
 public class DrugDetailActivity extends AppCompatActivity {
 
     private TextView textViewName, textViewDetail, textView15;
     private ImageView medicineImageView;
     private static final String TAG = "DrugDetailActivity";
+    private TextToSpeech tts;
+    private ImageButton ttsButton,imageButton7;
+    private TTSManager ttsManager;
+    private SwitchManager switchManager;
+    private boolean isSpeaking = false;  // TTS 실행 여부를 저장하는 변수
 
     // 한글 약품명을 영어로 매핑하는 테이블
     private static final Map<String, String> medicineNameMap = new HashMap<>();
@@ -48,7 +59,27 @@ public class DrugDetailActivity extends AppCompatActivity {
         textViewDetail = findViewById(R.id.textView14);
         textView15 = findViewById(R.id.textView15);
         medicineImageView = findViewById(R.id.medicineImageView);
+        ttsButton = findViewById(R.id.imageButton5);
+        imageButton7 = findViewById(R.id.imageButton7);
+        // TTSManager 초기화
+        ttsManager = new TTSManager(this);
+        switchManager = SwitchManager.getInstance(this);
 
+        // TextToSpeech 초기화
+        tts = new TextToSpeech(this, status -> {
+            if (status == TextToSpeech.SUCCESS) {
+                tts.setLanguage(Locale.KOREAN); // 한국어 설정
+            }
+        });
+        // TTS 버튼 클릭 이벤트 설정
+        ttsButton.setOnClickListener(v -> {
+            if (isSpeaking) {
+                stopTTS();  // 현재 TTS가 실행 중이면 멈춤
+            } else {
+                speakText();  // 현재 TTS가 실행 중이지 않으면 텍스트 읽음
+            }
+        });
+        imageButton7.setOnClickListener(v -> speakBackButtonAndFinish());
         // 인텐트로 전달된 데이터 가져오기
         String name = getIntent().getStringExtra("name");
         String company = getIntent().getStringExtra("company");
@@ -129,11 +160,54 @@ public class DrugDetailActivity extends AppCompatActivity {
             Log.e(TAG, "CSV 파일을 읽는 중 오류 발생", e);
             textView15.setText("약품 정보를 불러오지 못했습니다.");
         }
+
     }
 
-    // 뒤로가기 버튼 클릭 시 실행될 메서드
-    public void goBackToTextSearch(View view) {
-        Intent intent = new Intent(this, TextSearchActivity.class); // TextSearchActivity로 이동
-        startActivity(intent);
+    // TTS 멈추는 메소드
+    private void stopTTS() {
+        if (tts.isSpeaking()) {
+            tts.stop();  // TTS 멈추기
+        }
+        isSpeaking = false;  // TTS 멈춤 상태로 설정
     }
+
+    private void speakBackButtonAndFinish() {
+        String buttonText = imageButton7.getContentDescription().toString();
+        if (switchManager.getSwitchState()) {
+            ttsManager.speak(buttonText);
+
+            int estimatedSpeechTime = buttonText.length() * 100 ;
+            new Handler().postDelayed(this::finishWithAnimation, estimatedSpeechTime);
+        } else {
+            finishWithAnimation();
+        }
+    }
+
+    private void finishWithAnimation() {
+        Intent intent = new Intent(this, TextSearchActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        stopTTS();
+
+    }
+
+    // speakText 메소드 수정
+    private void speakText() {
+        String textToSpeak = textViewName.getText().toString() + ", " +
+                textView15.getText().toString() + ", " +
+                textViewDetail.getText().toString();
+
+        tts.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null);
+        isSpeaking = true;
+    }
+
+    // onBackPressed 메소드 수정
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        stopTTS();
+    }
+
 }

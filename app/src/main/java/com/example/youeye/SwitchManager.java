@@ -11,7 +11,7 @@ public class SwitchManager {
     private static SwitchManager instance;
     private final SharedPreferences preferences;
 
-    private SwitchManager(Context context) {
+    public SwitchManager(Context context) {
         preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
