@@ -151,6 +151,7 @@ public class PhotoResultActivity extends AppCompatActivity {
         scanner.process(image)
                 .addOnSuccessListener(barcodes -> showBarcodeResultDialog(barcodes))
                 .addOnFailureListener(e -> Toast.makeText(PhotoResultActivity.this, "바코드 인식에 실패했습니다.", Toast.LENGTH_SHORT).show());
+
     }
 
     // 바코드 인식 결과를 다이얼로그로 표시하고 "예", "아니오" 버튼 추가
