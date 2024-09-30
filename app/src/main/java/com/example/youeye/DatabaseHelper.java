@@ -1,6 +1,7 @@
 package com.example.youeye;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -10,13 +11,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "user.db";
     private static final int DATABASE_VERSION = 1;
-    public static final String TABLE_USERS = "users"; // TABLE_USERS 상수 정의
-    public static final String COLUMN_ID = "id"; // TABLE_USERS 상수 정의
-    public static String COLUMN_PW = "pw"; // TABLE_USERS 상수 정의
+    public static final String TABLE_USERS = "users";
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_PW = "pw";
 
     private final Context mContext;
 
@@ -32,15 +32,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         // 테이블이 존재하지 않을 때에만 CREATE TABLE 구문 실행
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " ("
                 + COLUMN_ID + " TEXT PRIMARY KEY, "
                 + COLUMN_PW + " TEXT)");
+
+        String createTableQuery = "CREATE TABLE " + TABLE_USERS + " (" +
+                COLUMN_ID + " TEXT PRIMARY KEY, " +
+                COLUMN_PW + " TEXT)";
+        db.execSQL(createTableQuery);
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // 이미 존재하는 테이블을 사용할 것이므로 onUpgrade() 메서드에서는 아무 작업도 수행하지 않습니다.
+        // onUpgrade()에서는 테이블을 업그레이드하는 작업을 수행할 수 있습니다.
+        // 현재는 아무 작업도 수행하지 않습니다.
     }
 
     private boolean checkDatabaseExists() {
@@ -60,7 +68,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private void copyDatabaseFromAssets() {
         try {
-            InputStream inputStream = mContext.getAssets().open("user.db");
+            InputStream inputStream = mContext.getAssets().open(DATABASE_NAME);
             String outFileName = mContext.getDatabasePath(DATABASE_NAME).getPath();
             OutputStream outputStream = new FileOutputStream(outFileName);
             byte[] buffer = new byte[1024];
@@ -77,4 +85,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.e("DatabaseHelper", "Failed to copy database: " + e.getMessage());
         }
     }
+    public boolean authenticateUser(String id, String pw) {
+        DatabaseHelper dbHelper = new DatabaseHelper(mContext);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = null;
+        boolean result = false;
+
+        try {
+            cursor = db.query(
+                    TABLE_USERS,
+                    new String[]{COLUMN_PW},
+                    COLUMN_ID + " = ?",
+                    new String[]{id},
+                    null,
+                    null,
+                    null
+            );
+
+            if (cursor != null && cursor.moveToFirst()) {
+                int columnIndex = cursor.getColumnIndex(COLUMN_PW);
+
+                if (columnIndex != -1) {
+                    String storedPW = cursor.getString(columnIndex);
+                    result = pw.equals(storedPW);
+                } else {
+                    Log.e("LoginActivity", "Column index is -1. Column not found.");
+                }
+            } else {
+                Log.e("LoginActivity", "No results found for id: " + id);
+            }
+        } catch (Exception e) {
+            Log.e("LoginActivity", "Error querying database: " + e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return result;
+    }
+
 }

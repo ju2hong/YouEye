@@ -43,9 +43,6 @@ public class TTSManager {
             if (result == TextToSpeech.ERROR) {
                 Log.e("TTSManager", "음성 출력에 오류가 발생했습니다.");
             }
-        } else if (!isInitialized) {
-            // 초기화 실패 시 로그 또는 예외 처리
-            Log.e("TTSManager", "TTS 초기화에 실패했습니다.");
         }
     }
 

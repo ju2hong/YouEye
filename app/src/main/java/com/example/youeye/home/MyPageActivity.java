@@ -3,6 +3,7 @@ package com.example.youeye.home;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -11,13 +12,16 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.youeye.R;
+import com.example.youeye.SwitchManager;
 import com.example.youeye.TTSManager;
 import com.example.youeye.alarm.TimeActivity;
 import com.example.youeye.login.LoginActivity;
 
 public class MyPageActivity extends AppCompatActivity {
     private TTSManager ttsManager;
-    private ImageButton logoutButton, alButton, settingsButton, backButton;
+    private SwitchManager switchManager;
+
+    private ImageButton logoutButton, alButton, settingsButton, imageButton10;
     private TextView textView9, logoutText, alText, settingsText, myPillText, backText;
 
     @Override
@@ -27,13 +31,13 @@ public class MyPageActivity extends AppCompatActivity {
 
         // TTSManager 초기화
         ttsManager = new TTSManager(this);
+        switchManager = SwitchManager.getInstance(this);
 
         // View 참조
         textView9 = findViewById(R.id.textView9);
         logoutButton = findViewById(R.id.logoutBtton);
         alButton = findViewById(R.id.alBtton);
         settingsButton = findViewById(R.id.imageButton8);
-        backButton = findViewById(R.id.imageButton10);
 
         logoutText = findViewById(R.id.logouttext);
         alText = findViewById(R.id.altext);
@@ -44,34 +48,47 @@ public class MyPageActivity extends AppCompatActivity {
         // TextView의 텍스트를 TTS로 출력
         ttsManager.speakTextViewText(textView9);
 
-        // 알람 버튼 클릭 이벤트 설정
-        setButtonClickListener(alButton, alText, TimeActivity.class);
+        imageButton10 = findViewById(R.id.imageButton10);
+        imageButton10.setOnClickListener(v -> speakButtonDescriptionAndFinish());
 
-        // 설정 버튼 클릭 이벤트 설정
-        setButtonClickListener(settingsButton, settingsText, SettingsActivity.class);
+// 알람 버튼 클릭 이벤트 설정
+        setButtonClickListener(alButton, TimeActivity.class);
 
-        // 로그아웃 버튼 클릭 이벤트 설정
+
+// 설정 버튼 클릭 이벤트 설정
+        setButtonClickListener(settingsButton, SettingsActivity.class);
+
+
+// 로그아웃 버튼 클릭 이벤트 설정
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ttsManager.speakTextViewText(logoutText);
+                // 버튼의 contentDescription 읽기
+                CharSequence buttonDescription = logoutButton.getContentDescription();
+
+                // TTS로 contentDescription 읽기
+                if (buttonDescription != null) {
+                    ttsManager.speak(buttonDescription.toString());
+                }
+
                 showLogoutDialog("로그아웃", "정말 로그아웃 하시겠습니까?");
             }
         });
 
-        // 뒤로가기 버튼 클릭 이벤트 설정
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ttsManager.speakTextViewText(backText);
-                onBackButtonPressed(v);
-            }
-        });
-    }
 
-    private void setButtonClickListener(ImageButton button, TextView textView, Class<?> activityClass) {
+    }
+    // tts 로 버튼 위 데코 읽기
+    private void setButtonClickListener(ImageButton button, Class<?> activityClass) {
         button.setOnClickListener(v -> {
-            ttsManager.speakTextViewText(textView);
+            // 버튼의 contentDescription 읽기
+            CharSequence buttonDescription = button.getContentDescription();
+
+            // TTS로 contentDescription 읽기
+            if (buttonDescription != null) {
+                ttsManager.speak(buttonDescription.toString());
+            }
+
+            // 버튼 클릭 시 해당 액티비티로 이동
             Intent intent = new Intent(MyPageActivity.this, activityClass);
             startActivity(intent);
         });
@@ -124,27 +141,26 @@ public class MyPageActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void onBackButtonPressed(View view) {
-        finish(); // 종료하고 이전 액티비티로 돌아감
-    }
+    private void speakButtonDescriptionAndFinish() {
+        String buttonText = imageButton10.getContentDescription().toString();
+        if (switchManager.getSwitchState()) {
+            ttsManager.speak(buttonText);
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        ttsManager.setTTSOn(true); // 화면이 다시 보여질 때 TTS 상태를 복원
-    }
+            // 예상 발화 시간 계산 (대략 100ms per character + 500ms buffer)
+            int estimatedSpeechTime = buttonText.length() * 100 ;
 
-    @Override
-    protected void onPause() {
-        ttsManager.setTTSOn(false); // 화면이 가려질 때 TTS 상태를 저장
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (ttsManager != null) {
-            ttsManager.shutdown();
+            new Handler().postDelayed(this::finishWithAnimation, estimatedSpeechTime);
+        } else {
+            finishWithAnimation();
         }
-        super.onDestroy();
+    }
+    private void finishWithAnimation() {
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        speakButtonDescriptionAndFinish();
     }
 }

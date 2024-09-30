@@ -3,6 +3,7 @@ package com.example.youeye.home;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -10,13 +11,37 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.youeye.R;
+import com.example.youeye.SwitchManager;
+import com.example.youeye.TTSManager;
 import com.example.youeye.alarm.TimeActivity;
 
 public class SettingsActivity extends AppCompatActivity {
+
+    private ImageButton imageButton14;
+    private TTSManager ttsManager;
+    private SwitchManager switchManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        // TTSManager와 SwitchManager 초기화
+        ttsManager = new TTSManager(this);
+        switchManager = SwitchManager.getInstance(this);
+
+        imageButton14 = findViewById(R.id.imageButton14);
+        imageButton14.setOnClickListener(v -> speakButtonDescriptionAndFinish());
+
+        // 비밀번호 변경 버튼 참조 및 클릭 이벤트 처리
+        ImageButton changePasswordButton = findViewById(R.id.imageButton12);
+        changePasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, ChangePasswordActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // 알람 버튼 참조
         ImageButton alButton = findViewById(R.id.imageButton13);
@@ -76,8 +101,26 @@ public class SettingsActivity extends AppCompatActivity {
         // 다이얼로그 표시
         dialog.show();
     }
-    public void onBackButtonPressed(View view) {
+    private void speakButtonDescriptionAndFinish() {
+        String buttonText = imageButton14.getContentDescription().toString();
+        if (switchManager.getSwitchState()) {
+            ttsManager.speak(buttonText);
 
-        finish(); // 종료하고 이전 액티비티로 돌아감
+            // 예상 발화 시간 계산 (대략 100ms per character + 500ms buffer)
+            int estimatedSpeechTime = buttonText.length() * 100 ;
+
+            new Handler().postDelayed(this::finishWithAnimation, estimatedSpeechTime);
+        } else {
+            finishWithAnimation();
+        }
+    }
+    private void finishWithAnimation() {
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        speakButtonDescriptionAndFinish();
     }
 }

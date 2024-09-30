@@ -8,9 +8,12 @@ import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +29,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.youeye.R;
+import com.example.youeye.SwitchManager;
+import com.example.youeye.TTSManager;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
@@ -36,17 +41,27 @@ import java.util.concurrent.Executors;
 
 public class ImageSearchActivity extends AppCompatActivity {
 
+    private TTSManager ttsManager;
+    private SwitchManager switchManager;
     private static final int CAMERA_REQUEST_CODE = 101; // 카메라 권한 요청 코드
     private PreviewView previewView;
     private ImageCapture imageCapture;
     private ExecutorService cameraExecutor;
+    private ImageButton imageButton4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imagesearch);
 
+        // TTSManager 초기화
+        ttsManager = new TTSManager(this);
+        switchManager = SwitchManager.getInstance(this);
         previewView = findViewById(R.id.previewView);
+
+
+        imageButton4 = findViewById(R.id.imageButton4);
+        imageButton4.setOnClickListener(v -> speakButtonDescriptionAndFinish());
 
         // 카메라 권한을 확인하고 요청하는 함수
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
@@ -58,6 +73,29 @@ public class ImageSearchActivity extends AppCompatActivity {
 
         // 사진 촬영을 위한 Executor
         cameraExecutor = Executors.newSingleThreadExecutor();
+    }
+
+    private void speakButtonDescriptionAndFinish() {
+        String buttonText = imageButton4.getContentDescription().toString();
+        if (switchManager.getSwitchState()) {
+            ttsManager.speak(buttonText);
+
+            // 예상 발화 시간 계산 (대략 100ms per character + 500ms buffer)
+            int estimatedSpeechTime = buttonText.length() * 100 ;
+
+            new Handler().postDelayed(this::finishWithAnimation, estimatedSpeechTime);
+        } else {
+            finishWithAnimation();
+        }
+    }
+    private void finishWithAnimation() {
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        speakButtonDescriptionAndFinish();
     }
 
     // 권한 요청에 대한 응답 처리
@@ -137,6 +175,7 @@ public class ImageSearchActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
 
