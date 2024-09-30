@@ -54,6 +54,7 @@
         android:id="@+id/imageButton8"
         android:layout_width="200dp"
         android:layout_height="219dp"
+        android:background="@android:color/transparent"
         android:contentDescription="설정"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,9 +62,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.667"
-        app:srcCompat="@drawable/bigbutton"
-        android:background="@android:color/transparent"
-        />
+        app:srcCompat="@drawable/bigbutton" />
 
     <ImageButton
         android:id="@+id/imageButton9"
@@ -131,10 +130,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="설정"
+        android:textAlignment="center"
+        android:textColor="@color/white"
         android:textSize="30pt"
         android:textStyle="bold"
-        android:textColor="@color/white"
-        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/imageButton8"
         app:layout_constraintEnd_toEndOf="@+id/imageButton8"
         app:layout_constraintStart_toStartOf="@+id/imageButton8"
@@ -151,10 +150,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/imageButton9"
         app:layout_constraintEnd_toEndOf="@+id/imageButton9"
-        app:layout_constraintHorizontal_bias="0.433"
+        app:layout_constraintHorizontal_bias="0.415"
         app:layout_constraintStart_toEndOf="@+id/imageButton8"
-        app:layout_constraintTop_toBottomOf="@+id/logoutBtton"
-        app:layout_constraintVertical_bias="0.428" />
+        app:layout_constraintTop_toTopOf="@+id/imageButton9"
+        app:layout_constraintVertical_bias="0.419" />
 
     <TextView
         android:id="@+id/textView18"
