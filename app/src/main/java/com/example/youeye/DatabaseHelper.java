@@ -33,27 +33,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-<<<<<<< HEAD
         // 테이블이 존재하지 않을 때에만 CREATE TABLE 구문 실행
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " ("
                 + COLUMN_ID + " TEXT PRIMARY KEY, "
                 + COLUMN_PW + " TEXT)");
 
-=======
->>>>>>> 0860ab49d4b1ae88512d2c35397ef8855c5b0060
         String createTableQuery = "CREATE TABLE " + TABLE_USERS + " (" +
                 COLUMN_ID + " TEXT PRIMARY KEY, " +
                 COLUMN_PW + " TEXT)";
         db.execSQL(createTableQuery);
 
-<<<<<<< HEAD
-=======
         // 테이블이 존재하지 않을 때에만 CREATE TABLE 구문 실행
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " ("
                 + COLUMN_ID + " TEXT PRIMARY KEY, "
                 + COLUMN_PW + " TEXT)");
-
->>>>>>> 0860ab49d4b1ae88512d2c35397ef8855c5b0060
     }
 
     @Override
