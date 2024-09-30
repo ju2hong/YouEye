@@ -4,6 +4,11 @@ plugins {
 }
 
 android {
+    // DB 연결 위해 함 써봄
+    viewBinding {
+        enabled = true
+    }
+
     namespace 'com.example.youeye'
     compileSdk 34
 

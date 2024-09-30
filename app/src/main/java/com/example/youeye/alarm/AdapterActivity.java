@@ -1,3 +1,4 @@
+// AdapterActivity
 package com.example.youeye.alarm;
 
 import android.view.LayoutInflater;
@@ -12,12 +13,11 @@ import java.util.ArrayList;
 
 public class AdapterActivity extends BaseAdapter {
     public ArrayList<Time> listviewitem = new ArrayList<Time>();
-    private ArrayList<Time> arrayList = listviewitem; // 백업 arrayList
+    private ArrayList<Time> arrayList = listviewitem;
 
     @Override
     public int getCount() {
         return arrayList.size();
-
     }
 
     @Override
@@ -34,16 +34,22 @@ public class AdapterActivity extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
+
+        //convertView가 null인지 확인하고 null이면 새로운 뷰 생성 후 viewHolder를 초기화 환다.
         if (convertView == null) {
             holder = new ViewHolder();
+
+            // 레이아웃 인플레이터를 사용하여 list_theme 레이아웃을 인플레이트 한다.
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_theme, parent, false);
 
+            // convertView에서 텍스트뷰를 찾아 viewHolder 필드에 저장한다.
             TextView hourText = (TextView) convertView.findViewById(R.id.textTime1);
             TextView minuteText = (TextView) convertView.findViewById(R.id.textTime2);
             TextView am_pm = (TextView) convertView.findViewById(R.id.am_pm);
             TextView month = (TextView) convertView.findViewById(R.id.time_month);
             TextView day = (TextView) convertView.findViewById(R.id.time_day);
 
+            // viewHolder에 텍스트뷰 설정한다.
             holder.hourText = hourText;
             holder.minuteText = minuteText;
             holder.am_pm = am_pm;
@@ -52,6 +58,8 @@ public class AdapterActivity extends BaseAdapter {
 
             convertView.setTag(holder);
         } else {
+
+            // convertView가 null이 아니면 태그에서 viewHolder 객체를 가져온다.
             holder = (ViewHolder) convertView.getTag();
         }
 
@@ -67,14 +75,13 @@ public class AdapterActivity extends BaseAdapter {
 
     public void addItem(int hour, int minute, String am_pm, String month, String day) {
         Time time = new Time();
-
         time.setHour(hour);
         time.setMinute(minute);
         time.setAm_pm(am_pm);
         time.setMonth(month);
         time.setDay(day);
-
         listviewitem.add(time);
+        notifyDataSetChanged();
     }
 
     // List 삭제 method
@@ -83,6 +90,7 @@ public class AdapterActivity extends BaseAdapter {
 
         } else {
             listviewitem.remove(position);
+            notifyDataSetChanged();
         }
     }
 
@@ -91,7 +99,14 @@ public class AdapterActivity extends BaseAdapter {
 
         } else {
             listviewitem.remove(listviewitem.size() - 1);
+            notifyDataSetChanged();
         }
+    }
+
+    // 새로운 메서드 추가
+    public void updateList() {
+        arrayList = new ArrayList<>(listviewitem);
+        notifyDataSetChanged();
     }
 
     static class ViewHolder {

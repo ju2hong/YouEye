@@ -1,3 +1,5 @@
+// TimePickerActivity
+
 package com.example.youeye.alarm;
 
 import android.content.Intent;
@@ -21,12 +23,12 @@ import java.util.Locale;
 public class TimePickerActivity extends AppCompatActivity {
 
     private TimePicker timePicker;
-    private Button okBtn, cancelBtn;
     private int hour, minute;
     private String am_pm;
     private Date currentTime;
     private String stMonth, stDay;
 
+    // TimePicker.xml에서 timepicker로 만들어진 알람의 월/일 받아오기
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -41,6 +43,7 @@ public class TimePickerActivity extends AppCompatActivity {
         stMonth = month.format(currentTime);
         stDay = day.format(currentTime);
 
+        // 확인 버튼 눌렀을 시 시간,분,월,일 출력
         ImageButton okBtn = (ImageButton) findViewById(R.id.okBtn);
         okBtn.setOnClickListener(new View.OnClickListener(){
             @Override
