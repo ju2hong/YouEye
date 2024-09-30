@@ -85,7 +85,7 @@ public class PlayingService extends Service {
                     .setContentText("알람음이 재생됩니다.")
                     .setSmallIcon(R.drawable.ring)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setOngoing(false);
+                    .setOngoing(true);
 
             Notification notification = builder.build();
 

@@ -12,22 +12,21 @@ import com.example.youeye.R;
 import java.util.ArrayList;
 
 public class AdapterActivity extends BaseAdapter {
-    public ArrayList<Time> listviewitem = new ArrayList<Time>();
-    private ArrayList<Time> arrayList = listviewitem;
+    public ArrayList<Time> listviewItems = new ArrayList<Time>();
+    private ArrayList<Time> arrayList = listviewItems;
 
     @Override
     public int getCount() {
-        return arrayList.size();
+        return listviewItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return arrayList.get(position);
+        return listviewItems.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-
         return position;
     }
 
@@ -80,32 +79,32 @@ public class AdapterActivity extends BaseAdapter {
         time.setAm_pm(am_pm);
         time.setMonth(month);
         time.setDay(day);
-        listviewitem.add(time);
+        listviewItems.add(time);
         notifyDataSetChanged();
     }
 
     // List 삭제 method
     public void removeItem(int position) {
-        if (listviewitem.size() < 1) {
+        if (listviewItems.size() < 1) {
 
         } else {
-            listviewitem.remove(position);
+            listviewItems.remove(position);
             notifyDataSetChanged();
         }
     }
 
     public void removeItem() {
-        if (listviewitem.size() < 1) {
+        if (listviewItems.size() < 1) {
 
         } else {
-            listviewitem.remove(listviewitem.size() - 1);
+            listviewItems.remove(listviewItems.size() - 1);
             notifyDataSetChanged();
         }
     }
 
     // 새로운 메서드 추가
     public void updateList() {
-        arrayList = new ArrayList<>(listviewitem);
+        arrayList = new ArrayList<>(listviewItems);
         notifyDataSetChanged();
     }
 

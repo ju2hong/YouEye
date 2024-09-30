@@ -18,7 +18,7 @@ public class AlarmReceiverActivity extends BroadcastReceiver {
 
         // PlayingService 시작
         Intent serviceIntent = new Intent(context, PlayingService.class);
-        serviceIntent.putExtra("state", "alarm on");
+        serviceIntent.putExtra("action", "START_ALARM");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(serviceIntent);
         } else {
