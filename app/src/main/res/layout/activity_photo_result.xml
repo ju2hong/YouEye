@@ -4,32 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/layout_background"
     tools:context=".home.PhotoResultActivity">
 
     <!-- 선택한 이미지를 표시할 ImageView -->
+
+    <!-- 이미지를 선택하는 버튼 -->
+
     <ImageView
         android:id="@+id/photoImageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="48dp"
         android:scaleType="fitCenter"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/selectImageButton"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.7"
-        app:layout_constraintWidth_percent="1" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="1"
+        tools:srcCompat="@drawable/load" />
 
-    <!-- 이미지를 선택하는 버튼 -->
     <Button
         android:id="@+id/selectImageButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="71dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="72dp"
+        android:layout_marginBottom="36dp"
+        android:background="@drawable/keybutton"
         android:text="이미지 선택"
+        android:textColorLink="@color/switchbar_on_color"
+        android:textCursorDrawable="@drawable/keybutton"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/photoImageView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photoImageView"
+        app:rippleColor="@color/switchbar_on_color" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

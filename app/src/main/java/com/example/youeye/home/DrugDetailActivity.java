@@ -44,11 +44,11 @@ public class DrugDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drugdetail);
 
-        textViewName = findViewById(R.id.textView12);
-        textViewDetail = findViewById(R.id.textView14);
-        textView15 = findViewById(R.id.textView15);
+        textViewName = findViewById(R.id.textView12); // 약품명 텍스트뷰
+        textViewDetail = findViewById(R.id.textView14); // 스크롤뷰 안의 첫번째 텍스트뷰
+        textView15 = findViewById(R.id.textView15); // 스크롤뷰 안의 두번째 텍스트뷰 (주의사항 및 부작용 등)
         medicineImageView = findViewById(R.id.medicineImageView);
-        ttsButton = findViewById(R.id.imageButton5);
+        ttsButton = findViewById(R.id.imageButton5); // 스피커 버튼
         imageButton7 = findViewById(R.id.imageButton7);
 
         // TTSManager 초기화
@@ -62,7 +62,34 @@ public class DrugDetailActivity extends AppCompatActivity {
             }
         });
 
-        // 인텐트로 전달된 데이터 가져오기
+        // TTS 버튼 클릭 이벤트 설정
+        ttsButton.setOnClickListener(v -> {
+            String name = textViewName.getText().toString(); // 약품명
+            String additionalInfo = textView15.getText().toString(); // 스크롤뷰 안의 두번째 텍스트뷰 (주의사항 및 부작용 등)
+
+            // 읽어줄 텍스트 구성 (약품명 -> 주의사항 및 부작용 -> 추가적인 정보)
+            String textToSpeak = name + ", " + additionalInfo;
+
+            // TTS로 텍스트 읽기
+            tts.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null);
+        });
+
+
+        // TTS 버튼 클릭 이벤트 설정
+        ttsButton.setOnClickListener(v -> {
+            String name = textViewName.getText().toString(); // 약품명
+            String additionalInfo = textView15.getText().toString(); // 스크롤뷰 안의 두번째 텍스트뷰 내용
+
+            // 읽어줄 텍스트 구성
+            String textToSpeak = name + ", " + additionalInfo;
+
+            // TTS로 텍스트 읽기
+            tts.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null);
+        });
+
+
+
+    // 인텐트로 전달된 데이터 가져오기
         String name = getIntent().getStringExtra("name");
         String company = getIntent().getStringExtra("company");
         String validity = getIntent().getStringExtra("validity");
