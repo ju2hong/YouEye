@@ -1,16 +1,24 @@
 package com.example.youeye.home;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.youeye.R;
 import com.example.youeye.SwitchManager;
 import com.example.youeye.TTSManager;
@@ -82,22 +90,46 @@ public class DrugDetailActivity extends AppCompatActivity {
         loadMedicineImage(name);
     }
 
-    // CSV 파일에서 약품의 이미지를 불러와서 medicineImageView에 표시하는 메서드
     private void loadMedicineImage(String productName) {
+        // 로딩 이미지 보여주기
+        ImageView loadingImageView = findViewById(R.id.loadingImageView);
+        loadingImageView.setVisibility(View.VISIBLE);
+
+        // 약품 이미지 표시하는 ImageView
+        ImageView medicineImageView = findViewById(R.id.medicineImageView);
+
         String productSerial = findSerialFromDetailDrug(productName);
         if (productSerial != null) {
             String imageUrl = findImageLinkFromDrugLink(productSerial);
             if (imageUrl != null) {
+                // Glide를 사용하여 이미지 로딩
                 Glide.with(this)
                         .load(imageUrl)
-                        .placeholder(R.drawable.placeholder)  // 로딩 중에 표시할 이미지
-                        .error(R.drawable.error)             // 로드 실패 시 표시할 이미지
-                        .into(medicineImageView);            // 이미지 표시
+                        .placeholder(R.drawable.placeholder1)  // 로딩 중에 표시할 이미지
+                        .error(R.drawable.error)              // 로드 실패 시 표시할 이미지
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                // 이미지 로드 실패 시 로딩 이미지 감추기
+                                loadingImageView.setVisibility(View.GONE);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                // 이미지 로드 완료 시 로딩 이미지 감추기
+                                loadingImageView.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
+                        .into(medicineImageView);
             } else {
                 Log.e(TAG, "이미지 링크를 찾을 수 없습니다.");
+                loadingImageView.setVisibility(View.GONE);
             }
         } else {
             Log.e(TAG, "제품 일련번호를 찾을 수 없습니다.");
+            loadingImageView.setVisibility(View.GONE);
         }
     }
 
