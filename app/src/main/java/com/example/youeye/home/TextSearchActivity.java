@@ -184,9 +184,6 @@ public class TextSearchActivity extends AppCompatActivity {
                     // DrugDetailActivity로 데이터 전달
                     Intent intent = new Intent(TextSearchActivity.this, DrugDetailActivity.class);
                     intent.putExtra("name", name);
-                    intent.putExtra("company", company);
-                    intent.putExtra("validity", validity);
-                    intent.putExtra("storage", storage);
                     startActivity(intent);
 
                     found = true;
