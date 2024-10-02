@@ -134,6 +134,9 @@ public class TextSearchActivity extends AppCompatActivity {
                                 intent.putExtra("company", company);
                                 intent.putExtra("validity", validity);
                                 intent.putExtra("storage", storage);
+
+                                // API에서 유효한 데이터가 있으므로 textViewDetail을 표시
+                                intent.putExtra("showDetails", true);
                                 startActivity(intent);
                             } else {
                                 // API에 정보가 없는 경우
@@ -177,13 +180,13 @@ public class TextSearchActivity extends AppCompatActivity {
                 // CSV 파일의 첫 번째 열에서 약품명을 찾기 (equals -> contains 사용)
                 if (nextLine[0].contains(query)) { // 검색어가 약품명에 포함되는지 확인
                     String name = nextLine[0];
-                    String company = nextLine[1];
-                    String validity = nextLine[2];
-                    String storage = nextLine[3];
 
                     // DrugDetailActivity로 데이터 전달
                     Intent intent = new Intent(TextSearchActivity.this, DrugDetailActivity.class);
                     intent.putExtra("name", name);
+
+                    // CSV에만 데이터가 있는 경우, textViewDetail을 숨기도록 플래그 전달
+                    intent.putExtra("showDetails", false);
                     startActivity(intent);
 
                     found = true;
@@ -202,6 +205,7 @@ public class TextSearchActivity extends AppCompatActivity {
             Toast.makeText(this, "CSV 파일을 읽는 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     private String getTagValue(Element element, String tagName) {
         NodeList nodeList = element.getElementsByTagName(tagName);

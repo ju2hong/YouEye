@@ -62,31 +62,28 @@ public class DrugDetailActivity extends AppCompatActivity {
             }
         });
 
-        // TTS 버튼 클릭 이벤트 설정
-        ttsButton.setOnClickListener(v -> {
-            if (isSpeaking) {
-                stopTTS();
-            } else {
-                speakText();
-            }
-        });
-        imageButton7.setOnClickListener(v -> speakBackButtonAndFinish());
-
         // 인텐트로 전달된 데이터 가져오기
         String name = getIntent().getStringExtra("name");
         String company = getIntent().getStringExtra("company");
         String validity = getIntent().getStringExtra("validity");
         String storage = getIntent().getStringExtra("storage");
 
-        // 데이터 표시
-        textViewName.setText(name);
-        String details = "회사: " + company + "\n유효기간: " + validity + "\n보관방법: " + storage;
-        textViewDetail.setText(details);
+        // showDetails 플래그를 확인하여 textViewDetail의 가시성 설정
+        boolean showDetails = getIntent().getBooleanExtra("showDetails", false);
+        if (showDetails) {
+            String details = "회사: " + company + "\n유효기간: " + validity + "\n보관방법: " + storage;
+            textViewDetail.setText(details);
+            textViewDetail.setVisibility(View.VISIBLE);
+        } else {
+            textViewDetail.setVisibility(View.GONE); // CSV 데이터만 있을 때는 숨기기
+        }
 
-        // CSV 파일에서 약품 정보를 읽어서 textView15에 표시
+        textViewName.setText(name);
+
+        // CSV에서 추가적인 약품 정보 표시
         displayDrugDetailsFromCSV(name);
 
-        // CSV 파일에서 이미지 링크를 가져와 표시
+        // 이미지 로드
         loadMedicineImage(name);
     }
 
