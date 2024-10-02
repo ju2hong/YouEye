@@ -102,7 +102,7 @@ public class DrugDetailActivity extends AppCompatActivity {
                 // Glide를 사용하여 이미지 로딩
                 Glide.with(this)
                         .load(imageUrl)
-                        .placeholder(R.drawable.placeholder1)  // 로딩 중에 표시할 이미지
+                        .placeholder(R.drawable.load)  // 로딩 중에 표시할 이미지
                         .error(R.drawable.error)              // 로드 실패 시 표시할 이미지
                         .listener(new RequestListener<Drawable>() {
                             @Override
