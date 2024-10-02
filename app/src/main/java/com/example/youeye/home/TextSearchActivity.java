@@ -94,7 +94,7 @@ public class TextSearchActivity extends AppCompatActivity {
     }
 
     private void searchMedicine(String query) {
-        // API 서비스 호출
+        // API 서비스 호출 (부분 문자열 검색을 위해 쿼리 그대로 사용)
         apiService.searchMedicine(API_KEY, 1, 10, "xml", query).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -174,8 +174,8 @@ public class TextSearchActivity extends AppCompatActivity {
             boolean found = false;
 
             while ((nextLine = reader.readNext()) != null) {
-                // CSV 파일의 첫 번째 열에서 약품명을 찾기
-                if (nextLine[0].equals(query)) {
+                // CSV 파일의 첫 번째 열에서 약품명을 찾기 (equals -> contains 사용)
+                if (nextLine[0].contains(query)) { // 검색어가 약품명에 포함되는지 확인
                     String name = nextLine[0];
                     String company = nextLine[1];
                     String validity = nextLine[2];
