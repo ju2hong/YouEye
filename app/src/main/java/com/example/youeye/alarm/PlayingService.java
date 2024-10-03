@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
@@ -75,13 +76,21 @@ public class PlayingService extends Service {
 
     private void startAlarm() {
         if (!isRunning) {
-            mediaPlayer = MediaPlayer.create(this, R.raw.ring); // R.raw.ring에 알람 소리 파일 위치
-            mediaPlayer.setLooping(false); // 반복 재생하지 않음
-            mediaPlayer.start();
-            isRunning = true;
+            try {
+                mediaPlayer = MediaPlayer.create(this, R.raw.ring);
+                if (mediaPlayer == null) {
+                    Log.e("PlayingService", "MediaPlayer 객체 생성 실패, 알람 소리 파일 확인 필요");
+                    return;
+                }
+                mediaPlayer.setLooping(false);  // 반복 재생하지 않음
+                mediaPlayer.start();  // 알람 소리 시작
+                isRunning = true;
 
-            // 일정 시간 후 알람 중지
-            handler.postDelayed(this::stopAlarm, ALARM_DURATION);
+                Log.d("PlayingService", "알람 소리 재생 중");
+                handler.postDelayed(this::stopAlarm, ALARM_DURATION);  // 5초 후 알람 중지
+            } catch (Exception e) {
+                Log.e("PlayingService", "알람 소리 재생 오류: " + e.getMessage());
+            }
         }
     }
 
@@ -91,6 +100,7 @@ public class PlayingService extends Service {
                 mediaPlayer.stop();
                 mediaPlayer.release();
                 mediaPlayer = null;
+                Log.d("PlayingService", "알람 소리 중지");
             }
             isRunning = false;
             stopForeground(true); // 포그라운드 서비스 중지

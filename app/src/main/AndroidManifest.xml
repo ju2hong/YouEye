@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!-- 오디오 사용 권한 추가 -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
+
     <!-- 알람 권한 추가 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
+    <!-- 알람 소리 권한 추가 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+
+    <!-- 오디오 사용 권한 추가 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -20,6 +25,7 @@
     <!-- 카메라 권한 추가 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+
     <!-- 음성 인식 권한 추가 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
@@ -33,7 +39,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.YouEye"
         tools:targetApi="31"
-        android:networkSecurityConfig="@xml/network_security_config">
+        android:networkSecurityConfig="@xml/network_security_config"
+        tools:ignore="ForegroundServicePermission">
 
         <activity
             android:name=".MainActivity"
@@ -85,15 +92,16 @@
             </intent-filter>
         </receiver>
 
+        <!-- PlayingService 선언 -->
+        <service
+        android:name=".alarm.PlayingService"
+        android:exported="false"
+        android:foregroundServiceType="mediaPlayback" />
+
         <!-- mypage 설정 버튼 -->
         <activity android:name=".home.SettingsActivity" />
 
         <!-- 사진결과 -->
         <activity android:name=".home.PhotoResultActivity" android:exported="true" />
-
-
-
-
-
     </application>
 </manifest>
