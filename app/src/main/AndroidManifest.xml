@@ -5,6 +5,10 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
+    <!-- 알람 권한 추가 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
@@ -74,7 +78,12 @@
         <activity android:name=".home.DrugDetailActivity" android:exported="true" />
 
         <!-- 알람 리시버 -->
-        <receiver android:name=".alarm.AlarmReceiverActivity" />
+        <receiver android:name=".alarm.AlarmReceiverActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <!-- mypage 설정 버튼 -->
         <activity android:name=".home.SettingsActivity" />

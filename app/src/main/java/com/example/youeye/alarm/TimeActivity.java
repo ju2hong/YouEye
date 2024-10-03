@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -91,6 +92,16 @@ public class TimeActivity extends AppCompatActivity {
     @SuppressLint("ScheduleExactAlarm")
     private void setAlarm(int hour, int minute) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        // Android 12(API 31) 이상에서 권한이 필요한 경우 처리
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (!alarmManager.canScheduleExactAlarms()) {
+                // 사용자가 직접 설정에서 권한을 부여하도록 안내
+                Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                startActivity(intent);
+                return;  // 권한을 요청한 후에는 알람 설정을 중단
+            }
+        }
 
         if (alarmManager != null) {
             Calendar calendar = Calendar.getInstance();
