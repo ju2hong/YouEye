@@ -57,7 +57,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.342"
-        app:srcCompat="@drawable/placeholder" />
+        app:srcCompat="@drawable/placeholder1" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -147,6 +147,18 @@
                 android:textColor="@color/black"
                 android:textSize="10pt"
                 android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/loadingImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/load"
+                android:visibility="gone" />
+
 
         </LinearLayout>
     </ScrollView>
