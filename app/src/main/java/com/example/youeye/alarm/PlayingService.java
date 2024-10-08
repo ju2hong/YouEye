@@ -1,4 +1,3 @@
-// PlayingService.java
 package com.example.youeye.alarm;
 
 import android.app.Notification;
@@ -7,7 +6,6 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
@@ -23,7 +21,11 @@ public class PlayingService extends Service {
     private MediaPlayer mediaPlayer;
     private boolean isRunning;
     private Handler handler;
-    private static final int ALARM_DURATION = 5000; // 알람 소리 재생 시간 (5초)
+
+    // 알람을 중지할 시간 (밀리초 단위, 예: 5000ms = 4초)
+    private static final int ALARM_DURATION = 4000;
+
+    // Notification Channel ID
     private static final String CHANNEL_ID = "PlayingServiceChannel";
 
     @Nullable
@@ -37,24 +39,19 @@ public class PlayingService extends Service {
         super.onCreate();
         handler = new Handler();
 
+        // Notification Channel 설정 (Android Oreo 이상)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
                     CHANNEL_ID,
-                    "알람 소리 재생",
-                    NotificationManager.IMPORTANCE_HIGH
+                    "Playing Service Channel",
+                    NotificationManager.IMPORTANCE_DEFAULT
             );
+            channel.setDescription("채널 설명: 알람 소리 재생 서비스");
+
             NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             if (manager != null) {
                 manager.createNotificationChannel(channel);
             }
-
-            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setContentTitle("알람이 울립니다")
-                    .setContentText("알람 소리가 재생 중입니다.")
-                    .setSmallIcon(R.drawable.ring)
-                    .build();
-
-            startForeground(1, notification);
         }
     }
 
@@ -64,11 +61,17 @@ public class PlayingService extends Service {
             return START_NOT_STICKY;
         }
 
-        String action = intent.getStringExtra("action");
-        if ("START_ALARM".equals(action)) {
-            startAlarm();
-        } else if ("STOP_ALARM".equals(action)) {
-            stopAlarm();
+        String action = intent.getExtras().getString("action", "");
+
+        switch (action) {
+            case "START_ALARM":
+                startAlarm();
+                break;
+            case "STOP_ALARM":
+                stopAlarm();
+                break;
+            default:
+                break;
         }
 
         return START_NOT_STICKY;
@@ -76,41 +79,58 @@ public class PlayingService extends Service {
 
     private void startAlarm() {
         if (!isRunning) {
-            try {
-                mediaPlayer = MediaPlayer.create(this, R.raw.ring);
-                if (mediaPlayer == null) {
-                    Log.e("PlayingService", "MediaPlayer 객체 생성 실패, 알람 소리 파일 확인 필요");
-                    return;
-                }
-                mediaPlayer.setLooping(false);  // 반복 재생하지 않음
-                mediaPlayer.start();  // 알람 소리 시작
-                isRunning = true;
+            // Notification 빌드
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setContentTitle("알람 시작")
+                    .setContentText("알람음이 재생됩니다.")
+                    .setSmallIcon(R.drawable.ring)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setOngoing(false);
 
-                Log.d("PlayingService", "알람 소리 재생 중");
-                handler.postDelayed(this::stopAlarm, ALARM_DURATION);  // 5초 후 알람 중지
-            } catch (Exception e) {
-                Log.e("PlayingService", "알람 소리 재생 오류: " + e.getMessage());
-            }
+            Notification notification = builder.build();
+
+            // 포그라운드 서비스로 시작
+            startForeground(1, notification);
+
+            mediaPlayer = MediaPlayer.create(this, R.raw.ring);
+            mediaPlayer.setLooping(false); // 반복 재생 비활성화
+            mediaPlayer.start();
+            isRunning = true;
+            Log.d("PlayingService", "알람 시작됨");
+
+            // 알람 중지
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    stopAlarm();
+                }
+            }, ALARM_DURATION);
         }
     }
 
     private void stopAlarm() {
-        if (isRunning) {
-            if (mediaPlayer != null) {
+        if (isRunning && mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
-                mediaPlayer.release();
-                mediaPlayer = null;
-                Log.d("PlayingService", "알람 소리 중지");
             }
+            mediaPlayer.reset();
+            mediaPlayer.release();
+            mediaPlayer = null;
             isRunning = false;
-            stopForeground(true); // 포그라운드 서비스 중지
-            stopSelf(); // 서비스 중지
+            Log.d("PlayingService", "알람 정지됨");
+
+            // 포그라운드 서비스 중지 및 서비스 종료
+            stopForeground(true);
+            stopSelf();
         }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        stopAlarm();
+        if (isRunning) {
+            stopAlarm();
+        }
+        Log.d("PlayingService", "서비스 파괴됨");
     }
 }
