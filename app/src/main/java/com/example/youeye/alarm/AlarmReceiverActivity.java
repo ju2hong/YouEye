@@ -2,63 +2,73 @@ package com.example.youeye.alarm;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.media.Image;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.TimePicker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.youeye.R;
 import com.google.gson.Gson;
+import okhttp3.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import java.util.List;
 
 public class AlarmReceiverActivity extends AppCompatActivity {
 
-    private TimePicker timePicker;
-    private int selectedMonth;  // 사용자 지정 월
-    private int selectedDay;    // 사용자 지정 일
+    private TimePicker timePicker;  // 사용자가 시간을 입력할 TimePicker
+    private int selectedYear;
+    private int selectedMonth;
+    private int selectedDay;
+    private List<Alarm> alarmList = new ArrayList<>();  // 알람 리스트
+
+    private OkHttpClient client = new OkHttpClient();  // OkHttp 클라이언트
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alarmsettings);
+        setContentView(R.layout.activity_alarmsettings);  // 알람 설정 레이아웃
 
-        // 시간 선택 TimePicker
-        timePicker = findViewById(R.id.time_picker);
+        timePicker = findViewById(R.id.time_picker);  // TimePicker
+
+        ImageButton datePickerBtn = findViewById(R.id.datePickerBtn);  // 날짜 선택 버튼
+        ImageButton confirmButton = findViewById(R.id.okBtn);  // 확인 버튼
 
         // 날짜 선택 버튼 클릭 시 DatePickerDialog 열기
-        findViewById(R.id.datePickerBtn).setOnClickListener(v -> {
+        datePickerBtn.setOnClickListener(v -> {
             showDatePickerDialog();
         });
 
-        // 확인 버튼 클릭 시, 선택된 날짜와 시간으로 알람 전송
-        findViewById(R.id.okBtn).setOnClickListener(v -> {
+        // 확인 버튼 클릭 시, 사용자가 입력한 시간과 날짜로 알람 리스트에 추가 후 서버로 전송
+        confirmButton.setOnClickListener(v -> {
             int hour = timePicker.getHour();
             int minute = timePicker.getMinute();
 
-            // 선택된 날짜와 시간으로 알람 객체 생성
-            Alarm alarm = new Alarm("AM", hour, minute, selectedMonth, selectedDay);
-            sendAlarmToServer(alarm);  // 서버로 알람 전송
+            // 사용자가 선택한 날짜와 시간을 이용해 알람 객체 생성
+            Alarm alarm = new Alarm("AM", hour, minute, selectedYear, selectedMonth, selectedDay);
+
+            // 알람 리스트에 추가
+            alarmList.add(alarm);
+
+            // 서버로 알람 리스트 전송
+            sendAlarmsToServer();
         });
     }
 
-    // DatePickerDialog를 표시하는 메서드
+    // DatePickerDialog를 표시하고, 사용자가 선택한 날짜를 저장하는 메서드
     private void showDatePickerDialog() {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 (view, year, month, dayOfMonth) -> {
-                    // 사용자가 선택한 날짜 저장
-                    selectedMonth = month + 1;  // 월은 0부터 시작하므로 1을 더함
+                    // 사용자가 선택한 날짜를 저장
+                    selectedYear = year;
+                    selectedMonth = month + 1;
                     selectedDay = dayOfMonth;
                 },
                 calendar.get(Calendar.YEAR),
@@ -68,43 +78,21 @@ public class AlarmReceiverActivity extends AppCompatActivity {
         datePickerDialog.show();  // DatePickerDialog 표시
     }
 
-    // Alarm 객체 정의 (시간과 날짜를 저장)
-    public class Alarm {
-        private String amPm;
-        private int hour;
-        private int minute;
-        private int month;
-        private int day;
-
-        public Alarm(String amPm, int hour, int minute, int month, int day) {
-            this.amPm = amPm;
-            this.hour = hour;
-            this.minute = minute;
-            this.month = month;
-            this.day = day;
-        }
-
-        public String toJson() {
-            Gson gson = new Gson();
-            return gson.toJson(this);
-        }
-    }
-
-    // 서버로 알람 데이터를 전송하는 메서드
-    public void sendAlarmToServer(Alarm alarm) {
-        String json = alarm.toJson();
-        OkHttpClient client = new OkHttpClient();
+    // 서버로 알람 리스트를 POST 요청으로 보내는 메서드
+    private void sendAlarmsToServer() {
+        Gson gson = new Gson();
+        String json = gson.toJson(alarmList);  // 알람 리스트를 JSON으로 변환
 
         RequestBody body = RequestBody.create(json, MediaType.parse("application/json"));
         Request request = new Request.Builder()
-                .url("https://your-server-url.com/api/alarm")
+                .url("https://your-server-url.com/api/alarms")  // 서버의 API URL
                 .post(body)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
+                e.printStackTrace();  // 요청 실패 시 처리
             }
 
             @Override
@@ -112,8 +100,28 @@ public class AlarmReceiverActivity extends AppCompatActivity {
                 if (!response.isSuccessful()) {
                     throw new IOException("Unexpected code " + response);
                 }
+                // 서버 응답 처리
                 System.out.println(response.body().string());
             }
         });
+    }
+
+    // Alarm 객체 정의
+    public class Alarm {
+        private String amPm;   // 오전/오후
+        private int hour;      // 시
+        private int minute;    // 분
+        private int year;      // 년
+        private int month;     // 월
+        private int day;       // 일
+
+        public Alarm(String amPm, int hour, int minute, int year, int month, int day) {
+            this.amPm = amPm;
+            this.hour = hour;
+            this.minute = minute;
+            this.year = year;
+            this.month = month;
+            this.day = day;
+        }
     }
 }
