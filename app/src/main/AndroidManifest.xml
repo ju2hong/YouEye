@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!-- 오디오 사용 권한 추가 -->
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
 
+    <!-- Foreground Service 권한 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+
+    <!-- 오디오 사용 권한 추가 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- 알람 사용 권한 추가 -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <!-- 인터넷 권한 추가 -->
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -16,8 +22,14 @@
     <!-- 카메라 권한 추가 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+
     <!-- 음성 인식 권한 추가 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- 알람 사용 권한 추가 -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -46,6 +58,34 @@
         <activity android:name=".member.IDMemberActivity" android:exported="true" />
         <activity android:name=".member.PWMemberActivity" android:exported="true" />
         <activity android:name=".home.HomeActivity" android:exported="true" />
+        <activity
+            android:name=".login.LoginActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".login.IDLoginActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".login.PWLoginActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".member.MemberActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".member.IDMemberActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".member.PWMemberActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".home.HomeActivity"
+            android:exported="true">
+        </activity>
         <!--home 버튼 activity-->
         <activity
             android:name=".home.ImageSearchActivity"
@@ -73,6 +113,11 @@
         <activity android:name=".alarm.TimePickerActivity" android:exported="true" />
         <activity android:name=".home.DrugDetailActivity" android:exported="true" />
 
+        <!-- PlayingService 등록 -->
+        <service android:name=".alarm.PlayingService"
+            android:foregroundServiceType="mediaPlayback"
+            tools:ignore="ForegroundServicePermission" />
+
         <!-- 알람 리시버 -->
         <receiver android:name=".alarm.AlarmReceiverActivity" />
 
@@ -81,10 +126,5 @@
 
         <!-- 사진결과 -->
         <activity android:name=".home.PhotoResultActivity" android:exported="true" />
-
-
-
-
-
     </application>
 </manifest>

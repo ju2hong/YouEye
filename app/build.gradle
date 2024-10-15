@@ -100,6 +100,13 @@ dependencies {
 //로딩이미지
         implementation 'com.github.bumptech.glide:glide:4.12.0'
         annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
-    }
+
+    // 알람 list JSON 변경
+        implementation 'com.google.code.gson:gson:2.8.8'
+        // HTTP 요청 라이브러리로 OkHttp 사용
+        implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+
+
+}
 
 

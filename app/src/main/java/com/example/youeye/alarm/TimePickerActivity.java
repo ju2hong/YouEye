@@ -1,13 +1,15 @@
+// TimePickerActivity.java
 package com.example.youeye.alarm;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.NumberPicker;
+import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,85 +23,82 @@ import java.util.Locale;
 public class TimePickerActivity extends AppCompatActivity {
 
     private TimePicker timePicker;
-    private Button okBtn, cancelBtn;
-    private int hour, minute;
-    private String am_pm;
-    private Date currentTime;
-    private String stMonth, stDay;
+    private String am_pm, month, day;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alarm_timepicker);
+        setContentView(R.layout.activity_alarm_timepicker); // timepicker 레이아웃 사용
 
-        timePicker = (TimePicker)findViewById(R.id.time_picker);
+        timePicker = findViewById(R.id.time_picker);
 
-        currentTime = Calendar.getInstance().getTime();
-        SimpleDateFormat day = new SimpleDateFormat("dd", Locale.getDefault());
-        SimpleDateFormat month = new SimpleDateFormat("MM", Locale.getDefault());
+        // 시간 설정시 숫자 색상을 검정색으로 변경
+        setTimePickerTextColor(timePicker, Color.BLACK);
 
-        stMonth = month.format(currentTime);
-        stDay = day.format(currentTime);
+        // 현재 날짜 가져오기
+        Date currentTime = Calendar.getInstance().getTime();
+        SimpleDateFormat monthFormat = new SimpleDateFormat("MM", Locale.getDefault());
+        SimpleDateFormat dayFormat = new SimpleDateFormat("dd", Locale.getDefault());
+        month = monthFormat.format(currentTime);
+        day = dayFormat.format(currentTime);
 
-        ImageButton okBtn = (ImageButton) findViewById(R.id.okBtn);
-        okBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    hour = timePicker.getHour();
-                    minute = timePicker.getMinute();
-                }
-                else{
-                    hour = timePicker.getHour();
-                    minute = timePicker.getMinute();
-                }
+        // 확인 버튼 클릭 이벤트
+        ImageButton okBtn = findViewById(R.id.okBtn);
+        okBtn.setOnClickListener(v -> {
+            int hour, minute;
 
-                am_pm = AM_PM(hour);
-                hour = timeSet(hour);
-
-                Intent sendIntent = new Intent(TimePickerActivity.this, TimeActivity.class);
-
-                sendIntent.putExtra("hour",hour);
-                sendIntent.putExtra("minute",minute);
-                sendIntent.putExtra("am_pm",am_pm);
-                sendIntent.putExtra("month",stMonth);
-                sendIntent.putExtra("day",stDay);
-                setResult(RESULT_OK,sendIntent);
-
-                // 알람이 설정되었다는 토스트 메시지 표시
-                Toast.makeText(TimePickerActivity.this, "알람이 설정되었습니다 : " + hour + "시 : " + String.format("%02d분", minute), Toast.LENGTH_LONG).show();
-
-                finish();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                hour = timePicker.getHour();
+                minute = timePicker.getMinute();
+            } else {
+                hour = timePicker.getCurrentHour();
+                minute = timePicker.getCurrentMinute();
             }
+
+            am_pm = (hour >= 12) ? "오후" : "오전";
+            if (hour > 12) hour -= 12;
+
+            // 결과 전달
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("hour", hour);
+            resultIntent.putExtra("minute", minute);
+            resultIntent.putExtra("am_pm", am_pm);
+            resultIntent.putExtra("month", month);
+            resultIntent.putExtra("day", day);
+            setResult(RESULT_OK, resultIntent);
+
+            // finish 전 api 전달
+
+            finish();
         });
 
-        // 취소 버튼 누를 시 TimePickerActivity 종료
-        ImageButton cancelBtn = (ImageButton)findViewById(R.id.cancelBtn);
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                finish();
+        // 취소 버튼 클릭 이벤트
+        ImageButton cancelBtn = findViewById(R.id.cancelBtn);
+        cancelBtn.setOnClickListener(v -> finish());
+    }
+    private void setTimePickerTextColor(TimePicker timePicker, int color) {
+        // TimePicker의 자식 뷰 중 NumberPicker들을 탐색
+        for (int i = 0; i < timePicker.getChildCount(); i++) {
+            View child = timePicker.getChildAt(i);
+            if (child instanceof NumberPicker) {
+                NumberPicker numberPicker = (NumberPicker) child;
+                // NumberPicker의 TextView 색상을 변경
+                setNumberPickerTextColor(numberPicker, color);
             }
-        });
+        }
     }
 
-    // 24시 시간제 바꾸기
-    private int timeSet(int hour){
-        if(hour > 12){
-            hour -= 12;
+    private void setNumberPickerTextColor(NumberPicker numberPicker, int color) {
+        try {
+            // NumberPicker 내부의 TextView 접근
+            for (int i = 0; i < numberPicker.getChildCount(); i++) {
+                View child = numberPicker.getChildAt(i);
+                if (child instanceof TextView) {
+                    ((TextView) child).setTextColor(color);  // 텍스트 색상 변경
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return hour;
-    }
-
-    // 오전,오후 선택
-    private String AM_PM(int hour){
-        if(hour >= 12){
-            am_pm = "오후";
-        }
-        else{
-            am_pm = "오전";
-        }
-        return am_pm;
     }
 }
