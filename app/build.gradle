@@ -93,20 +93,17 @@ dependencies {
     implementation 'com.opencsv:opencsv:5.5.2'
 
 
-        // ML Kit 바코드 스캐닝 라이브러리
-        implementation 'com.google.mlkit:barcode-scanning:17.0.2'
+    // ML Kit 바코드 스캐닝 라이브러리
+    implementation 'com.google.mlkit:barcode-scanning:17.0.2'
     implementation 'com.google.android.gms:play-services-mlkit-barcode-scanning:18.0.0'
 
-//로딩이미지
+    //로딩이미지
         implementation 'com.github.bumptech.glide:glide:4.12.0'
         annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
-    // 알람 list JSON 변경
-        implementation 'com.google.code.gson:gson:2.8.8'
-        // HTTP 요청 라이브러리로 OkHttp 사용
-        implementation 'com.squareup.okhttp3:okhttp:4.9.1'
-
-
+    // 알람 list 서버
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 }
 
 
