@@ -73,14 +73,6 @@
                 android:textStyle="bold"
                 android:layout_toRightOf="@id/time_month"
                 android:paddingRight="10dp" />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switchBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:focusable="false"
-                android:focusableInTouchMode="false" />
         </RelativeLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
