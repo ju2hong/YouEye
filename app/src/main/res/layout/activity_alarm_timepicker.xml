@@ -75,29 +75,4 @@
         app:layout_constraintStart_toStartOf="@+id/cancelBtn"
         app:layout_constraintTop_toTopOf="@+id/cancelBtn" />
 
-    <ImageButton
-        android:id="@+id/datePickerBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.539"
-        app:srcCompat="@drawable/button" />
-
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="날짜선택"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:textSize="30pt"
-        app:layout_constraintBottom_toBottomOf="@+id/datePickerBtn"
-        app:layout_constraintEnd_toEndOf="@+id/datePickerBtn"
-        app:layout_constraintStart_toStartOf="@+id/datePickerBtn"
-        app:layout_constraintTop_toTopOf="@+id/datePickerBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,11 +1,7 @@
 package com.example.youeye.alarm;
 
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.media.Image;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TimePicker;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +12,6 @@ import okhttp3.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class AlarmReceiverActivity extends AppCompatActivity {
@@ -37,13 +32,7 @@ public class AlarmReceiverActivity extends AppCompatActivity {
 
         timePicker = findViewById(R.id.time_picker);  // TimePicker
 
-        ImageButton datePickerBtn = findViewById(R.id.datePickerBtn);  // 날짜 선택 버튼
         ImageButton confirmButton = findViewById(R.id.okBtn);  // 확인 버튼
-
-        // 날짜 선택 버튼 클릭 시 DatePickerDialog 열기
-        datePickerBtn.setOnClickListener(v -> {
-            showDatePickerDialog();
-        });
 
         // 확인 버튼 클릭 시, 사용자가 입력한 시간과 날짜로 알람 리스트에 추가 후 서버로 전송
         confirmButton.setOnClickListener(v -> {
@@ -60,24 +49,6 @@ public class AlarmReceiverActivity extends AppCompatActivity {
             sendAlarmsToServer();
         });
     }
-
-    // DatePickerDialog를 표시하고, 사용자가 선택한 날짜를 저장하는 메서드
-    private void showDatePickerDialog() {
-        Calendar calendar = Calendar.getInstance();
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                (view, year, month, dayOfMonth) -> {
-                    // 사용자가 선택한 날짜를 저장
-                    selectedYear = year;
-                    selectedMonth = month + 1;
-                    selectedDay = dayOfMonth;
-                },
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-        );
-        datePickerDialog.show();  // DatePickerDialog 표시
-    }
-
     // 서버로 알람 리스트를 POST 요청으로 보내는 메서드
     private void sendAlarmsToServer() {
         Gson gson = new Gson();
