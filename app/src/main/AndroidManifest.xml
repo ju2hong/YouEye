@@ -81,11 +81,16 @@
             android:name=".home.ChangePasswordActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".home.Show_pill"
+            android:exported="true">
+        </activity>
 
         <!--ㅡmypage 버튼 activity-->
         <activity android:name=".alarm.TimeActivity" android:exported="true" />
         <activity android:name=".alarm.TimePickerActivity" android:exported="true" />
         <activity android:name=".home.DrugDetailActivity" android:exported="true" />
+
 
         <!-- PlayingService 등록 -->
         <service android:name=".alarm.PlayingService"
