@@ -103,7 +103,7 @@ public class DrugDetailActivity extends AppCompatActivity {
         displayDrugDetailsFromCSV(name);
 
         // 이미지 로드
-        loadMedicineImage(name);
+        loadMedicineImageFromCSV(name);  // 수정된 이미지 로드 방식
     }
 
     // 약품리스트 저장: 약품명을 SharedPreferences에 저장하는 메소드
@@ -125,89 +125,45 @@ public class DrugDetailActivity extends AppCompatActivity {
         Toast.makeText(this, "약품명이 저장되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
-    private void loadMedicineImage(String productName) {
-        // 로딩 이미지 보여주기
-        ImageView loadingImageView = findViewById(R.id.loadingImageView);
-        loadingImageView.setVisibility(View.VISIBLE);
-
-        // 약품 이미지 표시하는 ImageView
-        ImageView medicineImageView = findViewById(R.id.medicineImageView);
-
-        String productSerial = findSerialFromDetailDrug(productName);
-        if (productSerial != null) {
-            String imageUrl = findImageLinkFromDrugLink(productSerial);
-            if (imageUrl != null) {
-                // Glide를 사용하여 이미지 로딩
-                Glide.with(this)
-                        .load(imageUrl)
-                        .placeholder(R.drawable.load)  // 로딩 중에 표시할 이미지
-                        .error(R.drawable.error)              // 로드 실패 시 표시할 이미지
-                        .listener(new RequestListener<Drawable>() {
-                            @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                // 이미지 로드 실패 시 로딩 이미지 감추기
-                                loadingImageView.setVisibility(View.GONE);
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                // 이미지 로드 완료 시 로딩 이미지 감추기
-                                loadingImageView.setVisibility(View.GONE);
-                                return false;
-                            }
-                        })
-                        .into(medicineImageView);
-            } else {
-                Log.e(TAG, "이미지 링크를 찾을 수 없습니다.");
-                loadingImageView.setVisibility(View.GONE);
-            }
-        } else {
-            Log.e(TAG, "제품 일련번호를 찾을 수 없습니다.");
-            loadingImageView.setVisibility(View.GONE);
-        }
-    }
-
-    // detaildrug.csv에서 제품명의 일련번호를 찾는 메서드
-    private String findSerialFromDetailDrug(String productName) {
-        try {
-            InputStream is = getAssets().open("detaildrug.csv");
-            CSVReader reader = new CSVReader(new InputStreamReader(is, "UTF-8"));
-            String[] nextLine;
-
-            while ((nextLine = reader.readNext()) != null) {
-                // 7열의 제품명 확인
-                if (nextLine[0].equals(productName)) {
-                    reader.close();
-                    return nextLine[6];  // 7열에 일련번호가 있음
-                }
-            }
-            reader.close();
-        } catch (Exception e) {
-            Log.e(TAG, "CSV 파일을 읽는 중 오류 발생", e);
-        }
-        return null;
-    }
-
-    // druglink.csv에서 일련번호로 이미지 링크를 찾는 메서드
-    private String findImageLinkFromDrugLink(String productSerial) {
+    private void loadMedicineImageFromCSV(String productName) {
         try {
             InputStream is = getAssets().open("druglink.csv");
             CSVReader reader = new CSVReader(new InputStreamReader(is, "UTF-8"));
             String[] nextLine;
 
             while ((nextLine = reader.readNext()) != null) {
-                // 1열의 일련번호가 productSerial과 일치하는지 확인
-                if (nextLine[0].equals(productSerial)) {
-                    reader.close();
-                    return nextLine[2];  // 이미지 링크는 3열에 있음
+                String csvMedicineName = nextLine[1]; // 2번째 열의 약품명
+                String imageUrl = nextLine[2];        // 3번째 열의 이미지 링크
+
+                if (csvMedicineName.equals(productName)) {
+                    Log.d(TAG, "이미지 링크: " + imageUrl);
+
+                    // 이미지 로딩
+                    Glide.with(this)
+                            .load(imageUrl)
+                            .placeholder(R.drawable.load)  // 로딩 중에 표시할 이미지
+                            .error(R.drawable.error)       // 로드 실패 시 표시할 이미지
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    Log.e(TAG, "이미지 로드 실패", e);
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    return false;
+                                }
+                            })
+                            .into(medicineImageView);
+                    break;
                 }
             }
             reader.close();
         } catch (Exception e) {
-            Log.e(TAG, "CSV 파일을 읽는 중 오류 발생", e);
+            Log.e(TAG, "CSV 파일 읽기 오류", e);
+            Toast.makeText(this, "이미지를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
         }
-        return null;
     }
 
     // CSV에서 약품 정보를 찾아서 textView15에 표시하는 메소드
@@ -265,6 +221,7 @@ public class DrugDetailActivity extends AppCompatActivity {
             int estimatedSpeechTime = buttonText.length() * 100;
             new Handler().postDelayed(this::finishWithAnimation, estimatedSpeechTime);
         } else {
+
             finishWithAnimation();
         }
     }
