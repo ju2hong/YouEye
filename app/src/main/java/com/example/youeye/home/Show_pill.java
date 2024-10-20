@@ -33,8 +33,8 @@ public class Show_pill extends AppCompatActivity {
         // 저장된 약품 리스트 불러오기
         medicationList = loadSearchedMedicines();
 
-        // RecyclerView 어댑터 설정
-        medicationAdapter = new MedicationAdapter(medicationList);
+        // RecyclerView 어댑터 설정 (Context 추가)
+        medicationAdapter = new MedicationAdapter(this, medicationList);  // 'this'로 Context 전달
         medicationRecyclerView.setAdapter(medicationAdapter);
 
         // 뒤로가기 버튼 설정
