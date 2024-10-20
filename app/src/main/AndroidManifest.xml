@@ -105,5 +105,7 @@
 
         <!-- 사진결과 -->
         <activity android:name=".home.PhotoResultActivity" android:exported="true" />
+
+
     </application>
 </manifest>

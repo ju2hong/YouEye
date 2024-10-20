@@ -26,25 +26,11 @@
         android:clipToPadding="false"
         android:padding="16dp"
         app:layout_constraintBottom_toTopOf="@+id/bkButton"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView4"
         app:layout_constraintVertical_bias="1.0" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addMedicationButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginRight="32dp"
-        android:contentDescription="새 약물 추가"
-        android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="#FF00312C"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/background_color" />
-
 
     <ImageButton
         android:id="@+id/bkButton"
@@ -75,5 +61,4 @@
         app:layout_constraintStart_toStartOf="@+id/bkButton"
         app:layout_constraintTop_toTopOf="@+id/bkButton"
         app:layout_constraintVertical_bias="0.303" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.example.youeye.home;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +28,9 @@ import com.opencsv.CSVReader;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 public class DrugDetailActivity extends AppCompatActivity {
 
@@ -74,22 +78,7 @@ public class DrugDetailActivity extends AppCompatActivity {
             tts.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null);
         });
 
-
-        // TTS 버튼 클릭 이벤트 설정
-        ttsButton.setOnClickListener(v -> {
-            String name = textViewName.getText().toString(); // 약품명
-            String additionalInfo = textView15.getText().toString(); // 스크롤뷰 안의 두번째 텍스트뷰 내용
-
-            // 읽어줄 텍스트 구성
-            String textToSpeak = name + ", " + additionalInfo;
-
-            // TTS로 텍스트 읽기
-            tts.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null);
-        });
-
-
-
-    // 인텐트로 전달된 데이터 가져오기
+        // 인텐트로 전달된 데이터 가져오기
         String name = getIntent().getStringExtra("name");
         String company = getIntent().getStringExtra("company");
         String validity = getIntent().getStringExtra("validity");
@@ -107,11 +96,33 @@ public class DrugDetailActivity extends AppCompatActivity {
 
         textViewName.setText(name);
 
+        // 약품리스트 저장 (SharedPreferences에 약품명 저장)
+        saveSearchedMedicine(name);
+
         // CSV에서 추가적인 약품 정보 표시
         displayDrugDetailsFromCSV(name);
 
         // 이미지 로드
         loadMedicineImage(name);
+    }
+
+    // 약품리스트 저장: 약품명을 SharedPreferences에 저장하는 메소드
+    private void saveSearchedMedicine(String medicineName) {
+        // SharedPreferences 객체 생성
+        SharedPreferences sharedPreferences = getSharedPreferences("SearchedMedicines", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        // 기존에 저장된 약품명 리스트 가져오기 (Immutable Set이므로 새롭게 복사하여 수정해야 함)
+        Set<String> medicineSet = sharedPreferences.getStringSet("medicineList", new HashSet<>());
+        Set<String> updatedMedicineSet = new HashSet<>(medicineSet);  // 기존 데이터를 새로운 Set으로 복사
+
+        // 새로운 약품명을 리스트에 추가
+        updatedMedicineSet.add(medicineName);
+
+        // 업데이트된 리스트를 SharedPreferences에 저장
+        editor.putStringSet("medicineList", updatedMedicineSet);
+        editor.apply();  // 비동기로 저장
+        Toast.makeText(this, "약품명이 저장되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
     private void loadMedicineImage(String productName) {
