@@ -1,7 +1,8 @@
-// TimePickerActivity.java
 package com.example.youeye.alarm;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,11 +29,9 @@ public class TimePickerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alarm_timepicker); // timepicker 레이아웃 사용
+        setContentView(R.layout.activity_alarm_timepicker);
 
         timePicker = findViewById(R.id.time_picker);
-
-        // 시간 설정시 숫자 색상을 검정색으로 변경
         setTimePickerTextColor(timePicker, Color.BLACK);
 
         // 현재 날짜 가져오기
@@ -41,6 +40,9 @@ public class TimePickerActivity extends AppCompatActivity {
         SimpleDateFormat dayFormat = new SimpleDateFormat("dd", Locale.getDefault());
         month = monthFormat.format(currentTime);
         day = dayFormat.format(currentTime);
+
+        // SharedPreferences에서 저장된 알람 시간 불러오기
+        loadAlarmData();
 
         // 확인 버튼 클릭 이벤트
         ImageButton okBtn = findViewById(R.id.okBtn);
@@ -58,6 +60,9 @@ public class TimePickerActivity extends AppCompatActivity {
             am_pm = (hour >= 12) ? "오후" : "오전";
             if (hour > 12) hour -= 12;
 
+            // 알람 시간과 날짜를 SharedPreferences에 저장
+            saveAlarmData(hour, minute, am_pm, month, day);
+
             // 결과 전달
             Intent resultIntent = new Intent();
             resultIntent.putExtra("hour", hour);
@@ -67,22 +72,19 @@ public class TimePickerActivity extends AppCompatActivity {
             resultIntent.putExtra("day", day);
             setResult(RESULT_OK, resultIntent);
 
-            // finish 전 api 전달
-
-            finish();
+            finish();  // 액티비티 종료
         });
 
         // 취소 버튼 클릭 이벤트
         ImageButton cancelBtn = findViewById(R.id.cancelBtn);
         cancelBtn.setOnClickListener(v -> finish());
     }
+
     private void setTimePickerTextColor(TimePicker timePicker, int color) {
-        // TimePicker의 자식 뷰 중 NumberPicker들을 탐색
         for (int i = 0; i < timePicker.getChildCount(); i++) {
             View child = timePicker.getChildAt(i);
             if (child instanceof NumberPicker) {
                 NumberPicker numberPicker = (NumberPicker) child;
-                // NumberPicker의 TextView 색상을 변경
                 setNumberPickerTextColor(numberPicker, color);
             }
         }
@@ -90,15 +92,47 @@ public class TimePickerActivity extends AppCompatActivity {
 
     private void setNumberPickerTextColor(NumberPicker numberPicker, int color) {
         try {
-            // NumberPicker 내부의 TextView 접근
             for (int i = 0; i < numberPicker.getChildCount(); i++) {
                 View child = numberPicker.getChildAt(i);
                 if (child instanceof TextView) {
-                    ((TextView) child).setTextColor(color);  // 텍스트 색상 변경
+                    ((TextView) child).setTextColor(color);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    // SharedPreferences에 알람 시간 저장
+    private void saveAlarmData(int hour, int minute, String am_pm, String month, String day) {
+        SharedPreferences sharedPreferences = getSharedPreferences("AlarmPreferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("hour", hour);
+        editor.putInt("minute", minute);
+        editor.putString("am_pm", am_pm);
+        editor.putString("month", month);
+        editor.putString("day", day);
+        editor.apply();  // 저장 실행
+    }
+
+    // SharedPreferences에서 알람 시간 불러오기
+    private void loadAlarmData() {
+        SharedPreferences sharedPreferences = getSharedPreferences("AlarmPreferences", Context.MODE_PRIVATE);
+        int savedHour = sharedPreferences.getInt("hour", -1);
+        int savedMinute = sharedPreferences.getInt("minute", -1);
+        String savedAmPm = sharedPreferences.getString("am_pm", "");
+        String savedMonth = sharedPreferences.getString("month", "");
+        String savedDay = sharedPreferences.getString("day", "");
+
+        if (savedHour != -1 && savedMinute != -1) {
+            // 알람이 이미 설정되어 있을 경우, TimePicker에 설정된 값 표시
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                timePicker.setHour(savedHour);
+                timePicker.setMinute(savedMinute);
+            } else {
+                timePicker.setCurrentHour(savedHour);
+                timePicker.setCurrentMinute(savedMinute);
+            }
         }
     }
 }
