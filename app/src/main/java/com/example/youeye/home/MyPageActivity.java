@@ -21,7 +21,7 @@ public class MyPageActivity extends AppCompatActivity {
     private TTSManager ttsManager;
     private SwitchManager switchManager;
 
-    private ImageButton logoutButton, alButton, settingsButton, imageButton10;
+    private ImageButton logoutButton, alButton, settingsButton, imageButton10,imageButton9;
     private TextView textView9, logoutText, alText, settingsText, myPillText, backText;
 
     @Override
@@ -37,6 +37,7 @@ public class MyPageActivity extends AppCompatActivity {
         textView9 = findViewById(R.id.textView9);
         logoutButton = findViewById(R.id.logoutBtton);
         alButton = findViewById(R.id.alBtton);
+        imageButton9 = findViewById(R.id.imageButton9);
         settingsButton = findViewById(R.id.imageButton8);
 
         logoutText = findViewById(R.id.logouttext);
@@ -54,7 +55,8 @@ public class MyPageActivity extends AppCompatActivity {
 // 알람 버튼 클릭 이벤트 설정
         setButtonClickListener(alButton, TimeActivity.class);
 
-
+// 나의 복용약 버튼 클릭 이벤트 설정
+        setButtonClickListener(imageButton9, Show_pill.class);
 // 설정 버튼 클릭 이벤트 설정
         setButtonClickListener(settingsButton, SettingsActivity.class);
 
