@@ -1,4 +1,3 @@
-// File: com/example/youeye/login/IDLoginActivity.java
 package com.example.youeye.login;
 
 import android.content.Intent;

@@ -1,4 +1,3 @@
-// File: com/example/youeye/api/LoginResponse.java
 package com.example.youeye.api;
 
 public class LoginResponse {

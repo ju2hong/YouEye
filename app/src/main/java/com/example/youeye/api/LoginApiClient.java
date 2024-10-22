@@ -11,18 +11,15 @@ public class LoginApiClient {
 
     public static Retrofit getClient() {
         if (retrofit == null) {
-            // 로깅 인터셉터 설정 (디버깅 용도)
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-            // OkHttpClient 설정
             OkHttpClient client = new OkHttpClient.Builder()
                     .addInterceptor(loggingInterceptor)
                     .build();
 
-            // Retrofit 인스턴스 생성
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://dyserver.asuscomm.com:13000/api/") // 실제 로그인 API의 base URL로 변경
+                    .baseUrl("http://dyserver.asuscomm.com:13000/api/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build();

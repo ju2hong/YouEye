@@ -18,7 +18,6 @@ public class ApiClient {
         if (retrofit == null) {
             OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
 
-            // Adding interceptor to add API key to every request
             clientBuilder.addInterceptor(new Interceptor() {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
@@ -34,7 +33,6 @@ public class ApiClient {
                 }
             });
 
-            // Adding logging interceptor
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             clientBuilder.addInterceptor(loggingInterceptor);
