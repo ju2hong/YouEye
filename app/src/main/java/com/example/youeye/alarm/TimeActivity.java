@@ -1,17 +1,17 @@
 package com.example.youeye.alarm;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
-import android.widget.AdapterView;
+import android.provider.Settings;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -19,56 +19,52 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.youeye.R;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import java.text.SimpleDateFormat;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Calendar;
-
 
 public class TimeActivity extends AppCompatActivity {
 
     private AdapterActivity arrayAdapter;
-    private ImageButton tpBtn, rmBtn;
+    private ArrayList<Time> alarmList = new ArrayList<>(); // ArrayList로 알람 저장
     private ListView listView;
     private int hour, minute;
-    private String month, day, am_pm;
-    private Handler handler;
-    private int adapterPosition;
+    private String am_pm, month, day;
 
+    // 시간 설정을 위한 런처
     private final ActivityResultLauncher<Intent> timePickerLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    // 시간 데이터를 받아옴
                     Intent data = result.getData();
-                    hour = data.getIntExtra("hour", 1);
-                    minute = data.getIntExtra("minute", 2);
+                    hour = data.getIntExtra("hour", 0);
+                    minute = data.getIntExtra("minute", 0);
                     am_pm = data.getStringExtra("am_pm");
                     month = data.getStringExtra("month");
                     day = data.getStringExtra("day");
 
+                    // 알람 객체를 ArrayList에 추가
+                    Time alarmTime = new Time();
+                    alarmTime.setHour(hour);
+                    alarmTime.setMinute(minute);
+                    alarmTime.setAm_pm(am_pm);
+                    alarmTime.setMonth(month);
+                    alarmTime.setDay(day);
+
+                    alarmList.add(alarmTime);
+
+                    // 리스트뷰 업데이트
                     arrayAdapter.addItem(hour, minute, am_pm, month, day);
                     arrayAdapter.notifyDataSetChanged();
 
-                    // 알람 토스트 설정
-                    setAlarm(hour, minute);
-                }
-            }
-    );
+                    // 알람 목록을 SharedPreferences에 저장
+                    saveAlarmList();
 
-    private final ActivityResultLauncher<Intent> itemEditLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                    Intent data = result.getData();
-                    hour = data.getIntExtra("hour", 1);
-                    minute = data.getIntExtra("minute", 2);
-                    am_pm = data.getStringExtra("am_pm");
-                    month = data.getStringExtra("month");
-                    day = data.getStringExtra("day");
-
-                    arrayAdapter.addItem(hour, minute, am_pm, month, day);
-                    arrayAdapter.notifyDataSetChanged();
-
-                    // 알람 토스트 설정2
+                    // 알람 설정
                     setAlarm(hour, minute);
                 }
             }
@@ -79,90 +75,108 @@ public class TimeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarmsettings);
 
-        handler = new Handler();  // Handler 초기화
-
+        // 어댑터 초기화
         arrayAdapter = new AdapterActivity();
-
-        listView = (ListView) findViewById(R.id.list_view);
+        listView = findViewById(R.id.list_view);
         listView.setAdapter(arrayAdapter);
 
-        // List에 있는 항목들 눌렀을 때 시간변경 가능
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                adapterPosition = position;
-                arrayAdapter.removeItem(position);
-                Intent intent = new Intent(TimeActivity.this, TimePickerActivity.class);
-                itemEditLauncher.launch(intent);
-            }
+        // 저장된 알람 목록 불러오기
+        loadAlarmList();
+
+        // 시간 설정 버튼 클릭 이벤트
+        ImageButton addBtn = findViewById(R.id.adBtn);
+        addBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(TimeActivity.this, TimePickerActivity.class);
+            timePickerLauncher.launch(intent); // 시간 설정 액티비티 호출
         });
 
-        class NewRunnable implements Runnable {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    handler.sendEmptyMessage(0);
-                }
-            }
-        }
+        // 알람 삭제 버튼 클릭 이벤트
+        ImageButton rmBtn = findViewById(R.id.rmBtn);
+        rmBtn.setOnClickListener(v -> {
+            arrayAdapter.removeItem();
+            arrayAdapter.notifyDataSetChanged();
 
-        NewRunnable runnable = new NewRunnable();
-        Thread thread = new Thread(runnable);
-        thread.start();
-
-        // TimePicker의 시간 셋팅값을 받기 위한 startActivityForResult() 대체
-        tpBtn = (ImageButton) findViewById(R.id.adBtn);
-        rmBtn = (ImageButton) findViewById(R.id.rmBtn);
-
-        if (tpBtn == null || rmBtn == null || listView == null) {
-            throw new IllegalArgumentException("필수 뷰 요소를 찾을 수 없습니다.");
-        }
-
-        tpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent tpIntent = new Intent(TimeActivity.this, TimePickerActivity.class);
-                timePickerLauncher.launch(tpIntent);
-            }
-        });
-
-        rmBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                arrayAdapter.removeItem();
-                arrayAdapter.notifyDataSetChanged();
-            }
+            // 알람 목록을 SharedPreferences에서 업데이트
+            saveAlarmList();
         });
     }
 
-    // 알람 매니저
+    // 알람 목록을 SharedPreferences에 저장하는 메서드
+    private void saveAlarmList() {
+        SharedPreferences sharedPreferences = getSharedPreferences("AlarmPreferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(alarmList); // 알람 리스트를 JSON으로 변환
+        editor.putString("alarmList", json);
+        editor.apply(); // 저장 실행
+
+        // JSON 저장 확인을 위해 로그 출력
+        Log.d("AlarmListSave", "Saved Alarm List JSON: " + json);
+    }
+
+    // 저장된 알람 목록을 불러오는 메서드
+    private void loadAlarmList() {
+        SharedPreferences sharedPreferences = getSharedPreferences("AlarmPreferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("alarmList", null);
+        Type type = new TypeToken<ArrayList<Time>>() {}.getType();
+        alarmList = gson.fromJson(json, type);
+
+        // 불러온 JSON 데이터 확인 로그
+        Log.d("AlarmListLoad", "Loaded Alarm List JSON: " + json);
+
+        if (alarmList == null) {
+            alarmList = new ArrayList<>();
+        } else {
+            // 불러온 알람 목록을 리스트뷰에 적용
+            for (Time alarmTime : alarmList) {
+                arrayAdapter.addItem(alarmTime.getHour(), alarmTime.getMinute(), alarmTime.getAm_pm(), alarmTime.getMonth(), alarmTime.getDay());
+            }
+            arrayAdapter.notifyDataSetChanged();
+        }
+    }
+
+    // 알람 설정 메서드
+    @SuppressLint("ScheduleExactAlarm")
     private void setAlarm(int hour, int minute) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        // 알람이 울릴 시간 설정
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
-        calendar.set(Calendar.SECOND, 0);
+        // Android 12(API 31) 이상에서 권한이 필요한 경우 처리
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (!alarmManager.canScheduleExactAlarms()) {
+                // 사용자가 직접 설정에서 권한을 부여하도록 안내
+                Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                startActivity(intent);
+                return;  // 권한을 요청한 후에는 알람 설정을 중단
+            }
+        }
 
-        // 인텐트를 생성하여 리시버를 호출합니다.
-        Intent intent = new Intent(this, AlarmReceiverActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // 알람을 설정합니다.
         if (alarmManager != null) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.set(Calendar.HOUR_OF_DAY, hour);
+            calendar.set(Calendar.MINUTE, minute);
+            calendar.set(Calendar.SECOND, 0);
+
+            if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
+                // 알람 시간이 현재 시간보다 이전이면 다음날로 설정
+                calendar.add(Calendar.DAY_OF_MONTH, 1);
+            }
+
+            Intent intent = new Intent(this, AlarmReceiverActivity.class);
+
+            // FLAG_IMMUTABLE 플래그 추가
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            } else {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            }
+
+            Toast.makeText(this, "알람이 " + hour + "시 " + minute + "분에 설정되었습니다.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "알람 설정에 실패했습니다.", Toast.LENGTH_SHORT).show();
         }
     }
-    public void onBackButtonPressed(View view) {
-
-        finish(); // 종료하고 이전 액티비티로 돌아감
-    }
 }
-
