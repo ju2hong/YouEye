@@ -11,10 +11,11 @@
 
     <!-- 이미지를 선택하는 버튼 -->
 
+
     <ImageView
         android:id="@+id/photoImageView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="324dp"
+        android:layout_height="395dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="37dp"
         android:layout_marginEnd="24dp"
@@ -23,35 +24,72 @@
         app:layout_constraintBottom_toTopOf="@+id/selectImageButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.7"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_percent="1"
         tools:srcCompat="@drawable/load" />
 
 
     <ImageButton
         android:id="@+id/selectImageButton"
-        android:layout_width="370dp"
-        android:layout_height="158dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="344dp"
+        android:layout_height="111dp"
+        android:layout_marginTop="456dp"
+        android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/photoImageView"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/button" />
+
+    <!-- 뒤로가기 버튼 -->
 
     <TextView
         android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="이미지 선택"
+        android:layout_width="301dp"
+        android:layout_height="89dp"
+        android:text="사진선택"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="25pt"
+        android:textSize="30pt"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/selectImageButton"
         app:layout_constraintEnd_toEndOf="@+id/selectImageButton"
+        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="@+id/selectImageButton"
-        app:layout_constraintTop_toTopOf="@+id/selectImageButton" />
+        app:layout_constraintTop_toTopOf="@+id/selectImageButton"
+        app:layout_constraintVertical_bias="0.363" />
+
+    <ImageButton
+        android:id="@+id/bkbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:contentDescription="뒤로가기"
+        android:onClick="onBackButtonPressed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.948"
+        app:srcCompat="@drawable/button" />
+
+    <TextView
+        android:id="@+id/bktext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="뒤로가기"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="30pt"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/bkbtn"
+        app:layout_constraintEnd_toEndOf="@+id/bkbtn"
+        app:layout_constraintStart_toStartOf="@+id/bkbtn"
+        app:layout_constraintTop_toTopOf="@+id/bkbtn" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
