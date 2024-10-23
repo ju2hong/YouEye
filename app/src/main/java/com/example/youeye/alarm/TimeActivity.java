@@ -75,8 +75,8 @@ public class TimeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarmsettings);
 
-        // 어댑터 초기화
-        arrayAdapter = new AdapterActivity();
+        // 어댑터 초기화 시 alarmList를 전달
+        arrayAdapter = new AdapterActivity(alarmList);
         listView = findViewById(R.id.list_view);
         listView.setAdapter(arrayAdapter);
 
@@ -93,13 +93,37 @@ public class TimeActivity extends AppCompatActivity {
         // 알람 삭제 버튼 클릭 이벤트
         ImageButton rmBtn = findViewById(R.id.rmBtn);
         rmBtn.setOnClickListener(v -> {
-            arrayAdapter.removeItem();
-            arrayAdapter.notifyDataSetChanged();
+            if (!alarmList.isEmpty()) {
+                // 마지막 아이템의 위치
+                int lastIndex = alarmList.size() - 1;
+                // 삭제할 알람 객체 가져오기
+                Time removedAlarm = alarmList.get(lastIndex);
+                int alarmId = removedAlarm.getId();
 
-            // 알람 목록을 SharedPreferences에서 업데이트
-            saveAlarmList();
+                // AlarmManager에서 알람 해제
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Intent intent = new Intent(this, AlarmReceiverActivity.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+                if (alarmManager != null) {
+                    alarmManager.cancel(pendingIntent);
+                    pendingIntent.cancel();
+                }
+
+                // 어댑터에서 아이템 삭제
+                arrayAdapter.removeItem(lastIndex);
+                // alarmList에서도 아이템 삭제
+                alarmList.remove(lastIndex);
+                // SharedPreferences에 변경사항 저장
+                saveAlarmList();
+
+                Toast.makeText(this, "알람이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "삭제할 알람이 없습니다.", Toast.LENGTH_SHORT).show();
+            }
         });
     }
+
 
     // 알람 목록을 SharedPreferences에 저장하는 메서드
     private void saveAlarmList() {

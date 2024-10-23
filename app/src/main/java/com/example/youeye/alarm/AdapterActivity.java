@@ -12,7 +12,12 @@ import com.example.youeye.R;
 import java.util.ArrayList;
 
 public class AdapterActivity extends BaseAdapter {
-    private ArrayList<Time> listviewItems = new ArrayList<>();
+    private ArrayList<Time> listviewItems;
+
+    // 생성자에서 리스트를 받도록 수정
+    public AdapterActivity(ArrayList<Time> listviewItems) {
+        this.listviewItems = listviewItems;
+    }
 
     @Override
     public int getCount() {
@@ -67,9 +72,10 @@ public class AdapterActivity extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void removeItem() {
-        if (!listviewItems.isEmpty()) {
-            listviewItems.remove(listviewItems.size() - 1);
+    // 특정 위치의 아이템을 삭제하는 메서드 추가
+    public void removeItem(int position) {
+        if (position >= 0 && position < listviewItems.size()) {
+            listviewItems.remove(position);
             notifyDataSetChanged();
         }
     }
