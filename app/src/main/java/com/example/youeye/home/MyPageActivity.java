@@ -69,14 +69,13 @@ public class MyPageActivity extends AppCompatActivity {
                 CharSequence buttonDescription = logoutButton.getContentDescription();
 
                 // TTS로 contentDescription 읽기
-                if (buttonDescription != null) {
+                if (buttonDescription != null && switchManager.getSwitchState()) {
                     ttsManager.speak(buttonDescription.toString());
                 }
 
                 showLogoutDialog("로그아웃", "정말 로그아웃 하시겠습니까?");
             }
         });
-
 
     }
     // tts 로 버튼 위 데코 읽기
@@ -85,8 +84,8 @@ public class MyPageActivity extends AppCompatActivity {
             // 버튼의 contentDescription 읽기
             CharSequence buttonDescription = button.getContentDescription();
 
-            // TTS로 contentDescription 읽기
-            if (buttonDescription != null) {
+            // TTS 스위치 상태 확인 후 발화
+            if (buttonDescription != null && switchManager.getSwitchState()) {
                 ttsManager.speak(buttonDescription.toString());
             }
 
@@ -111,12 +110,14 @@ public class MyPageActivity extends AppCompatActivity {
         // 다이얼로그 타이틀 및 메시지 설정
         dialogTitle.setText(title);
         dialogMessage.setText(message);
-
         // 예 버튼 클릭 이벤트 처리
         yesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ttsManager.speak("예");
+                // TTS 스위치 상태 확인 후 발화
+                if (switchManager.getSwitchState()) {
+                    ttsManager.speak("예");
+                }
                 // 로그아웃 로직
                 Toast.makeText(MyPageActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
@@ -133,7 +134,10 @@ public class MyPageActivity extends AppCompatActivity {
         noButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ttsManager.speak("아니오");
+                // TTS 스위치 상태 확인 후 발화
+                if (switchManager.getSwitchState()) {
+                    ttsManager.speak("아니오");
+                }
                 // 다이얼로그 닫기
                 dialog.dismiss();
             }
@@ -142,20 +146,22 @@ public class MyPageActivity extends AppCompatActivity {
         // 다이얼로그 표시
         dialog.show();
     }
-
     private void speakButtonDescriptionAndFinish() {
         String buttonText = imageButton10.getContentDescription().toString();
+        // TTS 스위치 상태 확인 후 발화
         if (switchManager.getSwitchState()) {
             ttsManager.speak(buttonText);
 
-            // 예상 발화 시간 계산 (대략 100ms per character + 500ms buffer)
-            int estimatedSpeechTime = buttonText.length() * 100 ;
+            // 예상 발화 시간 계산 (대략 100ms per character)
+            int estimatedSpeechTime = buttonText.length() * 100;
 
             new Handler().postDelayed(this::finishWithAnimation, estimatedSpeechTime);
         } else {
+            // TTS가 꺼져 있으면 즉시 액티비티 종료
             finishWithAnimation();
         }
     }
+
     private void finishWithAnimation() {
         finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
