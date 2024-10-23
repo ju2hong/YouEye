@@ -59,7 +59,7 @@ public class ImageSearchActivity extends AppCompatActivity {
         switchManager = SwitchManager.getInstance(this);
         previewView = findViewById(R.id.previewView);
 
-
+        // 뒤로가기 버튼
         imageButton4 = findViewById(R.id.imageButton4);
         imageButton4.setOnClickListener(v -> speakButtonDescriptionAndFinish());
 
@@ -141,7 +141,12 @@ public class ImageSearchActivity extends AppCompatActivity {
     // 사진 촬영 함수
     public void takePhoto(View view) {
         if (imageCapture == null) return;
-
+        // 버튼의 contentDescription 읽기
+        String buttonText = view.getContentDescription().toString();
+        // TTS가 활성화되어 있을 때만 읽기
+        if (switchManager.getSwitchState()) {
+            ttsManager.speak(buttonText);
+        }
         // 사진 파일을 저장할 경로 설정
         String name = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(System.currentTimeMillis());
         ContentValues contentValues = new ContentValues();
@@ -177,11 +182,27 @@ public class ImageSearchActivity extends AppCompatActivity {
     }
 
 
+    // ImageButton의 contentDescription을 음성으로 출력하는 메서드
+    private void speakButtonDescription(ImageButton button) {
+        String buttonText = button.getContentDescription().toString();
+        // 스위치가 활성화되어 있을 때만 음성 출력
+        if (switchManager.getSwitchState()) {
+            ttsManager.speak(buttonText);
+        }
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 화면이 다시 보여질 때 TTS 상태를 복원
+        ttsManager.setTTSOn(switchManager.getSwitchState());
+    }
 
     @Override
     protected void onDestroy() {
+        if (ttsManager != null) {
+            ttsManager.shutdown();
+        }
         super.onDestroy();
-        cameraExecutor.shutdown(); // Executor 종료
     }
 }

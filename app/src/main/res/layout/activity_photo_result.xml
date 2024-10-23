@@ -32,24 +32,27 @@
         tools:srcCompat="@drawable/load" />
 
 
+    <!-- 뒤로가기 버튼 -->
+
     <ImageButton
         android:id="@+id/selectImageButton"
+        android:contentDescription="사진선택"
         android:layout_width="344dp"
         android:layout_height="111dp"
         android:layout_marginTop="456dp"
         android:background="@android:color/transparent"
+        app:layout_constraintBottom_toTopOf="@+id/bkbtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/button" />
-
-    <!-- 뒤로가기 버튼 -->
 
     <TextView
         android:id="@+id/textView9"
-        android:layout_width="301dp"
-        android:layout_height="89dp"
+        android:layout_width="270dp"
+        android:layout_height="92dp"
         android:text="사진선택"
         android:textAlignment="center"
         android:textColor="@color/white"
@@ -68,7 +71,6 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:contentDescription="뒤로가기"
-        android:onClick="onBackButtonPressed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
