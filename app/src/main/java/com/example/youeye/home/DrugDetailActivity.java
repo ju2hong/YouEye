@@ -24,6 +24,9 @@ import com.bumptech.glide.request.target.Target;
 import com.example.youeye.R;
 import com.example.youeye.SwitchManager;
 import com.example.youeye.TTSManager;
+import com.example.youeye.alarm.AdapterActivity;
+import com.example.youeye.alarm.AlarmReceiverActivity;
+import com.example.youeye.alarm.TimeActivity;
 import com.opencsv.CSVReader;
 
 import java.io.InputStream;
@@ -104,6 +107,16 @@ public class DrugDetailActivity extends AppCompatActivity {
 
         // 이미지 로드
         loadMedicineImageFromCSV(name);  // 수정된 이미지 로드 방식
+
+        ImageButton imageButton6 = findViewById(R.id.imageButton6); // 버튼 참조
+        imageButton6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // AlarmSettingsActivity로 이동
+                Intent intent = new Intent(DrugDetailActivity.this, TimeActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     // 약품리스트 저장: 약품명을 SharedPreferences에 저장하는 메소드
