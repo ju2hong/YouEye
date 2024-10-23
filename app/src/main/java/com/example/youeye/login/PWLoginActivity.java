@@ -1,6 +1,8 @@
 package com.example.youeye.login;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +19,15 @@ import androidx.core.content.res.ResourcesCompat;
 import com.example.youeye.R;
 import com.example.youeye.SwitchManager;
 import com.example.youeye.TTSManager;
+import com.example.youeye.api.LoginApiClient;
+import com.example.youeye.api.LoginRequest;
+import com.example.youeye.api.LoginResponse;
+import com.example.youeye.api.LoginService;
+import com.example.youeye.home.HomeActivity;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +42,8 @@ public class PWLoginActivity extends AppCompatActivity {
     private TTSManager ttsManager;
     private SwitchManager switchManager;  // SwitchManager 선언 추가
     private ImageButton backButton;
+
+    private String userId; // 사용자 ID를 받아올 변수
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +70,6 @@ public class PWLoginActivity extends AppCompatActivity {
         imageButtons.add(findViewById(R.id.textPwButton3));
         imageButtons.add(findViewById(R.id.textPwButton4));
 
-
         // TextView 리스트 초기화
         textViews = new ArrayList<>();
         textViews.add(findViewById(R.id.textpwkey1));
@@ -73,28 +86,32 @@ public class PWLoginActivity extends AppCompatActivity {
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> speakButtonDescriptionAndFinish());
 
-        // 모든 ImageButton을 초기 상태로 설정
         for (ImageButton imageButton : imageButtons) {
             imageButton.setImageResource(R.drawable.logintext);
             imageButton.setTag(null);
         }
 
-        // TTS On/Off 버튼 초기화 및 클릭 리스너 설정
         ImageButton keyTTSButton = findViewById(R.id.pwkeyTts);
         keyTTSButton.setOnClickListener(v -> toggleTTS());
 
-        // 0부터 9까지 숫자 버튼에 클릭 리스너 설정
-        for (int i = 0; i < 10; i++) {
-            final int number = i;
-            int buttonId = getResources().getIdentifier("textpwkey" + i, "id", getPackageName());
-            findViewById(buttonId).setOnClickListener(v -> handleNumberInput(number));
-        }
+        Intent intent = getIntent();
+        if (intent.hasExtra("id")) {
+            userId = intent.getStringExtra("id");
+        } else {
 
-        // 삭제 버튼 클릭 리스너 설정
-        findViewById(R.id.deletePwButton).setOnClickListener(v -> deleteLastCharacter());
+            Toast.makeText(this, "User ID not found", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
-    // 숫자 입력 처리
+    public void addNumber(View view) {
+        String tag = (String) view.getTag();
+        if (tag != null) {
+            int number = Integer.parseInt(tag);
+            handleNumberInput(number);
+        }
+    }
+
     private void handleNumberInput(int number) {
         if (currentIndex < imageButtons.size()) {
             ImageButton currentImageButton = imageButtons.get(currentIndex);
@@ -108,8 +125,11 @@ public class PWLoginActivity extends AppCompatActivity {
         }
     }
 
-    // 마지막 문자를 삭제하는 메서드
-    private void deleteLastCharacter() {
+    public void deleteLastCharacter(View view) {
+        deleteLastCharacterInternal();
+    }
+
+    private void deleteLastCharacterInternal() {
         if (currentIndex > 0) {
             currentIndex--;
             ImageButton previousImageButton = imageButtons.get(currentIndex);
@@ -119,7 +139,6 @@ public class PWLoginActivity extends AppCompatActivity {
         }
     }
 
-    // 다음 ImageButton으로 이동하는 메서드
     private void moveToNextImageButton() {
         currentIndex++;
         if (currentIndex >= imageButtons.size()) {
@@ -130,7 +149,6 @@ public class PWLoginActivity extends AppCompatActivity {
         }
     }
 
-    // TTS 토글 메서드
     private void toggleTTS() {
         boolean isCurrentlyOn = ttsManager.isTTSOn();
         boolean newState = !isCurrentlyOn;
@@ -138,7 +156,6 @@ public class PWLoginActivity extends AppCompatActivity {
         switchManager.setSwitchState(newState); // TTS 상태 저장
     }
 
-    // 확인 다이얼로그를 표시하는 메서드
     private void showConfirmationDialog() {
         StringBuilder enteredNumber = new StringBuilder();
         for (ImageButton imageButton : imageButtons) {
@@ -157,38 +174,84 @@ public class PWLoginActivity extends AppCompatActivity {
         TextView titleTextView = dialogView.findViewById(R.id.dialog_title);
         TextView messageTextView = dialogView.findViewById(R.id.dialog_message);
         titleTextView.setText("비밀번호 확인");
-        String message = getString(R.string.confirmation_message, enteredNumber);
+        String message = "입력한 비밀번호는 " + enteredNumber + "입니다. 맞습니까?"; // 또는 문자열 리소스를 사용하세요.
         messageTextView.setText(message);
 
         dialog = builder.create();
 
         Drawable background = ResourcesCompat.getDrawable(getResources(), R.drawable.custom_dialog_background, null);
-        dialog.getWindow().setBackgroundDrawable(background);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(background);
+        }
         dialog.show();
     }
 
-    // Yes 버튼 클릭 시 LoginActivity로 전환
     public void onYesButtonClick(View view) {
-        String enteredNumber = inputNumber.toString();
-        Intent intent = new Intent(PWLoginActivity.this, LoginActivity.class);
-        intent.putExtra("pw", enteredNumber);
-        startActivity(intent);
-    }
+        String enteredPassword = inputNumber.toString();
 
-    // No 버튼 클릭 시 입력된 숫자 초기화
-    public void onNoButtonClick(View view) {
-        clearAllImageButtons();
-        inputNumber.setLength(0);
+        if (userId == null || userId.isEmpty()) {
+            Toast.makeText(this, "User ID is missing", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("로그인 중...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        LoginRequest loginRequest = new LoginRequest(userId, enteredPassword);
+
+        LoginService loginService = LoginApiClient.getClient().create(LoginService.class);
+
+        Call<LoginResponse> call = loginService.login(loginRequest);
+        call.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    LoginResponse loginResponse = response.body();
+                    if (loginResponse != null && loginResponse.getToken() != null) {
+                        String token = loginResponse.getToken();
+                        saveToken(token);
+
+                        Intent homeIntent = new Intent(PWLoginActivity.this, HomeActivity.class);
+                        homeIntent.putExtra("switch_state", switchManager.getSwitchState());
+                        homeIntent.putExtra("token", token); // 필요 시 토큰 전달
+                        startActivity(homeIntent);
+                        finish();
+                    } else {
+                        showLoginFailed("서버 응답이 유효하지 않습니다.");
+                    }
+                } else {
+                    String errorMsg = "로그인 실패: " + response.message();
+                    showLoginFailed(errorMsg);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                String errorMsg = "로그인 실패: " + t.getMessage();
+                showLoginFailed(errorMsg);
+            }
+        });
+
         dialog.dismiss();
     }
 
-    // 모든 ImageButton을 초기화하는 메서드
-    private void clearAllImageButtons() {
-        for (ImageButton imageButton : imageButtons) {
-            imageButton.setImageResource(R.drawable.logintext);
-            imageButton.setTag(null);
-        }
-        currentIndex = 0;
+    private void saveToken(String token) {
+        SharedPreferences sharedPref = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("auth_token", token);
+        editor.apply();
+    }
+
+    private void showLoginFailed(String message) {
+        new AlertDialog.Builder(this)
+                .setTitle("로그인 실패")
+                .setMessage(message)
+                .setPositiveButton("확인", null)
+                .show();
     }
 
     private void speakButtonDescriptionAndFinish() {
@@ -196,18 +259,19 @@ public class PWLoginActivity extends AppCompatActivity {
         if (switchManager.getSwitchState()) {
             ttsManager.speak(buttonText);
 
-            // 예상 발화 시간 계산 (대략 100ms per character + 500ms buffer)
-            int estimatedSpeechTime = buttonText.length() * 100 ;
+            int estimatedSpeechTime = buttonText.length() * 100;
 
             new Handler().postDelayed(this::finishWithAnimation, estimatedSpeechTime);
         } else {
             finishWithAnimation();
         }
     }
+
     private void finishWithAnimation() {
         finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

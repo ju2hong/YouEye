@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,7 +55,7 @@ public class PhotoResultActivity extends AppCompatActivity {
         switchManager = new SwitchManager(this);
         ttsManager = new TTSManager(this);
         photoImageView = findViewById(R.id.photoImageView);
-        Button selectImageButton = findViewById(R.id.selectImageButton);  // 이미지 선택 버튼
+        ImageButton selectImageButton = findViewById(R.id.selectImageButton);  // 이미지 선택 버튼
 
         // 갤러리에서 이미지 선택
         selectImageButton.setOnClickListener(v -> {

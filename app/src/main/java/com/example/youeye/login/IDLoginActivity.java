@@ -16,7 +16,6 @@ import androidx.core.content.res.ResourcesCompat;
 import com.example.youeye.R;
 import com.example.youeye.SwitchManager;
 import com.example.youeye.TTSManager;
-import com.example.youeye.home.HomeActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +35,7 @@ public class IDLoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_idlogin);
-
+        setContentView(R.layout.activity_idlogin); // 정확한 레이아웃 이름으로 변경
 
         // TTSManager 초기화
         ttsManager = new TTSManager(this);
@@ -83,19 +81,21 @@ public class IDLoginActivity extends AppCompatActivity {
             imageButton.setImageResource(R.drawable.logintext);
             imageButton.setTag(null);
         }
+
         // TTS On/Off 버튼 초기화 및 클릭 리스너 설정
         ImageButton keyTTSButton = findViewById(R.id.keytts);
         keyTTSButton.setOnClickListener(v -> toggleTTS());
 
-        // 0부터 9까지 숫자 버튼에 클릭 리스너 설정
-        for (int i = 0; i < 10; i++) {
-            final int number = i;
-            int buttonId = getResources().getIdentifier("key" + i, "id", getPackageName());
-            findViewById(buttonId).setOnClickListener(v -> handleNumberInput(number));
-        }
+        // 삭제 버튼은 레이아웃의 onClick 속성을 통해 처리하므로 여기서는 설정하지 않습니다.
+    }
 
-        // 삭제 버튼 클릭 리스너 설정
-        findViewById(R.id.deleteButton).setOnClickListener(v -> deleteLastCharacter());
+    // 숫자 입력 처리 via layout's onClick
+    public void addNumber(View view) {
+        String tag = (String) view.getTag();
+        if (tag != null) {
+            int number = Integer.parseInt(tag);
+            handleNumberInput(number);
+        }
     }
 
     // 숫자 입력 처리
@@ -112,8 +112,12 @@ public class IDLoginActivity extends AppCompatActivity {
         }
     }
 
-    // 마지막 문자를 삭제하는 메서드
-    private void deleteLastCharacter() {
+    // 마지막 문자를 삭제하는 메서드 via layout's onClick
+    public void deleteLastCharacter(View view) {
+        deleteLastCharacterInternal();
+    }
+
+    private void deleteLastCharacterInternal() {
         if (currentIndex > 0) {
             currentIndex--;
             ImageButton previousImageButton = imageButtons.get(currentIndex);
@@ -151,7 +155,7 @@ public class IDLoginActivity extends AppCompatActivity {
         TextView titleTextView = dialogView.findViewById(R.id.dialog_title);
         TextView messageTextView = dialogView.findViewById(R.id.dialog_message);
         titleTextView.setText("아이디 확인");
-        String message = getString(R.string.confirmation_message, enteredNumber);
+        String message = "입력한 아이디는 " + enteredNumber + "입니다. 맞습니까?"; // 또는 문자열 리소스를 사용하세요.
         messageTextView.setText(message);
 
         dialog = builder.create();
@@ -162,12 +166,14 @@ public class IDLoginActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    // Yes 버튼 클릭 시 LoginActivity로 전환
+    // Yes 버튼 클릭 시 LoginActivity로 전환하면서 ID 전달
     public void onYesButtonClick(View view) {
         String enteredNumber = inputNumber.toString();
         Intent intent = new Intent(IDLoginActivity.this, LoginActivity.class);
         intent.putExtra("id", enteredNumber); // 입력된 ID 값을 전달
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
+        finish(); // 현재 액티비티 종료
     }
 
     // No 버튼 클릭 시 입력된 숫자 초기화
@@ -186,7 +192,6 @@ public class IDLoginActivity extends AppCompatActivity {
         currentIndex = 0;
     }
 
-
     private void speakButtonDescriptionAndFinish() {
         String buttonText = backButton.getContentDescription().toString();
         if (switchManager.getSwitchState()) {
@@ -200,13 +205,16 @@ public class IDLoginActivity extends AppCompatActivity {
             finishWithAnimation();
         }
     }
+
     private void finishWithAnimation() {
         finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         speakButtonDescriptionAndFinish();
     }
 }
+
