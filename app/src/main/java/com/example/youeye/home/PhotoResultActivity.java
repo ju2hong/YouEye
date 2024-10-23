@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,7 @@ public class PhotoResultActivity extends AppCompatActivity {
     private SwitchManager switchManager;
     // 표준품목코드와 제품명을 저장할 Map
     private Map<String, String> drugDataMap;
+    private ImageButton bkbtn,selectImageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +58,41 @@ public class PhotoResultActivity extends AppCompatActivity {
         ttsManager = new TTSManager(this);
         photoImageView = findViewById(R.id.photoImageView);
         ImageButton selectImageButton = findViewById(R.id.selectImageButton);  // 이미지 선택 버튼
+        // 뒤로가기 버튼
+        bkbtn = findViewById(R.id.bkbtn);
+        bkbtn.setOnClickListener(v -> speakButtonDescriptionAndFinish());
 
-        // 갤러리에서 이미지 선택
         selectImageButton.setOnClickListener(v -> {
+            String buttonText = selectImageButton.getContentDescription() != null ? selectImageButton.getContentDescription().toString() : "이미지 선택";
+            if (switchManager.getSwitchState()) {
+                ttsManager.speak(buttonText);
+            }
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intent, GALLERY_REQUEST_CODE);
         });
     }
+    private void speakButtonDescriptionAndFinish() {
+        String buttonText = bkbtn.getContentDescription().toString();
+        if (switchManager.getSwitchState()) {
+            ttsManager.speak(buttonText);
 
+            // 예상 발화 시간 계산 (대략 100ms per character + 500ms buffer)
+            int estimatedSpeechTime = buttonText.length() * 100 ;
+
+            new Handler().postDelayed(this::finishWithAnimation, estimatedSpeechTime);
+        } else {
+            finishWithAnimation();
+        }
+    }
+    private void finishWithAnimation() {
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        speakButtonDescriptionAndFinish();
+    }
     // CSV 파일에서 약품 데이터 로드
     private void loadDrugDataFromCSV() {
         drugDataMap = new HashMap<>();
