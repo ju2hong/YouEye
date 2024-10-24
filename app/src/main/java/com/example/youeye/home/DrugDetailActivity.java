@@ -24,6 +24,9 @@ import com.bumptech.glide.request.target.Target;
 import com.example.youeye.R;
 import com.example.youeye.SwitchManager;
 import com.example.youeye.TTSManager;
+import com.example.youeye.alarm.AdapterActivity;
+import com.example.youeye.alarm.AlarmReceiverActivity;
+import com.example.youeye.alarm.TimeActivity;
 import com.opencsv.CSVReader;
 
 import java.io.InputStream;
@@ -58,6 +61,7 @@ public class DrugDetailActivity extends AppCompatActivity {
         // TTSManager 초기화
         ttsManager = new TTSManager(this);
         switchManager = SwitchManager.getInstance(this);
+        imageButton7.setOnClickListener(v -> speakButtonDescriptionAndFinish());
 
         // TextToSpeech 초기화
         tts = new TextToSpeech(this, status -> {
@@ -74,9 +78,17 @@ public class DrugDetailActivity extends AppCompatActivity {
             // 읽어줄 텍스트 구성 (약품명 -> 주의사항 및 부작용 -> 추가적인 정보)
             String textToSpeak = name + ", " + additionalInfo;
 
-            // TTS로 텍스트 읽기
-            tts.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null);
+            // TTS 상태 확인
+            if (isSpeaking) {
+                // TTS가 현재 말하고 있다면 멈추기
+                stopTTS(); // TTS 멈추기
+            } else {
+                // TTS가 현재 말하고 있지 않다면 읽기 시작
+                tts.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null);
+                isSpeaking = true; // Speaking 상태 업데이트
+            }
         });
+
 
         // 인텐트로 전달된 데이터 가져오기
         String name = getIntent().getStringExtra("name");
@@ -104,6 +116,16 @@ public class DrugDetailActivity extends AppCompatActivity {
 
         // 이미지 로드
         loadMedicineImageFromCSV(name);  // 수정된 이미지 로드 방식
+
+        ImageButton imageButton6 = findViewById(R.id.imageButton6); // 버튼 참조
+        imageButton6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // AlarmSettingsActivity로 이동
+                Intent intent = new Intent(DrugDetailActivity.this, TimeActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     // 약품리스트 저장: 약품명을 SharedPreferences에 저장하는 메소드
@@ -210,43 +232,34 @@ public class DrugDetailActivity extends AppCompatActivity {
         if (tts.isSpeaking()) {
             tts.stop();
         }
-        isSpeaking = false;
+        isSpeaking = false; // Speaking 상태 업데이트
     }
 
-    private void speakBackButtonAndFinish() {
+    private void speakButtonDescriptionAndFinish() {
         String buttonText = imageButton7.getContentDescription().toString();
         if (switchManager.getSwitchState()) {
             ttsManager.speak(buttonText);
 
+            // 예상 발화 시간 계산 (대략 100ms per character + 500ms buffer)
             int estimatedSpeechTime = buttonText.length() * 100;
+
             new Handler().postDelayed(this::finishWithAnimation, estimatedSpeechTime);
         } else {
-
             finishWithAnimation();
         }
     }
 
     private void finishWithAnimation() {
-        Intent intent = new Intent(this, TextSearchActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
         finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-        stopTTS();
-    }
-
-    private void speakText() {
-        String textToSpeak = textViewName.getText().toString() + ", " +
-                textView15.getText().toString() + ", " +
-                textViewDetail.getText().toString();
-
-        tts.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null);
-        isSpeaking = true;
+        stopTTS(); // 페이지를 나갈 때 TTS 종료
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        stopTTS();
+        stopTTS(); // 페이지를 나갈 때 TTS 종료
+        speakButtonDescriptionAndFinish();
     }
+
 }
