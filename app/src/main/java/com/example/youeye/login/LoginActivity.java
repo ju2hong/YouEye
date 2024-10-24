@@ -1,13 +1,12 @@
+// File: com/example/youeye/login/LoginActivity.java
 package com.example.youeye.login;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -27,8 +26,6 @@ public class LoginActivity extends AppCompatActivity {
     private TextView loginView;
     private TextView pwView;
 
-    private String userId; // 사용자 ID를 저장할 변수
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,13 +37,6 @@ public class LoginActivity extends AppCompatActivity {
 
         // 스위치 상태 가져오기
         switchState = switchManager.getSwitchState();
-
-        // 인텐트에서 사용자 ID를 받아옵니다.
-        Intent intent = getIntent();
-        if (intent.hasExtra("id")) {
-            userId = intent.getStringExtra("id");
-            Log.d("LoginActivity", "Received ID: " + userId);
-        }
 
         // 스위치와 버튼 초기화
         switchLogin = findViewById(R.id.switch1);
@@ -81,18 +71,6 @@ public class LoginActivity extends AppCompatActivity {
                 switchLogin.getTrackDrawable().clearColorFilter();
             }
         });
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        setIntent(intent); // 새로운 인텐트를 저장합니다.
-
-        // 인텐트에서 사용자 ID를 받아옵니다.
-        if (intent.hasExtra("id")) {
-            userId = intent.getStringExtra("id");
-            Log.d("LoginActivity", "Received ID in onNewIntent: " + userId);
-        }
     }
 
     @Override
@@ -132,18 +110,7 @@ public class LoginActivity extends AppCompatActivity {
             // 화면 이동
             Intent intent = new Intent(LoginActivity.this, activityClass);
             intent.putExtra("switch_state", switchState); // 스위치 상태를 전달
-
-            // 만약 PWLoginActivity로 이동하는 경우, 사용자 ID 전달
-            if (activityClass == PWLoginActivity.class) {
-                if (userId != null && !userId.isEmpty()) {
-                    intent.putExtra("id", userId);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(LoginActivity.this, "먼저 아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                startActivity(intent);
-            }
+            startActivity(intent);
         });
     }
 }
