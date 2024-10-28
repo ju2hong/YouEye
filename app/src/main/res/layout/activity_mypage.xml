@@ -131,14 +131,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="설정"
+        android:textAlignment="center"
+        android:textColor="@color/white"
         android:textSize="30pt"
         android:textStyle="bold"
-        android:textColor="@color/white"
-        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/imageButton8"
         app:layout_constraintEnd_toEndOf="@+id/imageButton8"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="@+id/imageButton8"
-        app:layout_constraintTop_toBottomOf="@+id/alBtton" />
+        app:layout_constraintTop_toBottomOf="@+id/alBtton"
+        app:layout_constraintVertical_bias="0.444" />
 
     <TextView
         android:id="@+id/textView17"
@@ -147,14 +149,14 @@
         android:text="나의\n복용약"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="23pt"
+        android:textSize="21pt"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/imageButton9"
         app:layout_constraintEnd_toEndOf="@+id/imageButton9"
-        app:layout_constraintHorizontal_bias="0.433"
+        app:layout_constraintHorizontal_bias="0.53"
         app:layout_constraintStart_toEndOf="@+id/imageButton8"
         app:layout_constraintTop_toBottomOf="@+id/logoutBtton"
-        app:layout_constraintVertical_bias="0.428" />
+        app:layout_constraintVertical_bias="0.402" />
 
     <TextView
         android:id="@+id/textView18"
