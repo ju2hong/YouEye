@@ -1,8 +1,10 @@
+// File: com/example/youeye/member/IDMemberActivity.java
 package com.example.youeye.member;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -13,7 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.youeye.R;
-import com.example.youeye.login.LoginActivity;
+import com.example.youeye.SwitchManager;
+import com.example.youeye.TTSManager;
+import com.example.youeye.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,149 +26,178 @@ public class IDMemberActivity extends AppCompatActivity {
 
     private List<ImageButton> imageButtons;
     private int currentIndex = 0;
-    private StringBuilder inputNumber; // 사용자가 입력한 숫자를 저장할 StringBuilder
+    private StringBuilder inputNumber;
 
     private AlertDialog dialog;
+    private TTSManager ttsManager;
+    private SwitchManager switchManager;
+    private ImageButton backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 올바른 레이아웃 파일을 설정합니다.
         setContentView(R.layout.activity_idmember);
 
-        inputNumber = new StringBuilder(); // StringBuilder 초기화
+        // TTSManager 초기화
+        ttsManager = new TTSManager(this);
 
-        // ImageButton을 리스트로 초기화합니다.
+        // SwitchManager 초기화
+        switchManager = SwitchManager.getInstance(this);
+
+        // 스위치 상태 가져오기
+        boolean isSwitchOn = switchManager.getSwitchState();
+
+        // TTS 활성화 여부 설정
+        ttsManager.setTTSOn(isSwitchOn);
+
+        // 입력 번호를 저장할 StringBuilder 초기화
+        inputNumber = new StringBuilder();
+
+        // ImageButton 리스트 초기화
         imageButtons = new ArrayList<>();
         imageButtons.add(findViewById(R.id.textButton1));
         imageButtons.add(findViewById(R.id.textButton2));
         imageButtons.add(findViewById(R.id.textButton3));
         imageButtons.add(findViewById(R.id.textButton4));
 
-        // 모든 ImageButton을 초기 상태로 설정합니다.
+        // backButton 초기화
+        backButton = findViewById(R.id.backButton);
+
+        // backButton이 null이 아닌지 확인 후 클릭 리스너 설정
+        if (backButton != null) {
+            backButton.setOnClickListener(v -> speakButtonDescriptionAndFinish());
+        } else {
+            // backButton이 null인 경우 처리
+            // Log.e("IDMemberActivity", "backButton is null");
+        }
+
+        // 모든 ImageButton을 초기 상태로 설정
         for (ImageButton imageButton : imageButtons) {
             imageButton.setImageResource(R.drawable.logintext);
             imageButton.setTag(null);
         }
+    }
 
-        // onCreate 메서드 안에 0부터 9까지의 숫자에 대한 클릭 리스너를 추가합니다.
-        for (int i = 0; i < 10; i++) {
-            final int number = i; // 클로저를 위해 final 변수로 설정합니다.
-            int buttonId = getResources().getIdentifier("key" + i, "id", getPackageName());
-            findViewById(buttonId).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ImageButton currentImageButton = imageButtons.get(currentIndex);
-                    currentImageButton.setImageResource(R.drawable.textinput);
-                    currentImageButton.setTag(String.valueOf(number)); // 숫자를 문자열로 변환하여 태그에 설정합니다.
-                    inputNumber.append(number); // 입력된 숫자를 추가합니다.
-                    moveToNextImageButton();
-                }
-            });
+    // 숫자 입력 처리 via layout's onClick
+    public void addNumber(View view) {
+        String tag = (String) view.getTag();
+        if (tag != null) {
+            int number = Integer.parseInt(tag);
+            handleNumberInput(number);
         }
-        findViewById(R.id.deleteButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteLastCharacter();
+    }
+
+    // 숫자 입력 처리
+    private void handleNumberInput(int number) {
+        if (currentIndex < imageButtons.size()) {
+            ImageButton currentImageButton = imageButtons.get(currentIndex);
+            currentImageButton.setImageResource(R.drawable.textinput);
+            currentImageButton.setTag(String.valueOf(number));
+            inputNumber.append(number);
+            if (ttsManager.isTTSOn()) {
+                ttsManager.speak(String.valueOf(number));
             }
-        });
-    }
-
-    // 삭제 버튼 클릭 이벤트 핸들러
-    public void deleteLastCharacter() {
-        // 현재 입력된 숫자가 없는 경우 삭제 버튼을 무시합니다.
-        if (currentIndex <= 0) {
-            return;
+            moveToNextImageButton();
         }
-
-        // 직전에 입력된 ImageButton에서 이미지를 초기화하고 태그를 제거합니다.
-        int previousIndex = currentIndex - 1;
-        ImageButton previousImageButton = imageButtons.get(previousIndex);
-        previousImageButton.setImageResource(R.drawable.logintext);
-        previousImageButton.setTag(null);
-
-        // 직전 ImageButton으로 포커스를 이동합니다.
-        currentIndex = previousIndex;
-        imageButtons.get(currentIndex).requestFocus();
     }
 
-    // 다음 ImageButton으로 포커스를 이동하는 메서드
+    // 마지막 문자를 삭제하는 메서드 via layout's onClick
+    public void deleteLastCharacter(View view) {
+        if (currentIndex > 0) {
+            currentIndex--;
+            ImageButton previousImageButton = imageButtons.get(currentIndex);
+            previousImageButton.setImageResource(R.drawable.logintext);
+            previousImageButton.setTag(null);
+            inputNumber.deleteCharAt(inputNumber.length() - 1);
+        }
+    }
+
+    // 다음 ImageButton으로 이동하는 메서드
     private void moveToNextImageButton() {
         currentIndex++;
         if (currentIndex >= imageButtons.size()) {
-            // 모든 ImageButton에 숫자가 입력되었을 때 확인 팝업창을 띄웁니다.
             showConfirmationDialog();
-            currentIndex = 0; // 첫 번째 ImageButton으로 이동합니다.
         } else {
             imageButtons.get(currentIndex).requestFocus();
         }
     }
 
-    // 확인 팝업창을 띄우는 메서드
+    // 확인 다이얼로그를 표시하는 메서드
     private void showConfirmationDialog() {
-        StringBuilder enteredNumber = new StringBuilder();
-        for (ImageButton imageButton : imageButtons) {
-            String number = (String) imageButton.getTag();
-            if (number != null) {
-                enteredNumber.append(number);
-            }
-        }
-        // LayoutInflater를 사용하여 custom_dialog_layout.xml 파일을 inflate합니다.
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View dialogView = inflater.inflate(R.layout.custom_dialog_layout, null);
-
-        // AlertDialog.Builder를 사용하여 다이얼로그를 생성합니다.
+        String enteredNumber = inputNumber.toString();
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.custom_dialog_layout, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView);
 
-        // 다이얼로그 내의 TextView에 제목과 메시지를 설정합니다.
         TextView titleTextView = dialogView.findViewById(R.id.dialog_title);
         TextView messageTextView = dialogView.findViewById(R.id.dialog_message);
         titleTextView.setText("아이디 확인");
-        String message = getString(R.string.confirmation_message, enteredNumber);
+        String message = "입력한 아이디는 " + enteredNumber + "입니다. 맞습니까?";
         messageTextView.setText(message);
 
-        // AlertDialog를 생성하고 표시합니다.
+        // Yes, No 버튼에 대한 클릭 리스너를 설정합니다.
+        ImageButton yesButton = dialogView.findViewById(R.id.yesButton);
+        ImageButton noButton = dialogView.findViewById(R.id.noButton);
+
+        yesButton.setOnClickListener(this::onYesButtonClick);
+        noButton.setOnClickListener(this::onNoButtonClick);
+
         dialog = builder.create();
-        // 배경 설정
         Drawable background = ResourcesCompat.getDrawable(getResources(), R.drawable.custom_dialog_background, null);
-        dialog.getWindow().setBackgroundDrawable(background);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(background);
+        }
         dialog.show();
     }
-    // 사용자가 Yes를 선택한 경우, LoginActivity로 화면을 전환하는 메서드
+
+    // Yes 버튼 클릭 시 PWMemberActivity로 전환하면서 ID 전달
     public void onYesButtonClick(View view) {
-        // 로그인 처리를 한 뒤 로그인 액티비티의 아이디 입력 버튼을 변경합니다.
-        // 이 코드는 로그인 처리가 완료되었다고 가정하고 작성된 것입니다.
-        changeIdButtonInLoginActivity();
-        Intent intent = new Intent(IDMemberActivity.this, LoginActivity.class);
+        String enteredId = inputNumber.toString();
+        Intent intent = new Intent(IDMemberActivity.this, PWMemberActivity.class);
+        intent.putExtra("id", enteredId); // 입력된 ID 값을 전달
         startActivity(intent);
+        finish(); // 현재 액티비티 종료
     }
-    // LoginActivity에서 아이디 입력 버튼을 변경하는 메서드
-    private void changeIdButtonInLoginActivity() {
-        // 로그인 액티비티의 아이디 입력 창과 비밀번호 입력 창에 대한 레이아웃 파일을 가져옵니다.
-        View loginLayout = LayoutInflater.from(this).inflate(R.layout.activity_member, null);
 
-        // 가져온 레이아웃에서 아이디 입력 버튼을 찾아서 색상을 변경합니다.
-        ImageButton idButton = loginLayout.findViewById(R.id.idInputButton); // 예시에서는 idInputButton으로 가정합니다.
-        idButton.setImageResource(R.drawable.inputbutton); // 새 이미지로 아이디 입력 버튼을 설정합니다.
-
-        // 변경된 레이아웃을 다시 화면에 적용합니다.
-        setContentView(loginLayout);
-    }
-    // 사용자가 No를 선택한 경우, 입력된 숫자를 다시 초기화하는 메서드
+    // No 버튼 클릭 시 입력된 숫자 초기화
     public void onNoButtonClick(View view) {
-        clearAllImageButtons(); // 모든 이미지 버튼을 초기화합니다.
+        clearAllImageButtons();
         inputNumber.setLength(0);
-        dialog.dismiss(); // 팝업창을 닫습니다
+        dialog.dismiss();
     }
 
     // 모든 ImageButton을 초기화하는 메서드
-    public void clearAllImageButtons() {
+    private void clearAllImageButtons() {
         for (ImageButton imageButton : imageButtons) {
             imageButton.setImageResource(R.drawable.logintext);
             imageButton.setTag(null);
         }
-        currentIndex = 0; // 현재 인덱스를 초기화하여 처음부터 다시 입력할 수 있도록 합니다.
+        currentIndex = 0;
     }
 
-}
+    private void speakButtonDescriptionAndFinish() {
+        String buttonText = backButton.getContentDescription().toString();
+        if (switchManager.getSwitchState()) {
+            ttsManager.speak(buttonText);
 
+            // 예상 발화 시간 계산 (대략 100ms per character + 500ms buffer)
+            int estimatedSpeechTime = buttonText.length() * 100;
+
+            new Handler().postDelayed(this::finishWithAnimation, estimatedSpeechTime);
+        } else {
+            finishWithAnimation();
+        }
+    }
+
+    private void finishWithAnimation() {
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        speakButtonDescriptionAndFinish();
+    }
+}
