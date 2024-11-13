@@ -15,6 +15,8 @@ import android.widget.TimePicker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.youeye.R;
+import com.example.youeye.SwitchManager;
+import com.example.youeye.TTSManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -25,6 +27,9 @@ public class TimePickerActivity extends AppCompatActivity {
 
     private TimePicker timePicker;
     private String am_pm, month, day;
+    private ImageButton okBtn,cancelBtn;
+    private TTSManager ttsManager;
+    private SwitchManager switchManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,12 @@ public class TimePickerActivity extends AppCompatActivity {
         timePicker = findViewById(R.id.time_picker);
         setTimePickerTextColor(timePicker, Color.BLACK);
 
+        // TTSManager 초기화
+        ttsManager = new TTSManager(this);
+        // SwitchManager 초기화
+        switchManager = SwitchManager.getInstance(this);
+        // 스위치 상태 가져오기
+        boolean isSwitchOn = switchManager.getSwitchState();
         // 현재 날짜 가져오기
         Date currentTime = Calendar.getInstance().getTime();
         SimpleDateFormat monthFormat = new SimpleDateFormat("MM", Locale.getDefault());
@@ -71,15 +82,30 @@ public class TimePickerActivity extends AppCompatActivity {
             resultIntent.putExtra("month", month);
             resultIntent.putExtra("day", day);
             setResult(RESULT_OK, resultIntent);
-
+            // TTS 실행: 버튼의 contentDescription 읽기
+            if (switchManager.getSwitchState()) {
+                CharSequence description = okBtn.getContentDescription();
+                if (description != null) {
+                    ttsManager.speak(description.toString());
+                }
+            }
             finish();  // 액티비티 종료
         });
 
         // 취소 버튼 클릭 이벤트
         ImageButton cancelBtn = findViewById(R.id.cancelBtn);
-        cancelBtn.setOnClickListener(v -> finish());
+        // 취소 버튼 클릭 이벤트
+        cancelBtn.setOnClickListener(v -> {
+            // TTS 실행: 버튼의 contentDescription 읽기
+            if (switchManager.getSwitchState()) {
+                CharSequence description = cancelBtn.getContentDescription();
+                if (description != null) {
+                    ttsManager.speak(description.toString());
+                }
+            }
+            finish();  // 액티비티 종료
+        });
     }
-
     private void setTimePickerTextColor(TimePicker timePicker, int color) {
         for (int i = 0; i < timePicker.getChildCount(); i++) {
             View child = timePicker.getChildAt(i);

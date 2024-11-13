@@ -22,7 +22,7 @@
 
     <ImageButton
         android:id="@+id/okBtn"
-        android:contentDescription="확인 버튼"
+        android:contentDescription="알람이 추가 되었습니다."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
@@ -51,7 +51,7 @@
 
     <ImageButton
         android:id="@+id/cancelBtn"
-        android:contentDescription="취소 버튼"
+        android:contentDescription="취소 되었습니다."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
