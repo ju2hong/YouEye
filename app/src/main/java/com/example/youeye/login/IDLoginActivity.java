@@ -154,7 +154,7 @@ public class IDLoginActivity extends AppCompatActivity {
         TextView titleTextView = dialogView.findViewById(R.id.dialog_title);
         TextView messageTextView = dialogView.findViewById(R.id.dialog_message);
         titleTextView.setText("아이디 확인");
-        String message = "입력한 아이디는 " + enteredNumber + "입니다. 맞습니까?";
+        String message = "입력한 번호는 " + enteredNumber + "입니다.";
         messageTextView.setText(message);
 
         dialog = builder.create();
@@ -163,10 +163,16 @@ public class IDLoginActivity extends AppCompatActivity {
             dialog.getWindow().setBackgroundDrawable(background);
         }
         dialog.show();
-    }
+
+        if (ttsManager.isTTSOn()) {
+            ttsManager.speak("아이디를 확인해주세요");
+        }
+
+}
 
     // Yes 버튼 클릭 시 PWLoginActivity로 전환하면서 ID 전달
     public void onYesButtonClick(View view) {
+        ttsManager.speak("예");
         String enteredId = inputNumber.toString();
         Intent intent = new Intent(IDLoginActivity.this, PWLoginActivity.class);
         intent.putExtra("id", enteredId); // 입력된 ID 값을 전달
@@ -176,6 +182,7 @@ public class IDLoginActivity extends AppCompatActivity {
 
     // No 버튼 클릭 시 입력된 숫자 초기화
     public void onNoButtonClick(View view) {
+        ttsManager.speak("아니오");
         clearAllImageButtons();
         inputNumber.setLength(0);
         dialog.dismiss();

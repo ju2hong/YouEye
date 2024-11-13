@@ -180,27 +180,30 @@ public class PWLoginActivity extends AppCompatActivity {
 
         LayoutInflater inflater = LayoutInflater.from(this);
         View dialogView = inflater.inflate(R.layout.custom_dialog_layout, null);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView);
 
         TextView titleTextView = dialogView.findViewById(R.id.dialog_title);
         TextView messageTextView = dialogView.findViewById(R.id.dialog_message);
         titleTextView.setText("비밀번호 확인");
-        String message = "입력한 비밀번호는 " + enteredNumber + "입니다. 맞습니까?";
+        String message = "입력한 번호는 " + enteredNumber + "입니다.";
         messageTextView.setText(message);
 
         dialog = builder.create();
-
         Drawable background = ResourcesCompat.getDrawable(getResources(), R.drawable.custom_dialog_background, null);
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(background);
         }
         dialog.show();
+
+        if (ttsManager.isTTSOn()) {
+            ttsManager.speak("비밀번호를 확인해주세요");
+        }
     }
 
     // Yes 버튼 클릭 시 로그인 API 호출
     public void onYesButtonClick(View view) {
+        ttsManager.speak("예");
         String enteredPassword = inputNumber.toString();
 
         // 로그인 API 호출
@@ -211,6 +214,7 @@ public class PWLoginActivity extends AppCompatActivity {
 
     // No 버튼 클릭 시 입력된 비밀번호 초기화
     public void onNoButtonClick(View view) {
+        ttsManager.speak("아니요");
         clearAllImageButtons();
         inputNumber.setLength(0);
         dialog.dismiss();
