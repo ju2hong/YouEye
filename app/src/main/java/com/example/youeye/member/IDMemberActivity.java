@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,10 +18,17 @@ import androidx.core.content.res.ResourcesCompat;
 import com.example.youeye.R;
 import com.example.youeye.SwitchManager;
 import com.example.youeye.TTSManager;
-import com.example.youeye.R;
+import com.example.youeye.api.CheckIdRequest;
+import com.example.youeye.api.CheckIdResponse;
+import com.example.youeye.api.LoginApiClient;
+import com.example.youeye.api.LoginService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class IDMemberActivity extends AppCompatActivity {
 
@@ -28,15 +36,16 @@ public class IDMemberActivity extends AppCompatActivity {
     private int currentIndex = 0;
     private StringBuilder inputNumber;
 
-    private AlertDialog dialog;
     private TTSManager ttsManager;
     private SwitchManager switchManager;
     private ImageButton backButton;
 
+    // 다이얼로그 객체를 클래스 변수로 선언
+    private AlertDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 올바른 레이아웃 파일을 설정합니다.
         setContentView(R.layout.activity_idmember);
 
         // TTSManager 초기화
@@ -117,23 +126,87 @@ public class IDMemberActivity extends AppCompatActivity {
     private void moveToNextImageButton() {
         currentIndex++;
         if (currentIndex >= imageButtons.size()) {
-            showConfirmationDialog();
+            // 입력이 완료되면 ID 중복 확인 실행
+            checkIdDuplicate();
         } else {
             imageButtons.get(currentIndex).requestFocus();
         }
     }
 
+    // ID 중복 확인 메서드
+    private void checkIdDuplicate() {
+        String enteredId = inputNumber.toString();
+
+        // 서버에 요청 보낼 객체 생성
+        CheckIdRequest checkIdRequest = new CheckIdRequest(enteredId);
+
+        // Retrofit 서비스 생성
+        LoginService loginService = LoginApiClient.getClient().create(LoginService.class);
+        Call<CheckIdResponse> call = loginService.checkid(checkIdRequest);
+
+        // 비동기 요청
+        call.enqueue(new Callback<CheckIdResponse>() {
+            @Override
+            public void onResponse(Call<CheckIdResponse> call, Response<CheckIdResponse> response) {
+                if (response.isSuccessful()) {
+                    CheckIdResponse checkIdResponse = response.body();
+                    if (checkIdResponse != null) {
+                        if (checkIdResponse.isExists()) {
+                            // ID가 이미 존재하는 경우
+                            Toast.makeText(IDMemberActivity.this, "아이디가 이미 존재합니다.", Toast.LENGTH_SHORT).show();
+                            if (ttsManager.isTTSOn()) {
+                                ttsManager.speak("아이디가 이미 존재합니다.");
+                            }
+                            clearAllImageButtons();
+                            inputNumber.setLength(0);
+                            currentIndex = 0;
+                        } else {
+                            // ID를 사용할 수 있는 경우
+                            Toast.makeText(IDMemberActivity.this, "아이디를 사용할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                            if (ttsManager.isTTSOn()) {
+                                ttsManager.speak("아이디를 사용할 수 있습니다.");
+                            }
+                            // 다음 단계로 진행
+                            showConfirmationDialog();
+                        }
+                    }
+                } else {
+                    // 서버 오류 등의 상황 처리
+                    Toast.makeText(IDMemberActivity.this, "ID 중복 확인 실패: " + response.message(), Toast.LENGTH_SHORT).show();
+                    if (ttsManager.isTTSOn()) {
+                        ttsManager.speak("ID 중복 확인에 실패했습니다.");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CheckIdResponse> call, Throwable t) {
+                // 통신 오류 처리
+                Toast.makeText(IDMemberActivity.this, "통신 오류: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                if (ttsManager.isTTSOn()) {
+                    ttsManager.speak("통신 오류가 발생했습니다.");
+                }
+            }
+        });
+    }
+
     // 확인 다이얼로그를 표시하는 메서드
     private void showConfirmationDialog() {
-        String enteredNumber = inputNumber.toString();
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.custom_dialog_layout, null);
+        String enteredId = inputNumber.toString();
+
+        // 다이얼로그 레이아웃을 인플레이트합니다.
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View dialogView = inflater.inflate(R.layout.custom_dialog_layout, null);
+
+        // AlertDialog.Builder를 사용하여 다이얼로그를 생성합니다.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView);
 
+        // 다이얼로그 내의 TextView에 제목과 메시지를 설정합니다.
         TextView titleTextView = dialogView.findViewById(R.id.dialog_title);
         TextView messageTextView = dialogView.findViewById(R.id.dialog_message);
         titleTextView.setText("아이디 확인");
-        String message = "입력한 아이디는 " + enteredNumber + "입니다. 맞습니까?";
+        String message = "입력한 아이디는 " + enteredId + "입니다. 맞습니까?";
         messageTextView.setText(message);
 
         // Yes, No 버튼에 대한 클릭 리스너를 설정합니다.
@@ -143,7 +216,9 @@ public class IDMemberActivity extends AppCompatActivity {
         yesButton.setOnClickListener(this::onYesButtonClick);
         noButton.setOnClickListener(this::onNoButtonClick);
 
+        // AlertDialog를 생성하고 표시합니다.
         dialog = builder.create();
+        // 배경 설정
         Drawable background = ResourcesCompat.getDrawable(getResources(), R.drawable.custom_dialog_background, null);
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(background);
@@ -164,7 +239,10 @@ public class IDMemberActivity extends AppCompatActivity {
     public void onNoButtonClick(View view) {
         clearAllImageButtons();
         inputNumber.setLength(0);
-        dialog.dismiss();
+        currentIndex = 0;
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
     }
 
     // 모든 ImageButton을 초기화하는 메서드
@@ -197,7 +275,6 @@ public class IDMemberActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         speakButtonDescriptionAndFinish();
     }
 }
