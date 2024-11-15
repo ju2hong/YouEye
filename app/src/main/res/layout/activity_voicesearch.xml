@@ -66,34 +66,35 @@
         app:layout_constraintTop_toTopOf="@id/searchVoice"
         app:layout_constraintVertical_bias="0.55" />
 
-    <ImageButton
-        android:id="@+id/backButton"
-        android:contentDescription="뒤로가기"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.937"
-        app:srcCompat="@drawable/button"
-        android:background="@android:color/transparent"
-        android:onClick="onBackButtonPressed"
-        />
+        app:layout_constraintVertical_bias="0.937">
 
-    <TextView
-        android:id="@+id/back"
-        android:layout_width="328dp"
-        android:layout_height="100dp"
-        android:text="뒤로가기"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="30pt"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/backButton"
-        app:layout_constraintEnd_toEndOf="@id/backButton"
-        app:layout_constraintStart_toStartOf="@id/backButton"
-        app:layout_constraintTop_toTopOf="@id/backButton"
-        app:layout_constraintVertical_bias="0.291" />
+        <ImageButton
+            android:id="@+id/backButton"
+            android:contentDescription="뒤로가기"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/button"
+            android:background="@android:color/transparent"
+            android:onClick="onBackButtonPressed" />
+
+        <TextView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="뒤로가기"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="30pt"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -80,21 +80,6 @@
         android:background="@android:color/transparent"
         />
 
-    <ImageButton
-        android:id="@+id/imageButton10"
-        android:contentDescription="뒤로가기"
-        android:layout_width="404dp"
-        android:layout_height="135dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.428"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.941"
-        app:srcCompat="@drawable/backbutton"
-        android:background="@android:color/transparent"
-        android:onClick="onBackButtonPressed"
-        />
 
     <TextView
         android:id="@+id/logouttext"
@@ -158,20 +143,33 @@
         app:layout_constraintTop_toBottomOf="@+id/logoutBtton"
         app:layout_constraintVertical_bias="0.402" />
 
-    <TextView
-        android:id="@+id/textView18"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="뒤로가기"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="30pt"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton10"
-        app:layout_constraintEnd_toEndOf="@+id/imageButton10"
-        app:layout_constraintStart_toStartOf="@+id/imageButton10"
-        app:layout_constraintTop_toTopOf="@+id/imageButton10"
-        app:layout_constraintVertical_bias="0.303" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.937">
 
+        <ImageButton
+            android:id="@+id/imageButton10"
+            android:contentDescription="뒤로가기"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/button"
+            android:background="@android:color/transparent" />
 
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="뒤로가기"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="30pt"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
