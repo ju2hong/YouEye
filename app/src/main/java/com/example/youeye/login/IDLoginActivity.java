@@ -1,3 +1,4 @@
+// File: com/example/youeye/login/IDLoginActivity.java
 package com.example.youeye.login;
 
 import android.content.Intent;
@@ -29,13 +30,13 @@ public class IDLoginActivity extends AppCompatActivity {
 
     private AlertDialog dialog;
     private TTSManager ttsManager;
-    private SwitchManager switchManager;  // SwitchManager 선언 추가
+    private SwitchManager switchManager;
     private ImageButton backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_idlogin); // 정확한 레이아웃 이름으로 변경
+        setContentView(R.layout.activity_idlogin);
 
         // TTSManager 초기화
         ttsManager = new TTSManager(this);
@@ -85,8 +86,6 @@ public class IDLoginActivity extends AppCompatActivity {
         // TTS On/Off 버튼 초기화 및 클릭 리스너 설정
         ImageButton keyTTSButton = findViewById(R.id.keytts);
         keyTTSButton.setOnClickListener(v -> toggleTTS());
-
-        // 삭제 버튼은 레이아웃의 onClick 속성을 통해 처리하므로 여기서는 설정하지 않습니다.
     }
 
     // 숫자 입력 처리 via layout's onClick
@@ -155,7 +154,7 @@ public class IDLoginActivity extends AppCompatActivity {
         TextView titleTextView = dialogView.findViewById(R.id.dialog_title);
         TextView messageTextView = dialogView.findViewById(R.id.dialog_message);
         titleTextView.setText("아이디 확인");
-        String message = "입력한 아이디는 " + enteredNumber + "입니다. 맞습니까?"; // 또는 문자열 리소스를 사용하세요.
+        String message = "입력한 번호는 " + enteredNumber + "입니다.";
         messageTextView.setText(message);
 
         dialog = builder.create();
@@ -164,20 +163,26 @@ public class IDLoginActivity extends AppCompatActivity {
             dialog.getWindow().setBackgroundDrawable(background);
         }
         dialog.show();
-    }
 
-    // Yes 버튼 클릭 시 LoginActivity로 전환하면서 ID 전달
+        if (ttsManager.isTTSOn()) {
+            ttsManager.speak("아이디를 확인해주세요");
+        }
+
+}
+
+    // Yes 버튼 클릭 시 PWLoginActivity로 전환하면서 ID 전달
     public void onYesButtonClick(View view) {
-        String enteredNumber = inputNumber.toString();
-        Intent intent = new Intent(IDLoginActivity.this, LoginActivity.class);
-        intent.putExtra("id", enteredNumber); // 입력된 ID 값을 전달
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        ttsManager.speak("예");
+        String enteredId = inputNumber.toString();
+        Intent intent = new Intent(IDLoginActivity.this, PWLoginActivity.class);
+        intent.putExtra("id", enteredId); // 입력된 ID 값을 전달
         startActivity(intent);
         finish(); // 현재 액티비티 종료
     }
 
     // No 버튼 클릭 시 입력된 숫자 초기화
     public void onNoButtonClick(View view) {
+        ttsManager.speak("아니오");
         clearAllImageButtons();
         inputNumber.setLength(0);
         dialog.dismiss();
@@ -217,4 +222,5 @@ public class IDLoginActivity extends AppCompatActivity {
         speakButtonDescriptionAndFinish();
     }
 }
+
 

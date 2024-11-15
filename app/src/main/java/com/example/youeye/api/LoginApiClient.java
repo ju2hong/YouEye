@@ -11,6 +11,7 @@ public class LoginApiClient {
 
     public static Retrofit getClient() {
         if (retrofit == null) {
+
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 

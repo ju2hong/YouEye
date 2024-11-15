@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.ImageButton;
@@ -19,6 +20,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.youeye.R;
+import com.example.youeye.SwitchManager;
+import com.example.youeye.TTSManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -33,6 +36,9 @@ public class TimeActivity extends AppCompatActivity {
     private ListView listView;
     private int hour, minute;
     private String am_pm, month, day;
+    private ImageButton imageButton11;
+    private TTSManager ttsManager;
+    private SwitchManager switchManager;
 
     // 시간 설정을 위한 런처
     private final ActivityResultLauncher<Intent> timePickerLauncher = registerForActivityResult(
@@ -79,6 +85,16 @@ public class TimeActivity extends AppCompatActivity {
         arrayAdapter = new AdapterActivity(alarmList);
         listView = findViewById(R.id.list_view);
         listView.setAdapter(arrayAdapter);
+        imageButton11 = findViewById(R.id.imageButton11);
+        // TTSManager 초기화
+        ttsManager = new TTSManager(this);
+        // SwitchManager 초기화
+        switchManager = SwitchManager.getInstance(this);
+        // 스위치 상태 가져오기
+        boolean isSwitchOn = switchManager.getSwitchState();
+        //뒤로가기버튼
+        imageButton11.setOnClickListener(v -> speakButtonDescriptionAndFinish());
+
 
         // 저장된 알람 목록 불러오기
         loadAlarmList();
@@ -202,5 +218,29 @@ public class TimeActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "알람 설정에 실패했습니다.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+    private void speakButtonDescriptionAndFinish() {
+        String buttonText = imageButton11.getContentDescription().toString();
+        if (switchManager.getSwitchState()) {
+            ttsManager.speak(buttonText);
+
+            // 예상 발화 시간 계산 (대략 100ms per character + 500ms buffer)
+            int estimatedSpeechTime = buttonText.length() * 100 ;
+
+            new Handler().postDelayed(this::finishWithAnimation, estimatedSpeechTime);
+        } else {
+            finishWithAnimation();
+        }
+    }
+    private void finishWithAnimation() {
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        speakButtonDescriptionAndFinish();
     }
 }

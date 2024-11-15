@@ -84,20 +84,6 @@
         app:layout_constraintVertical_bias="0.721"
         app:srcCompat="@drawable/button" />
 
-    <ImageButton
-        android:id="@+id/backBtn"
-        android:contentDescription="뒤로가기"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.925"
-        app:srcCompat="@drawable/button"
-        android:onClick="onBackButtonPressed" />
 
     <TextView
         android:id="@+id/txtsearch"
@@ -113,20 +99,33 @@
         app:layout_constraintStart_toStartOf="@+id/search_button"
         app:layout_constraintTop_toTopOf="@+id/search_button" />
 
-    <TextView
-        android:id="@+id/backtxt"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="뒤로가기"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="30pt"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/backBtn"
-        app:layout_constraintEnd_toEndOf="@+id/backBtn"
-        app:layout_constraintHorizontal_bias="0.515"
-        app:layout_constraintStart_toStartOf="@+id/backBtn"
-        app:layout_constraintTop_toBottomOf="@+id/search_button"
-        app:layout_constraintVertical_bias="0.884" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.937">
 
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:contentDescription="뒤로가기"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/button"
+            android:background="@android:color/transparent" />
+
+        <TextView
+            android:id="@+id/backtxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="뒤로가기"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="30pt"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
