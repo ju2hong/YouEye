@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E1DADA"
-    tools:context=".home.MyPageActivity"
-    >
+    tools:context=".home.MyPageActivity">
+
+    <!-- 마이페이지 텍스트 -->
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
@@ -21,6 +21,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023" />
 
+    <!-- 로그아웃 버튼 -->
     <ImageButton
         android:id="@+id/logoutBtton"
         android:layout_width="202dp"
@@ -35,6 +36,7 @@
         app:layout_constraintVertical_bias="0.234"
         app:srcCompat="@drawable/bigbutton" />
 
+    <!-- 알람 버튼 -->
     <ImageButton
         android:id="@+id/alBtton"
         android:layout_width="198dp"
@@ -47,9 +49,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.234"
-
         app:srcCompat="@drawable/bigbutton" />
 
+    <!-- 설정 버튼 -->
     <ImageButton
         android:id="@+id/imageButton8"
         android:layout_width="200dp"
@@ -62,14 +64,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.667"
         app:srcCompat="@drawable/bigbutton"
-        android:background="@android:color/transparent"
-        />
+        android:background="@android:color/transparent" />
 
+    <!-- 나의 복용약 버튼 -->
     <ImageButton
         android:id="@+id/imageButton9"
         android:layout_width="201dp"
         android:layout_height="218dp"
-        android:contentDescription="나의 복용약"
+        android:contentDescription="나의복용약"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.995"
@@ -77,40 +79,41 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.668"
         app:srcCompat="@drawable/bigbutton"
-        android:background="@android:color/transparent"
-        />
+        android:background="@android:color/transparent" />
 
-
+    <!-- 로그아웃 텍스트 -->
     <TextView
         android:id="@+id/logouttext"
         android:layout_width="127dp"
-        android:layout_height="185dp"
+        android:layout_height="wrap_content"
         android:text="로그\n아웃"
-        android:textColor="#FFFFFF"
+        android:textAlignment="center"
+        android:textColor="@color/white"
         android:textSize="60sp"
         android:textStyle="bold"
+        android:layout_marginBottom="20sp"
         app:layout_constraintBottom_toBottomOf="@id/logoutBtton"
         app:layout_constraintEnd_toEndOf="@id/logoutBtton"
-        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="@id/logoutBtton"
         app:layout_constraintTop_toTopOf="@id/logoutBtton" />
 
+    <!-- 알람 텍스트 -->
     <TextView
         android:id="@+id/altext"
         android:layout_width="127dp"
-        android:layout_height="185dp"
+        android:layout_height="wrap_content"
         android:text="나의\n알람"
         android:textColor="#FFFFFF"
         android:textSize="60sp"
         android:textStyle="bold"
+        android:layout_marginBottom="20sp"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@id/alBtton"
         app:layout_constraintEnd_toEndOf="@id/alBtton"
-        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="@id/alBtton"
         app:layout_constraintTop_toTopOf="@id/alBtton" />
 
-
+    <!-- 설정 텍스트 -->
     <TextView
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
@@ -118,15 +121,16 @@
         android:text="설정"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="30pt"
+        android:textSize="65sp"
         android:textStyle="bold"
+        android:layout_marginBottom="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageButton8"
         app:layout_constraintEnd_toEndOf="@+id/imageButton8"
-        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="@+id/imageButton8"
         app:layout_constraintTop_toBottomOf="@+id/alBtton"
-        app:layout_constraintVertical_bias="0.444" />
+    />
 
+    <!-- 나의 복용약 텍스트 -->
     <TextView
         android:id="@+id/textView17"
         android:layout_width="wrap_content"
@@ -134,15 +138,16 @@
         android:text="나의\n복용약"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="21pt"
+        android:textSize="52sp"
         android:textStyle="bold"
+        android:layout_marginBottom="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageButton9"
         app:layout_constraintEnd_toEndOf="@+id/imageButton9"
-        app:layout_constraintHorizontal_bias="0.53"
-        app:layout_constraintStart_toEndOf="@+id/imageButton8"
+        app:layout_constraintStart_toStartOf="@+id/imageButton9"
         app:layout_constraintTop_toBottomOf="@+id/logoutBtton"
-        app:layout_constraintVertical_bias="0.402" />
+       />
 
+    <!-- 뒤로가기 버튼과 텍스트 -->
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
