@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E1DADA"
-    tools:context=".home.HomeActivity"
-    >
+    tools:context=".home.HomeActivity">
 
     <ImageView
         android:id="@+id/imageView"
@@ -17,9 +16,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.038"
-        app:srcCompat="@drawable/logo"
-        />
+        app:srcCompat="@drawable/logo" />
 
+    <!-- Buttons -->
     <ImageButton
         android:id="@+id/imageSearch"
         android:layout_width="wrap_content"
@@ -32,8 +31,7 @@
         app:layout_constraintVertical_bias="0.608"
         app:srcCompat="@drawable/bigbutton"
         android:background="@android:color/transparent"
-        android:contentDescription="사진검색"
-        />
+        android:contentDescription="사진검색" />
 
     <ImageButton
         android:id="@+id/voiceSearch"
@@ -47,8 +45,7 @@
         app:layout_constraintVertical_bias="0.608"
         app:srcCompat="@drawable/bigbutton"
         android:background="@android:color/transparent"
-        android:contentDescription="음성검색"
-        />
+        android:contentDescription="음성검색" />
 
     <ImageButton
         android:id="@+id/textSearch"
@@ -62,8 +59,7 @@
         app:layout_constraintVertical_bias="0.969"
         app:srcCompat="@drawable/bigbutton"
         android:background="@android:color/transparent"
-        android:contentDescription="글자검색"
-        />
+        android:contentDescription="글자검색" />
 
     <ImageButton
         android:id="@+id/MyPage"
@@ -77,71 +73,63 @@
         app:layout_constraintVertical_bias="0.969"
         app:srcCompat="@drawable/bigbutton"
         android:background="@android:color/transparent"
-        android:contentDescription="마이페이지"
-        />
+        android:contentDescription="마이페이지" />
 
+    <!-- Centered TextViews for Buttons -->
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="149dp"
-        android:layout_height="184dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="사진\n검색"
-        android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="25pt"
+        android:textSize="30pt"
         android:textStyle="bold"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="@id/imageSearch"
         app:layout_constraintEnd_toEndOf="@id/imageSearch"
         app:layout_constraintStart_toStartOf="@id/imageSearch"
-        app:layout_constraintTop_toTopOf="@id/imageSearch"
-        tools:ignore="MissingConstraints"
-        />
+        app:layout_constraintTop_toTopOf="@+id/imageSearch" />
 
     <TextView
         android:id="@+id/textView5"
-        android:layout_width="141dp"
-        android:layout_height="170dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="음성\n검색"
-        android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="25pt"
+        android:textSize="30pt"
         android:textStyle="bold"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="@id/voiceSearch"
         app:layout_constraintEnd_toEndOf="@id/voiceSearch"
         app:layout_constraintStart_toStartOf="@id/voiceSearch"
-        app:layout_constraintTop_toTopOf="@id/voiceSearch"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="@id/voiceSearch" />
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="150dp"
-        android:layout_height="177dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="글자\n검색"
-        android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="25pt"
+        android:textSize="30pt"
         android:textStyle="bold"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="@id/textSearch"
         app:layout_constraintEnd_toEndOf="@id/textSearch"
         app:layout_constraintStart_toStartOf="@id/textSearch"
-        app:layout_constraintTop_toTopOf="@id/textSearch"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="42dp"
-        tools:layout_editor_absoluteY="518dp" />
+        app:layout_constraintTop_toTopOf="@id/textSearch" />
 
     <TextView
         android:id="@+id/textView7"
-        android:layout_width="159dp"
-        android:layout_height="179dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="마이\n페이지"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="23pt"
+        android:textSize="27pt"
         android:textStyle="bold"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="@id/MyPage"
         app:layout_constraintEnd_toEndOf="@id/MyPage"
         app:layout_constraintStart_toStartOf="@id/MyPage"
-        app:layout_constraintTop_toTopOf="@id/MyPage"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="225dp"
-        tools:layout_editor_absoluteY="518dp" />
+        app:layout_constraintTop_toTopOf="@id/MyPage" />
 </androidx.constraintlayout.widget.ConstraintLayout>
