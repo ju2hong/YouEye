@@ -153,7 +153,7 @@ public class IDLoginActivity extends AppCompatActivity {
 
         TextView titleTextView = dialogView.findViewById(R.id.dialog_title);
         TextView messageTextView = dialogView.findViewById(R.id.dialog_message);
-        titleTextView.setText("아이디 확인");
+        titleTextView.setText("로그인 아이디 확인");
         String message = "입력한 번호는 " + enteredNumber + "입니다.";
         messageTextView.setText(message);
 
