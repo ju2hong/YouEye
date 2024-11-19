@@ -72,20 +72,17 @@ public class IDMemberActivity extends AppCompatActivity {
 
         // backButton 초기화
         backButton = findViewById(R.id.backButton);
-
-        // backButton이 null이 아닌지 확인 후 클릭 리스너 설정
-        if (backButton != null) {
-            backButton.setOnClickListener(v -> speakButtonDescriptionAndFinish());
-        } else {
-            // backButton이 null인 경우 처리
-            // Log.e("IDMemberActivity", "backButton is null");
-        }
+        backButton.setOnClickListener(v -> speakButtonDescriptionAndFinish());
 
         // 모든 ImageButton을 초기 상태로 설정
         for (ImageButton imageButton : imageButtons) {
             imageButton.setImageResource(R.drawable.logintext);
             imageButton.setTag(null);
         }
+
+        // TTS On/Off 버튼 초기화 및 클릭 리스너 설정
+        ImageButton keyTTSButton = findViewById(R.id.keyStt);
+        keyTTSButton.setOnClickListener(v -> toggleTTS());
     }
 
     // 숫자 입력 처리 via layout's onClick
@@ -131,6 +128,13 @@ public class IDMemberActivity extends AppCompatActivity {
         } else {
             imageButtons.get(currentIndex).requestFocus();
         }
+    }
+    // TTS 토글 메서드
+    private void toggleTTS() {
+        boolean isCurrentlyOn = ttsManager.isTTSOn();
+        boolean newState = !isCurrentlyOn;
+        ttsManager.setTTSOn(newState);
+        switchManager.setSwitchState(newState); // TTS 상태 저장
     }
 
     // ID 중복 확인 메서드
@@ -205,8 +209,8 @@ public class IDMemberActivity extends AppCompatActivity {
         // 다이얼로그 내의 TextView에 제목과 메시지를 설정합니다.
         TextView titleTextView = dialogView.findViewById(R.id.dialog_title);
         TextView messageTextView = dialogView.findViewById(R.id.dialog_message);
-        titleTextView.setText("아이디 확인");
-        String message = "입력한 아이디는 " + enteredId + "입니다. 맞습니까?";
+        titleTextView.setText("회원가입 아이디 확인");
+        String message = "입력한 번호는 " + enteredId + " 입니다.";
         messageTextView.setText(message);
 
         // Yes, No 버튼에 대한 클릭 리스너를 설정합니다.
@@ -224,10 +228,14 @@ public class IDMemberActivity extends AppCompatActivity {
             dialog.getWindow().setBackgroundDrawable(background);
         }
         dialog.show();
+        if (ttsManager.isTTSOn()) {
+            ttsManager.speak("비밀번호를 확인해주세요");
+        }
     }
 
     // Yes 버튼 클릭 시 PWMemberActivity로 전환하면서 ID 전달
     public void onYesButtonClick(View view) {
+        ttsManager.speak("예");
         String enteredId = inputNumber.toString();
         Intent intent = new Intent(IDMemberActivity.this, PWMemberActivity.class);
         intent.putExtra("id", enteredId); // 입력된 ID 값을 전달
@@ -237,6 +245,7 @@ public class IDMemberActivity extends AppCompatActivity {
 
     // No 버튼 클릭 시 입력된 숫자 초기화
     public void onNoButtonClick(View view) {
+        ttsManager.speak("아니오");
         clearAllImageButtons();
         inputNumber.setLength(0);
         currentIndex = 0;
@@ -260,7 +269,7 @@ public class IDMemberActivity extends AppCompatActivity {
             ttsManager.speak(buttonText);
 
             // 예상 발화 시간 계산 (대략 100ms per character + 500ms buffer)
-            int estimatedSpeechTime = buttonText.length() * 100;
+            int estimatedSpeechTime = buttonText.length() * 100  ;
 
             new Handler().postDelayed(this::finishWithAnimation, estimatedSpeechTime);
         } else {
@@ -272,5 +281,9 @@ public class IDMemberActivity extends AppCompatActivity {
         finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        speakButtonDescriptionAndFinish();
+    }
 }
