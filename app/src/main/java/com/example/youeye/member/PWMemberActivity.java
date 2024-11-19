@@ -94,7 +94,7 @@ public class PWMemberActivity extends AppCompatActivity {
         }
 
         // TTS On/Off 버튼 초기화 및 클릭 리스너 설정
-        ImageButton keyTTSButton = findViewById(R.id.keytts);
+        ImageButton keyTTSButton = findViewById(R.id.pwkeyStt);
         if (keyTTSButton != null) {
             keyTTSButton.setOnClickListener(v -> toggleTTS());
         } else {
@@ -175,7 +175,6 @@ public class PWMemberActivity extends AppCompatActivity {
         boolean newState = !isCurrentlyOn;
         ttsManager.setTTSOn(newState);
         switchManager.setSwitchState(newState); // TTS 상태 저장
-        Toast.makeText(this, "TTS " + (newState ? "활성화" : "비활성화"), Toast.LENGTH_SHORT).show();
     }
 
     // 확인 팝업창을 띄우는 메서드
@@ -194,11 +193,14 @@ public class PWMemberActivity extends AppCompatActivity {
         TextView titleTextView = dialogView.findViewById(R.id.dialog_title);
         TextView messageTextView = dialogView.findViewById(R.id.dialog_message);
         if (titleTextView != null) {
-            titleTextView.setText("회원가입 확인");
+            titleTextView.setText("회원가입 비밀번호 확인");
         }
         if (messageTextView != null) {
-            String message = "입력한 아이디: " + enteredId + "\n입력한 비밀번호: " + enteredPassword + "\n회원가입을 진행하시겠습니까?";
+            String message = "입력한 번호 " + enteredPassword + " 입니다.";
             messageTextView.setText(message);
+            if (ttsManager.isTTSOn()) {
+                ttsManager.speak("비밀번호를 확인해주세요");
+            }
         }
 
         // Yes, No 버튼에 대한 클릭 리스너를 설정합니다.
@@ -307,7 +309,7 @@ public class PWMemberActivity extends AppCompatActivity {
                 ttsManager.speak(buttonText);
 
                 // 예상 발화 시간 계산 (대략 100ms per character + 500ms buffer)
-                int estimatedSpeechTime = buttonText.length() * 100 + 500;
+                int estimatedSpeechTime = buttonText.length() * 100 ;
 
                 new Handler().postDelayed(this::finishWithAnimation, estimatedSpeechTime);
             } else {

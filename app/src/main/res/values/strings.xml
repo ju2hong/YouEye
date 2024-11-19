@@ -3,4 +3,5 @@
     <string name="yes_button_description">예</string>
     <string name="no_button_description">아니오</string>
     <string name="confirmation_message">"\"%s"\"\n맞습니까?</string>
+    <string name="clear_medicines">약품 삭제</string>
 </resources>
