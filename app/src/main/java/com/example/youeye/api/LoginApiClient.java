@@ -1,4 +1,3 @@
-// File: com/example/youeye/api/LoginApiClient.java
 package com.example.youeye.api;
 
 import retrofit2.Retrofit;
