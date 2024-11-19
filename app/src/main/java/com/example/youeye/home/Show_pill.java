@@ -31,6 +31,13 @@ public class Show_pill extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_pill);
 
+        ImageButton clearButton = findViewById(R.id.clearButton);
+        clearButton.setOnClickListener(v -> {
+            clearSearchedMedicines(); // 저장된 약품 내역 삭제
+            medicationList.clear(); // RecyclerView의 데이터 리스트도 비워줌
+            medicationAdapter.notifyDataSetChanged(); // 어댑터에 데이터 변경 알림
+        });
+
         // RecyclerView 초기화
         medicationRecyclerView = findViewById(R.id.medicationRecyclerView);
         medicationRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -47,6 +54,13 @@ public class Show_pill extends AppCompatActivity {
         // 뒤로가기 버튼 설정
         bkButton = findViewById(R.id.bkButton);
         bkButton.setOnClickListener(v -> speakButtonDescriptionAndFinish());
+    }
+    // 삭제
+    private void clearSearchedMedicines() {
+        SharedPreferences sharedPreferences = getSharedPreferences("SearchedMedicines", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("medicineList"); // 저장된 약품 리스트 제거
+        editor.apply(); // 변경사항 적용
     }
 
     // SharedPreferences에서 저장된 약품명을 불러오는 메소드
