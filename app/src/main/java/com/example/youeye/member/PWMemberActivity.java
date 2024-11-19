@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings; // android_id 가져오기 위해 추가
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,7 @@ import com.example.youeye.SwitchManager;
 import com.example.youeye.TTSManager;
 import com.example.youeye.api.RegisterRequest;
 import com.example.youeye.api.RegisterResponse;
-import com.example.youeye.api.LoginApiClient; // 여기서 클래스명을 수정
+import com.example.youeye.api.LoginApiClient; // 클래스명 확인
 import com.example.youeye.api.LoginService;
 import com.example.youeye.login.LoginActivity;
 
@@ -79,13 +80,12 @@ public class PWMemberActivity extends AppCompatActivity {
             backButton.setOnClickListener(v -> speakButtonDescriptionAndFinish());
         } else {
             Log.e("PWMemberActivity", "backButton is null - Check activity_pwmember.xml layout file");
-            // 필요시 사용자에게 알림을 제공할 수 있습니다.
             Toast.makeText(this, "뒤로가기 버튼을 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
         }
 
         // 모든 ImageButton을 초기 상태로 설정합니다.
         for (ImageButton imageButton : imageButtons) {
-            if (imageButton != null) { // Null 체크 추가
+            if (imageButton != null) {
                 imageButton.setImageResource(R.drawable.logintext);
                 imageButton.setTag(null);
             } else {
@@ -99,9 +99,6 @@ public class PWMemberActivity extends AppCompatActivity {
             keyTTSButton.setOnClickListener(v -> toggleTTS());
         } else {
             Log.e("PWMemberActivity", "keyTTSButton is null - Ensure the view exists in the layout");
-            // 필요시 사용자에게 알림을 제공하거나, 기능을 비활성화할 수 있습니다.
-            // 예를 들어:
-            // keyTTSButton.setVisibility(View.GONE);
         }
     }
 
@@ -122,7 +119,7 @@ public class PWMemberActivity extends AppCompatActivity {
     private void handleNumberInput(int number) {
         if (currentIndex < imageButtons.size()) {
             ImageButton currentImageButton = imageButtons.get(currentIndex);
-            if (currentImageButton != null) { // Null 체크 추가
+            if (currentImageButton != null) {
                 currentImageButton.setImageResource(R.drawable.textinput);
                 currentImageButton.setTag(String.valueOf(number));
                 inputNumber.append(number);
@@ -145,7 +142,7 @@ public class PWMemberActivity extends AppCompatActivity {
         if (currentIndex > 0) {
             currentIndex--;
             ImageButton previousImageButton = imageButtons.get(currentIndex);
-            if (previousImageButton != null) { // Null 체크 추가
+            if (previousImageButton != null) {
                 previousImageButton.setImageResource(R.drawable.logintext);
                 previousImageButton.setTag(null);
                 if (inputNumber.length() > 0) {
@@ -234,8 +231,11 @@ public class PWMemberActivity extends AppCompatActivity {
     public void onYesButtonClick(View view) {
         String enteredPassword = inputNumber.toString();
 
-        // 회원가입 요청 보내기
-        RegisterRequest registerRequest = new RegisterRequest(enteredId, enteredPassword);
+        // android_id 가져오기
+        String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        // 회원가입 요청 보내기 (android_id 포함)
+        RegisterRequest registerRequest = new RegisterRequest(enteredId, enteredPassword, androidId);
 
         LoginService loginService = LoginApiClient.getClient().create(LoginService.class);
         Call<RegisterResponse> call = loginService.register(registerRequest);
@@ -292,7 +292,7 @@ public class PWMemberActivity extends AppCompatActivity {
     // 모든 ImageButton을 초기화하는 메서드
     public void clearAllImageButtons() {
         for (ImageButton imageButton : imageButtons) {
-            if (imageButton != null) { // Null 체크 추가
+            if (imageButton != null) {
                 imageButton.setImageResource(R.drawable.logintext);
                 imageButton.setTag(null);
             }
@@ -301,7 +301,7 @@ public class PWMemberActivity extends AppCompatActivity {
     }
 
     private void speakButtonDescriptionAndFinish() {
-        if (backButton != null) { // Null 체크 추가
+        if (backButton != null) {
             String buttonText = backButton.getContentDescription() != null ? backButton.getContentDescription().toString() : "뒤로가기";
             if (switchManager.getSwitchState()) {
                 ttsManager.speak(buttonText);

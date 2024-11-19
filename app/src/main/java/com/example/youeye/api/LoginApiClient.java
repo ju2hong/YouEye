@@ -20,7 +20,7 @@ public class LoginApiClient {
                     .build();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://dyserver.asuscomm.com:13000/api/")
+                    .baseUrl("http://dyserver.asuscomm.com:13001/api/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build();

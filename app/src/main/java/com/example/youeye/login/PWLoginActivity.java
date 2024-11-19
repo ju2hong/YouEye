@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -43,7 +44,7 @@ public class PWLoginActivity extends AppCompatActivity {
     private StringBuilder inputNumber;
     private AlertDialog dialog;
     private TTSManager ttsManager;
-    private SwitchManager switchManager;  // SwitchManager 선언 추가
+    private SwitchManager switchManager;
     private ImageButton backButton;
 
     private String userId; // 사용자 아이디를 저장할 변수
@@ -229,7 +230,7 @@ public class PWLoginActivity extends AppCompatActivity {
         currentIndex = 0;
     }
 
-    // 로그인 API 호출 메서드 추가
+    // 로그인 API 호출 메서드 수정 (android_id 추가)
     private void loginUser(String userId, String password) {
         // 프로그레스 다이얼로그 표시 (옵션)
         ProgressDialog progressDialog = new ProgressDialog(this);
@@ -237,8 +238,11 @@ public class PWLoginActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        // 로그인 요청 객체 생성
-        LoginRequest loginRequest = new LoginRequest(userId, password);
+        // android_id 가져오기
+        String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        // 로그인 요청 객체 생성 (android_id 포함)
+        LoginRequest loginRequest = new LoginRequest(userId, password, androidId);
 
         // Retrofit 서비스 생성
         LoginService loginService = LoginApiClient.getClient().create(LoginService.class);
