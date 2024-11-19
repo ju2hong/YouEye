@@ -20,6 +20,53 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.267" />
 
+    <LinearLayout
+        android:id="@+id/repeatOptions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/okBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_picker">
+
+        <TextView
+            android:id="@+id/repeat_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="반복 유형 선택:"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/repeatNone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="없음" />
+
+        <CheckBox
+            android:id="@+id/repeatDaily"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="매일" />
+
+        <CheckBox
+            android:id="@+id/repeatWeekly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="매주" />
+
+        <CheckBox
+            android:id="@+id/repeatMonthly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="매월" />
+    </LinearLayout>
+
     <ImageButton
         android:id="@+id/okBtn"
         android:contentDescription="알람이 추가 되었습니다."
